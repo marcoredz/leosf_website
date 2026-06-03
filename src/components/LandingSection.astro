@@ -1,0 +1,112 @@
+---
+import eofLogo from "../assets/eof_logo_transp.png";
+---
+
+<section class="relative flex min-h-dvh items-center justify-center overflow-hidden bg-background-dark px-5 py-24 text-background-light">
+	<a
+		href="/"
+		aria-label="Laveno End Of Summer Fest"
+		class="absolute left-4 top-4 sm:left-8 sm:top-7"
+	>
+		<img
+			src={eofLogo.src}
+			alt="Laveno End Of Summer Fest"
+			class="h-auto w-16 sm:w-24 lg:w-28"
+			loading="eager"
+		/>
+	</a>
+
+	<div class="mx-auto flex w-full max-w-5xl flex-col items-center text-center">
+		<p class="font-plex text-xl uppercase leading-none sm:text-2xl lg:text-3xl">
+			V Edizione
+		</p>
+		<h1 class="mt-12 font-blur text-[clamp(3.25rem,12vw,9.5rem)] uppercase leading-[0.88] tracking-normal">
+			28-29-30<br class="sm:hidden" /> AGOSTO
+		</h1>
+
+		<div
+			class="mt-12 grid w-full max-w-3xl grid-cols-2 gap-x-4 gap-y-5 sm:mt-12 sm:grid-cols-4 sm:gap-x-6"
+			aria-label="Countdown al 28 agosto 2026"
+		>
+			<div class="countdown-unit">
+				<strong data-countdown="days" class="countdown-value">00</strong>
+				<span class="countdown-label">Giorni</span>
+			</div>
+			<div class="countdown-unit">
+				<strong data-countdown="hours" class="countdown-value">00</strong>
+				<span class="countdown-label">Ore</span>
+			</div>
+			<div class="countdown-unit">
+				<strong data-countdown="minutes" class="countdown-value">00</strong>
+				<span class="countdown-label">Minuti</span>
+			</div>
+			<div class="countdown-unit">
+				<strong data-countdown="seconds" class="countdown-value">00</strong>
+				<span class="countdown-label">Secondi</span>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+	const targetDate = new Date("2026-08-28T00:00:00+02:00").getTime();
+	const daysElement = document.querySelector<HTMLElement>('[data-countdown="days"]');
+	const hoursElement = document.querySelector<HTMLElement>('[data-countdown="hours"]');
+	const minutesElement = document.querySelector<HTMLElement>(
+		'[data-countdown="minutes"]',
+	);
+	const secondsElement = document.querySelector<HTMLElement>(
+		'[data-countdown="seconds"]',
+	);
+
+	if (daysElement && hoursElement && minutesElement && secondsElement) {
+		const units = {
+			days: daysElement,
+			hours: hoursElement,
+			minutes: minutesElement,
+			seconds: secondsElement,
+		};
+
+		const pad = (value: number) => String(value).padStart(2, "0");
+
+		function updateCountdown() {
+			const remaining = Math.max(0, targetDate - Date.now());
+			const totalSeconds = Math.floor(remaining / 1000);
+			const days = Math.floor(totalSeconds / 86400);
+			const hours = Math.floor((totalSeconds % 86400) / 3600);
+			const minutes = Math.floor((totalSeconds % 3600) / 60);
+			const seconds = totalSeconds % 60;
+
+			units.days.textContent = pad(days);
+			units.hours.textContent = pad(hours);
+			units.minutes.textContent = pad(minutes);
+			units.seconds.textContent = pad(seconds);
+		}
+
+		updateCountdown();
+		window.setInterval(updateCountdown, 1000);
+	}
+</script>
+
+<style>
+	.countdown-unit {
+		display: flex;
+		min-width: 0;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.35rem;
+	}
+
+	.countdown-value {
+		font-family: var(--font-blur);
+		font-size: clamp(2.35rem, 8vw, 5.5rem);
+		font-weight: 700;
+		line-height: 0.9;
+	}
+
+	.countdown-label {
+		font-size: clamp(0.75rem, 2.4vw, 1rem);
+		line-height: 1.1;
+		text-transform: uppercase;
+	}
+</style>
