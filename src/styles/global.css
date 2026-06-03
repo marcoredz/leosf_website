@@ -1,5 +1,17 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Blur Bold";
+  src: url("/fonts/Blur Bold.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("/fonts/IBMPlexMono-Regular.ttf") format("truetype");
+  font-display: swap;
+}
+
 @theme {
   --color-background-dark: #2f2122;
   --color-background-light: #e0dddd;
@@ -11,4 +23,30 @@
   --color-leof-purple: #4e3183;
   --color-leof-orange-light: #ee9c3d;
   --color-leof-red: #cf4939;
+
+  --font-blur: "Blur Bold", system-ui, sans-serif;
+  --font-plex: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background: var(--color-background-dark);
+  }
+
+  body {
+    min-width: 320px;
+    overflow-x: hidden;
+    font-family: var(--font-plex);
+    color: var(--color-background-light);
+    background: var(--color-background-dark);
+  }
+
+  h1,
+  h2,
+  h3,
+  strong {
+    font-family: var(--font-blur);
+    font-weight: 700;
+  }
 }
