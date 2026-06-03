@@ -1,8 +1,13 @@
+## Chat Instructions
+
+Do not try to launch the dev server or build the project. Focus on providing guidance and answering questions related to the project structure, code, and development process. If you encounter any issues or have questions about the codebase, feel free to ask for clarification or assistance.
+
 ## UI Style
 
 ### Guidelines
 
-The UI style of the Laveno End Of Summer Festival website is designed to be visually appealing and user-friendly. The website features a clean and modern design with a focus on readability and ease of navigation. The color scheme is vibrant and festive, reflecting the lively atmosphere of the festival. The typography is clear and legible, ensuring that visitors can easily read the information provided on the website. Overall, the UI style aims to create an engaging and enjoyable experience for users while providing them with all the necessary information about the festival.
+'Blur Bold' font should be used for headings and important text elements to create a strong visual hierarchy.
+For other texts use 'IBMPlexMono-Regular' font to ensure readability and a clean, modern look.
 
 The website must be responsive on web and mobile devices, ensuring that users can access the information from any device. The layout is designed to adapt to different screen sizes, providing an optimal viewing experience for all users.
 
