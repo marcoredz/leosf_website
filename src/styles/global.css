@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Blur Bold";
+  src: url("/fonts/Blur Bold.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("/fonts/IBMPlexMono-Regular.ttf") format("truetype");
+  font-display: swap;
+}
+
+@theme {
+  --color-background-dark: #2f2122;
+  --color-background-light: #e0dddd;
+
+  --color-leof-orange: #d4693a;
+  --color-leof-green: #5e9744;
+  --color-leof-pink: #bb84b0;
+  --color-leof-burgundy: #732a5d;
+  --color-leof-purple: #4e3183;
+  --color-leof-orange-light: #ee9c3d;
+  --color-leof-red: #cf4939;
+
+  --font-blur: "Blur Bold", system-ui, sans-serif;
+  --font-plex: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background: var(--color-background-dark);
+  }
+
+  body {
+    min-width: 320px;
+    overflow-x: hidden;
+    font-family: var(--font-plex);
+    color: var(--color-background-light);
+    background: var(--color-background-dark);
+  }
+
+  h1,
+  h2,
+  h3,
+  strong {
+    font-family: var(--font-blur);
+    font-weight: 700;
+  }
+}
+
+@layer components {
+  .lineup-redacted {
+    --redacted-width: clamp(5.5rem, 18vw, 11rem);
+    --redacted-tilt: -2deg;
+    --redacted-offset: 0%;
+
+    position: relative;
+    display: inline-block;
+    justify-self: end;
+    width: var(--redacted-width);
+    height: 1.05em;
+    overflow: visible;
+    vertical-align: middle;
+  }
+
+  .lineup-redacted::before,
+  .lineup-redacted::after {
+    content: "";
+    position: absolute;
+    left: var(--redacted-offset);
+    right: 0;
+    top: 50%;
+    height: 0.62em;
+    background: var(--color-background-light);
+    border-radius: 999px;
+    filter: blur(0.7px);
+    transform: translateY(-50%) rotate(var(--redacted-tilt));
+    clip-path: polygon(
+      0% 48%,
+      6% 26%,
+      13% 44%,
+      21% 18%,
+      34% 39%,
+      48% 22%,
+      62% 44%,
+      78% 25%,
+      91% 40%,
+      100% 31%,
+      100% 76%,
+      88% 63%,
+      74% 84%,
+      58% 67%,
+      43% 86%,
+      28% 65%,
+      14% 82%,
+      0% 71%
+    );
+  }
+
+  .lineup-redacted::after {
+    left: calc(var(--redacted-offset) + 4%);
+    right: -4%;
+    top: 58%;
+    height: 0.46em;
+    opacity: 0.9;
+    transform: translateY(-50%) rotate(calc(var(--redacted-tilt) * -0.65));
+  }
+
+  .lineup-redacted-1 {
+    --redacted-width: clamp(5.75rem, 19vw, 11.25rem);
+    --redacted-tilt: -2deg;
+  }
+
+  .lineup-redacted-2 {
+    --redacted-width: clamp(4.75rem, 15vw, 8.75rem);
+    --redacted-tilt: 1.5deg;
+    --redacted-offset: 5%;
+  }
+
+  .lineup-redacted-3 {
+    --redacted-width: clamp(7rem, 24vw, 14rem);
+    --redacted-tilt: -1deg;
+    --redacted-offset: -2%;
+  }
+}
