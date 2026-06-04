@@ -1,0 +1,307 @@
+---
+const menuItems = [
+	{ label: "Home", href: "/#home" },
+	{ label: "Programma", href: "/#programma" },
+	{ label: "Il festival", href: "/#il-festival" },
+	{ label: "Gallery", href: "/#gallery" },
+	{ label: "News", href: "/#news" },
+	{ label: "Partecipa", href: "/#partecipa" },
+	{ label: "Contatti", href: "/#contatti" },
+];
+---
+
+<button
+	type="button"
+	class="menu-toggle"
+	aria-label="Apri menu"
+	aria-controls="site-menu"
+	aria-expanded="false"
+	data-menu-open
+>
+	<span aria-hidden="true"></span>
+	<span aria-hidden="true"></span>
+	<span aria-hidden="true"></span>
+</button>
+
+<nav
+	id="site-menu"
+	class="site-menu"
+	aria-label="Menu principale"
+	aria-hidden="true"
+	data-site-menu
+>
+	<button
+		type="button"
+		class="menu-close"
+		aria-label="Chiudi menu"
+		data-menu-close
+	>
+		<span aria-hidden="true"></span>
+		<span aria-hidden="true"></span>
+	</button>
+
+	<ul class="site-menu-list">
+		{
+			menuItems.map(({ label, href }) => (
+				<li>
+					<a href={href} data-menu-link>
+						{label}
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</nav>
+
+<script>
+	const menu = document.querySelector<HTMLElement>("[data-site-menu]");
+	const openButton = document.querySelector<HTMLButtonElement>("[data-menu-open]");
+	const closeButton = document.querySelector<HTMLButtonElement>("[data-menu-close]");
+	const menuLinks = document.querySelectorAll<HTMLAnchorElement>("[data-menu-link]");
+
+	function setMenuState(isOpen: boolean) {
+		menu?.classList.toggle("is-open", isOpen);
+		openButton?.classList.toggle("is-active", isOpen);
+		openButton?.setAttribute("aria-expanded", String(isOpen));
+		menu?.setAttribute("aria-hidden", String(!isOpen));
+		document.body.classList.toggle("menu-overlay-open", isOpen);
+
+		if (isOpen) {
+			closeButton?.focus();
+		} else {
+			openButton?.focus();
+		}
+	}
+
+	openButton?.addEventListener("click", () => setMenuState(true));
+	closeButton?.addEventListener("click", () => setMenuState(false));
+
+	menuLinks.forEach((link) => {
+		link.addEventListener("click", () => setMenuState(false));
+	});
+
+	document.addEventListener("keydown", (event) => {
+		if (event.key === "Escape") {
+			setMenuState(false);
+		}
+	});
+</script>
+
+<style>
+	.menu-toggle,
+	.menu-close {
+		position: fixed;
+		z-index: 60;
+		display: grid;
+		width: 3.25rem;
+		height: 3.25rem;
+		place-items: center;
+		border: 0;
+		color: var(--color-background-light);
+		background: transparent;
+		transition:
+			color 180ms ease,
+			background-color 180ms ease,
+			transform 180ms ease;
+	}
+
+	.menu-toggle {
+		top: max(1rem, env(safe-area-inset-top));
+		right: max(1rem, env(safe-area-inset-right));
+		isolation: isolate;
+	}
+
+	.menu-toggle::before {
+		position: absolute;
+		inset: -0.85rem;
+		z-index: -1;
+		content: "";
+		background: radial-gradient(
+			circle,
+			rgb(47 33 34 / 0.28) 0%,
+			rgb(47 33 34 / 0.16) 42%,
+			rgb(47 33 34 / 0) 72%
+		);
+		backdrop-filter: blur(12px);
+		-webkit-backdrop-filter: blur(12px);
+		mask-image: radial-gradient(circle, rgb(0 0 0 / 1) 46%, rgb(0 0 0 / 0) 76%);
+	}
+
+	.menu-close {
+		top: max(1rem, env(safe-area-inset-top));
+		right: max(1rem, env(safe-area-inset-right));
+		color: var(--color-background-dark);
+		background: transparent;
+	}
+
+	.menu-toggle:hover,
+	.menu-close:hover {
+		transform: scale(1.04);
+	}
+
+	.menu-toggle.is-active {
+		pointer-events: none;
+		opacity: 0;
+	}
+
+	.menu-toggle span,
+	.menu-close span {
+		position: absolute;
+		width: 1.45rem;
+		height: 0.125rem;
+		border-radius: 999px;
+		background: currentColor;
+	}
+
+	.menu-toggle span:nth-child(1) {
+		transform: translateY(-0.42rem);
+	}
+
+	.menu-toggle span:nth-child(3) {
+		transform: translateY(0.42rem);
+	}
+
+	.menu-close span:nth-child(1) {
+		transform: rotate(45deg);
+	}
+
+	.menu-close span:nth-child(2) {
+		transform: rotate(-45deg);
+	}
+
+	.site-menu {
+		position: fixed;
+		inset: 0;
+		z-index: 50;
+		display: flex;
+		align-items: flex-end;
+		justify-content: center;
+		min-height: 100dvh;
+		padding: 5.5rem 1.5rem 3rem;
+		color: var(--color-background-dark);
+		background: var(--color-background-light);
+		clip-path: circle(0% at calc(100% - 2.625rem) 2.625rem);
+		pointer-events: none;
+		visibility: hidden;
+		transition:
+			clip-path 620ms cubic-bezier(0.76, 0, 0.24, 1),
+			visibility 0ms linear 620ms;
+	}
+
+	.site-menu.is-open {
+		clip-path: circle(150% at calc(100% - 2.625rem) 2.625rem);
+		pointer-events: auto;
+		visibility: visible;
+		transition:
+			clip-path 720ms cubic-bezier(0.76, 0, 0.24, 1),
+			visibility 0ms linear 0ms;
+	}
+
+	.site-menu-list {
+		display: flex;
+		width: min(100%, 58rem);
+		flex-direction: column;
+		align-items: flex-end;
+		gap: clamp(1.8rem, 2vw, 1.5rem);
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.site-menu-list a {
+		display: block;
+		width: 100%;
+		max-width: 100%;
+		font-family: var(--font-plex);
+		font-size: clamp(2rem, 5.5vw, 4.75rem);
+		line-height: 0.9;
+		text-align: right;
+		text-decoration: none;
+		color: currentColor;
+		transform: translateY(1rem);
+		opacity: 0;
+		transition:
+			color 180ms ease,
+			opacity 360ms ease,
+			transform 480ms cubic-bezier(0.22, 1, 0.36, 1);
+		transition-delay: 0ms;
+	}
+
+	.site-menu.is-open .site-menu-list a {
+		transform: translateY(0);
+		opacity: 1;
+	}
+
+	.site-menu.is-open .site-menu-list li:nth-child(1) a {
+		transition-delay: 180ms;
+	}
+
+	.site-menu.is-open .site-menu-list li:nth-child(2) a {
+		transition-delay: 230ms;
+	}
+
+	.site-menu.is-open .site-menu-list li:nth-child(3) a {
+		transition-delay: 280ms;
+	}
+
+	.site-menu.is-open .site-menu-list li:nth-child(4) a {
+		transition-delay: 330ms;
+	}
+
+	.site-menu.is-open .site-menu-list li:nth-child(5) a {
+		transition-delay: 380ms;
+	}
+
+	.site-menu.is-open .site-menu-list li:nth-child(6) a {
+		transition-delay: 430ms;
+	}
+
+	.site-menu.is-open .site-menu-list li:nth-child(7) a {
+		transition-delay: 480ms;
+	}
+
+	.site-menu-list a:hover {
+		color: var(--color-leof-burgundy);
+	}
+
+	:global(body.menu-overlay-open) {
+		overflow: hidden;
+	}
+
+	@media (max-width: 640px) {
+		.menu-toggle,
+		.menu-close {
+			width: 3.875rem;
+			height: 3.875rem;
+		}
+
+		.site-menu {
+			align-items: flex-end;
+			justify-content: center;
+			padding: 4.75rem 1.25rem 3rem;
+			clip-path: circle(0% at calc(100% - 2.4375rem) 2.4375rem);
+		}
+
+		.site-menu.is-open {
+			clip-path: circle(160% at calc(100% - 2.4375rem) 2.4375rem);
+		}
+
+		.site-menu-list a {
+			font-size: clamp(1.85rem, 9vw, 3.4rem);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.menu-toggle,
+		.menu-close,
+		.site-menu,
+		.site-menu-list a {
+			transition: none;
+		}
+
+		.site-menu,
+		.site-menu.is-open {
+			clip-path: none;
+		}
+	}
+</style>
