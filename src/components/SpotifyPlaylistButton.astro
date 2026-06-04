@@ -1,0 +1,27 @@
+---
+interface Props {
+	href: string;
+	label?: string;
+}
+
+const { href, label = "ascolta la playlist" } = Astro.props;
+---
+
+<a
+	href={href}
+	target="_blank"
+	rel="noreferrer"
+	class="inline-flex min-h-12 items-center justify-center gap-3 whitespace-nowrap rounded-full bg-background-light px-5 py-3 font-plex text-sm uppercase font-bold leading-none text-background-dark transition-opacity hover:opacity-85 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-background-light sm:text-base"
+>
+	<svg
+		class="size-5 shrink-0"
+		viewBox="0 0 24 24"
+		fill="currentColor"
+		aria-hidden="true"
+	>
+		<path
+			d="M12 0C5.383 0 0 5.383 0 12s5.383 12 12 12 12-5.383 12-12S18.617 0 12 0Zm5.506 17.31a.746.746 0 0 1-1.027.247c-2.812-1.718-6.35-2.107-10.518-1.154a.747.747 0 0 1-.332-1.456c4.562-1.042 8.474-.593 11.63 1.336a.746.746 0 0 1 .247 1.027Zm1.47-3.273a.934.934 0 0 1-1.283.308c-3.22-1.98-8.129-2.554-11.938-1.398a.934.934 0 1 1-.543-1.787c4.351-1.322 9.76-.682 13.456 1.591a.934.934 0 0 1 .308 1.286Zm.126-3.41C15.24 8.334 8.871 8.122 5.182 9.242a1.12 1.12 0 1 1-.651-2.143c4.236-1.287 11.264-1.038 15.716 1.604a1.12 1.12 0 0 1-1.145 1.925Z"
+		/>
+	</svg>
+	<span>{label}</span>
+</a>
