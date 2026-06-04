@@ -1,4 +1,6 @@
 ---
+import eofLogo from "../assets/eof_logo_transp.png";
+
 const menuItems = [
 	{ label: "Home", href: "/#home" },
 	{ label: "Programma", href: "/#programma" },
@@ -10,18 +12,28 @@ const menuItems = [
 ];
 ---
 
-<button
-	type="button"
-	class="menu-toggle"
-	aria-label="Apri menu"
-	aria-controls="site-menu"
-	aria-expanded="false"
-	data-menu-open
->
-	<span aria-hidden="true"></span>
-	<span aria-hidden="true"></span>
-	<span aria-hidden="true"></span>
-</button>
+<header class="site-header" data-site-header>
+	<a href="/" aria-label="Laveno End Of Summer Fest" class="site-header-logo">
+		<img
+			src={eofLogo.src}
+			alt="Laveno End Of Summer Fest"
+			loading="eager"
+		/>
+	</a>
+
+	<button
+		type="button"
+		class="menu-toggle"
+		aria-label="Apri menu"
+		aria-controls="site-menu"
+		aria-expanded="false"
+		data-menu-open
+	>
+		<span aria-hidden="true"></span>
+		<span aria-hidden="true"></span>
+		<span aria-hidden="true"></span>
+	</button>
+</header>
 
 <nav
 	id="site-menu"
@@ -54,10 +66,41 @@ const menuItems = [
 </nav>
 
 <script>
+	const header = document.querySelector<HTMLElement>("[data-site-header]");
 	const menu = document.querySelector<HTMLElement>("[data-site-menu]");
 	const openButton = document.querySelector<HTMLButtonElement>("[data-menu-open]");
 	const closeButton = document.querySelector<HTMLButtonElement>("[data-menu-close]");
 	const menuLinks = document.querySelectorAll<HTMLAnchorElement>("[data-menu-link]");
+	let lastScrollY = window.scrollY;
+	let isScrollTicking = false;
+
+	function updateHeaderVisibility() {
+		const currentScrollY = window.scrollY;
+		const scrollDelta = currentScrollY - lastScrollY;
+		const isMenuOpen = menu?.classList.contains("is-open") ?? false;
+		const shouldHide = currentScrollY > 80 && scrollDelta > 8 && !isMenuOpen;
+		const shouldShow = scrollDelta < -8 || currentScrollY <= 80 || isMenuOpen;
+
+		if (shouldHide) {
+			header?.classList.add("is-hidden");
+		}
+
+		if (shouldShow) {
+			header?.classList.remove("is-hidden");
+		}
+
+		lastScrollY = currentScrollY;
+		isScrollTicking = false;
+	}
+
+	function requestHeaderVisibilityUpdate() {
+		if (isScrollTicking) {
+			return;
+		}
+
+		isScrollTicking = true;
+		window.requestAnimationFrame(updateHeaderVisibility);
+	}
 
 	function setMenuState(isOpen: boolean) {
 		menu?.classList.toggle("is-open", isOpen);
@@ -65,6 +108,7 @@ const menuItems = [
 		openButton?.setAttribute("aria-expanded", String(isOpen));
 		menu?.setAttribute("aria-hidden", String(!isOpen));
 		document.body.classList.toggle("menu-overlay-open", isOpen);
+		header?.classList.remove("is-hidden");
 
 		if (isOpen) {
 			closeButton?.focus();
@@ -85,13 +129,48 @@ const menuItems = [
 			setMenuState(false);
 		}
 	});
+
+	window.addEventListener("scroll", requestHeaderVisibilityUpdate, {
+		passive: true,
+	});
 </script>
 
 <style>
+	.site-header {
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 60;
+		display: flex;
+		width: 100%;
+		height: 5.25rem;
+		align-items: center;
+		justify-content: space-between;
+		padding: max(0.75rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) 0.75rem max(1rem, env(safe-area-inset-left));
+		color: var(--color-background-light);
+		background: var(--color-background-dark);
+		transition: transform 220ms ease;
+	}
+
+	.site-header.is-hidden {
+		transform: translateY(-100%);
+	}
+
+	.site-header-logo {
+		display: inline-flex;
+		align-items: center;
+		width: 4rem;
+		line-height: 0;
+	}
+
+	.site-header-logo img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
 	.menu-toggle,
 	.menu-close {
-		position: fixed;
-		z-index: 60;
 		display: grid;
 		width: 3.25rem;
 		height: 3.25rem;
@@ -106,28 +185,12 @@ const menuItems = [
 	}
 
 	.menu-toggle {
-		top: max(1rem, env(safe-area-inset-top));
-		right: max(1rem, env(safe-area-inset-right));
-		isolation: isolate;
-	}
-
-	.menu-toggle::before {
-		position: absolute;
-		inset: -0.85rem;
-		z-index: -1;
-		content: "";
-		background: radial-gradient(
-			circle,
-			rgb(47 33 34 / 0.28) 0%,
-			rgb(47 33 34 / 0.16) 42%,
-			rgb(47 33 34 / 0) 72%
-		);
-		backdrop-filter: blur(12px);
-		-webkit-backdrop-filter: blur(12px);
-		mask-image: radial-gradient(circle, rgb(0 0 0 / 1) 46%, rgb(0 0 0 / 0) 76%);
+		position: relative;
 	}
 
 	.menu-close {
+		position: fixed;
+		z-index: 80;
 		top: max(1rem, env(safe-area-inset-top));
 		right: max(1rem, env(safe-area-inset-right));
 		color: var(--color-background-dark);
@@ -172,7 +235,7 @@ const menuItems = [
 	.site-menu {
 		position: fixed;
 		inset: 0;
-		z-index: 50;
+		z-index: 70;
 		display: flex;
 		align-items: flex-end;
 		justify-content: center;
@@ -269,6 +332,15 @@ const menuItems = [
 	}
 
 	@media (max-width: 640px) {
+		.site-header {
+			height: 4.875rem;
+			padding: max(0.5rem, env(safe-area-inset-top)) max(0.5rem, env(safe-area-inset-right)) 0.5rem max(0.75rem, env(safe-area-inset-left));
+		}
+
+		.site-header-logo {
+			width: 3.75rem;
+		}
+
 		.menu-toggle,
 		.menu-close {
 			width: 3.875rem;
@@ -292,6 +364,7 @@ const menuItems = [
 	}
 
 	@media (prefers-reduced-motion: reduce) {
+		.site-header,
 		.menu-toggle,
 		.menu-close,
 		.site-menu,
