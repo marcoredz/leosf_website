@@ -1,50 +1,58 @@
 ---
-import eofLogo from "../assets/eof_logo_transp.png";
+import landingImage from "../assets/landing_image.jpg";
+import SpotifyPlaylistButton from "./SpotifyPlaylistButton.astro";
+
+const spotifyPlaylistUrl = "https://open.spotify.com/";
 ---
 
-<section class="relative flex min-h-svh items-center justify-center overflow-hidden bg-background-dark px-5 py-24 text-background-light">
-	<a
-		href="/"
-		aria-label="Laveno End Of Summer Fest"
-		class="absolute left-4 top-4 sm:left-8 sm:top-7"
-	>
-		<img
-			src={eofLogo.src}
-			alt="Laveno End Of Summer Fest"
-			class="h-auto w-16 sm:w-24 lg:w-28"
-			loading="eager"
-		/>
-	</a>
+<section class="relative flex min-h-svh overflow-hidden bg-background-dark px-5 py-24 text-background-light">
+	<img
+		src={landingImage.src}
+		alt=""
+		class="absolute inset-0 h-full w-full scale-105 object-cover blur-sm"
+		aria-hidden="true"
+	/>
+	<div class="absolute inset-0 bg-background-dark/35" aria-hidden="true"></div>
 
-	<div class="mx-auto flex w-full max-w-5xl flex-col items-center text-center">
-		<p class="font-plex text-xl uppercase leading-none sm:text-2xl lg:text-3xl">
-			V Edizione
-		</p>
-		<h1 class="mt-12 font-blur text-[clamp(3.25rem,12vw,9.5rem)] uppercase leading-[0.88] tracking-normal">
-			28-29-30<br class="sm:hidden" /> AGOSTO
-		</h1>
+	<div class="relative z-10 mx-auto flex min-h-[calc(100svh-12rem)] w-full max-w-5xl flex-col items-center text-center">
+		<div class="flex w-full flex-1 flex-col items-center justify-center pb-10">
+			<p class="font-plex text-xl uppercase leading-none sm:text-2xl lg:text-3xl">
+				V Edizione
+			</p>
+			<h1 class="mt-12 font-blur text-[clamp(3.25rem,12vw,9.5rem)] uppercase leading-[0.88] tracking-normal">
+				28-29-30<br class="sm:hidden" /> AGOSTO
+			</h1>
 
-		<div
-			class="mt-12 grid w-full max-w-3xl grid-cols-2 gap-x-4 gap-y-5 sm:mt-12 sm:grid-cols-4 sm:gap-x-6"
-			aria-label="Countdown al 28 agosto 2026"
-		>
-			<div class="countdown-unit">
-				<strong data-countdown="days" class="countdown-value">00</strong>
-				<span class="countdown-label">Giorni</span>
-			</div>
-			<div class="countdown-unit">
-				<strong data-countdown="hours" class="countdown-value">00</strong>
-				<span class="countdown-label">Ore</span>
-			</div>
-			<div class="countdown-unit">
-				<strong data-countdown="minutes" class="countdown-value">00</strong>
-				<span class="countdown-label">Minuti</span>
-			</div>
-			<div class="countdown-unit">
-				<strong data-countdown="seconds" class="countdown-value">00</strong>
-				<span class="countdown-label">Secondi</span>
+			<div
+				class="mt-12 grid w-full max-w-3xl grid-cols-4 gap-x-2 sm:mt-12 sm:gap-x-6"
+				aria-label="Countdown al 28 agosto 2026"
+			>
+				<div class="countdown-unit">
+					<strong data-countdown="days" class="countdown-value">00</strong>
+					<span class="countdown-label">Giorni</span>
+				</div>
+				<div class="countdown-unit">
+					<strong data-countdown="hours" class="countdown-value">00</strong>
+					<span class="countdown-label">Ore</span>
+				</div>
+				<div class="countdown-unit">
+					<strong data-countdown="minutes" class="countdown-value">00</strong>
+					<span class="countdown-label">Minuti</span>
+				</div>
+				<div class="countdown-unit">
+					<strong data-countdown="seconds" class="countdown-value">00</strong>
+					<span class="countdown-label">Secondi</span>
+				</div>
 			</div>
 		</div>
+
+		<p class="mb-12 max-w-3xl font-plex text-sm uppercase leading-tight sm:text-base lg:text-lg">
+			Laveno Mombello (VA), località gaggetto
+		</p>
+	</div>
+
+	<div class="absolute bottom-0 left-1/2 z-10 mb-12 -translate-x-1/2">
+		<SpotifyPlaylistButton href={spotifyPlaylistUrl} />
 	</div>
 </section>
 
@@ -98,14 +106,14 @@ import eofLogo from "../assets/eof_logo_transp.png";
 	}
 
 	.countdown-value {
-		font-family: var(--font-blur);
-		font-size: clamp(2.35rem, 8vw, 5.5rem);
+		font-family: var(--font-plex);
+		font-size: clamp(1.55rem, 8vw, 5.5rem);
 		font-weight: 700;
 		line-height: 0.9;
 	}
 
 	.countdown-label {
-		font-size: clamp(0.75rem, 2.4vw, 1rem);
+		font-size: clamp(0.58rem, 2.4vw, 1rem);
 		line-height: 1.1;
 		text-transform: uppercase;
 	}

@@ -7,13 +7,15 @@ type LineupEvent = {
 type LineupDay = {
 	id: string;
 	day: string;
+	backgroundClass: string;
 	events: LineupEvent[];
 };
 
 const lineup: LineupDay[] = [
 	{
 		id: "venerdi",
-		day: "Venerdì",
+		day: "Venerdì 28/08",
+		backgroundClass: "bg-leof-orange",
 		events: [
 			{ time: "17:00 - 17:50", artist: "DJSET" },
 			{ time: "18:00 - 18:30", artist: "BIAVA" },
@@ -29,7 +31,8 @@ const lineup: LineupDay[] = [
 	},
 	{
 		id: "sabato",
-		day: "Sabato",
+		day: "Sabato 29/08",
+		backgroundClass: "bg-leof-pink",
 		events: [
 			{ time: "17:00 - 17:50", artist: "DJSET" },
 			{ time: "18:00 - 18:30", artist: "CONTEST > CIRCO" },
@@ -45,7 +48,8 @@ const lineup: LineupDay[] = [
 	},
 	{
 		id: "domenica",
-		day: "Domenica",
+		day: "Domenica 30/08",
+		backgroundClass: "bg-leof-green",
 		events: [
 			{ time: "17:00 - 17:50", artist: "DJ SET" },
 			{ time: "18:00 - 18:30", artist: "GEREMIA" },
@@ -61,51 +65,57 @@ const lineup: LineupDay[] = [
 ];
 ---
 
-<section class="bg-leof-burgundy px-5 py-14 text-background-light sm:px-8 sm:py-20">
+<section class="bg-background-dark px-5 py-14 text-white sm:px-8 sm:py-20">
 	<div class="mx-auto w-full max-w-5xl">
-		<h2 class="font-blur text-[clamp(3rem,9vw,7rem)] uppercase leading-none">
+		<h2 class="text-center font-blur text-[clamp(3rem,9vw,7rem)] uppercase leading-none">
 			Line Up 2026
 		</h2>
-
-		<div class="mt-10 flex flex-col gap-12 sm:mt-14 sm:gap-16">
-			{
-				lineup.map(({ id, day, events }) => (
-					<section aria-labelledby={`lineup-${id}`}>
-						<h3
-							id={`lineup-${id}`}
-							class="font-blur text-[clamp(2.5rem,8vw,5.5rem)] uppercase leading-none"
-						>
-							{day}
-						</h3>
-
-						<ol class="mt-6 flex flex-col gap-3 sm:mt-8 sm:gap-4">
-							{events.map(({ time, artist }, eventIndex) => {
-								const isRedacted = artist === "TBA";
-								const redactedVariant = `lineup-redacted-${(eventIndex % 3) + 1}`;
-
-								return (
-									<li class="grid min-h-8 grid-cols-[minmax(8.5rem,auto)_1fr] items-baseline gap-4 text-sm uppercase leading-tight sm:grid-cols-[minmax(12rem,auto)_1fr] sm:text-2xl lg:text-3xl">
-										<time class="whitespace-nowrap">{time}</time>
-										<span
-											class:list={[
-												"text-right font-plex",
-												isRedacted && "lineup-redacted",
-												isRedacted && redactedVariant,
-											]}
-										>
-											{isRedacted ? (
-												<span class="sr-only">Artista da annunciare</span>
-											) : (
-												artist
-											)}
-										</span>
-									</li>
-								);
-							})}
-						</ol>
-					</section>
-				))
-			}
-		</div>
 	</div>
 </section>
+
+{
+	lineup.map(({ id, day, backgroundClass, events }) => (
+		<section
+			aria-labelledby={`lineup-${id}`}
+			class:list={[
+				backgroundClass,
+				"px-5 py-12 text-background-dark sm:px-8 sm:py-16",
+			]}
+		>
+			<div class="mx-auto w-full max-w-5xl">
+				<h3
+					id={`lineup-${id}`}
+					class="font-blur text-[clamp(2.5rem,8vw,5.5rem)] uppercase leading-none"
+				>
+					{day}
+				</h3>
+
+				<ol class="mt-6 flex flex-col gap-3 sm:mt-8 sm:gap-4">
+					{events.map(({ time, artist }, eventIndex) => {
+						const isRedacted = artist === "TBA";
+						const redactedVariant = `lineup-redacted-${(eventIndex % 3) + 1}`;
+
+						return (
+							<li class="grid min-h-8 grid-cols-[minmax(8.5rem,auto)_1fr] items-baseline gap-4 text-sm uppercase leading-tight sm:grid-cols-[minmax(12rem,auto)_1fr] sm:text-2xl lg:text-3xl">
+								<time class="whitespace-nowrap">{time}</time>
+								<span
+									class:list={[
+										"text-right font-plex",
+										isRedacted && "lineup-redacted",
+										isRedacted && redactedVariant,
+									]}
+								>
+									{isRedacted ? (
+										<span class="sr-only">Artista da annunciare</span>
+									) : (
+										artist
+									)}
+								</span>
+							</li>
+						);
+					})}
+				</ol>
+			</div>
+		</section>
+	))
+}

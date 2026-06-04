@@ -16,7 +16,8 @@
   --color-background-dark: #2f2122;
   --color-background-light: #e0dddd;
 
-  --color-leof-orange: #d4693a;
+  /* --color-leof-orange: #d4693a; */
+  --color-leof-orange: #e3632a;
   --color-leof-green: #5e9744;
   --color-leof-pink: #bb84b0;
   --color-leof-burgundy: #732a5d;
@@ -74,7 +75,7 @@
     right: 0;
     top: 50%;
     height: 0.62em;
-    background: var(--color-background-light);
+    background: currentColor;
     border-radius: 999px;
     filter: blur(0.7px);
     transform: translateY(-50%) rotate(var(--redacted-tilt));
