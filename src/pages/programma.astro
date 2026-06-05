@@ -1,6 +1,8 @@
 ---
 import landingImage from "../assets/landing_image.jpg";
+import FestivalMapSection from "../components/common/FestivalMapSection.astro";
 import LineupSection from "../components/common/LineupSection.astro";
+import PartnerSection from "../components/common/PartnerSection.astro";
 import SiteFooter from "../components/common/SiteFooter.astro";
 import ProgramAccordion from "../components/program/ProgramAccordion.astro";
 import ProgramCardScroller from "../components/program/ProgramCardScroller.astro";
@@ -24,8 +26,6 @@ const pastEditions = [
 	{ title: "2024", subtitle: "Area live", backgroundClass: "bg-leof-orange" },
 	{ title: "2023", subtitle: "Lago e musica", backgroundClass: "bg-leof-green" },
 ];
-
-const partners = Array.from({ length: 28 }, (_, index) => `Partner ${index + 1}`);
 ---
 
 <Layout
@@ -43,23 +43,7 @@ const partners = Array.from({ length: 28 }, (_, index) => `Partner ${index + 1}`
 
 		<LineupSection />
 
-		<ProgramSection title="Mappa del Festival">
-			<div class="mx-auto aspect-[4/5] w-full max-w-3xl overflow-hidden rounded-lg border border-background-light/25 bg-leof-purple text-background-light">
-				<div class="relative h-full w-full bg-[linear-gradient(135deg,rgba(224,221,221,0.12)_25%,transparent_25%),linear-gradient(225deg,rgba(224,221,221,0.1)_25%,transparent_25%)] bg-[length:3rem_3rem]">
-					<div class="absolute left-[14%] top-[20%] h-[55%] w-[70%] rotate-[-8deg] rounded bg-leof-red/80" />
-					<div class="absolute left-[22%] top-[36%] h-[24%] w-[52%] rotate-[-8deg] rounded bg-background-light/15" />
-					<div class="absolute left-[9%] top-[14%] font-plex text-xs uppercase text-leof-red">Ingresso</div>
-					<div class="absolute right-[9%] top-[22%] font-plex text-xs uppercase text-leof-red">Palco</div>
-					<div class="absolute bottom-[22%] left-[12%] font-plex text-xs uppercase text-leof-red">Food</div>
-					<div class="absolute bottom-[18%] right-[14%] font-plex text-xs uppercase text-leof-red">Bar</div>
-					<div class="absolute inset-0 flex items-center justify-center px-8 text-center">
-						<p class="font-blur text-[clamp(2rem,7vw,4.5rem)] uppercase leading-none">
-							Mappa in arrivo
-						</p>
-					</div>
-				</div>
-			</div>
-		</ProgramSection>
+		<FestivalMapSection />
 
 		<ProgramSection title="Attivita' e Workshop">
 			<p class="mx-auto max-w-2xl text-center font-plex text-sm uppercase leading-tight sm:text-base">
@@ -85,15 +69,7 @@ const partners = Array.from({ length: 28 }, (_, index) => `Partner ${index + 1}`
 
 		<ProgramAccordion />
 
-		<ProgramSection title="Partner" background="bg-background-light" textColor="text-background-dark">
-			<ul class="m-0 grid list-none grid-cols-4 gap-2 p-0 sm:grid-cols-7 sm:gap-3" aria-label="Partner festival">
-				{
-					partners.map((partner) => (
-						<li class="aspect-[5/3] rounded bg-background-dark" aria-label={partner} />
-					))
-				}
-			</ul>
-		</ProgramSection>
+		<PartnerSection />
 
 		<SiteFooter />
 	</main>

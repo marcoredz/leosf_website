@@ -1,11 +1,12 @@
 ---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
 type CardItem = {
 	title: string;
 	subtitle?: string;
 	backgroundClass?: string;
-	image?: {
-		src: string;
-	};
+	image?: ImageMetadata;
 };
 
 interface Props {
@@ -22,14 +23,17 @@ const { items, cardLabel } = Astro.props;
 >
 	{
 		items.map(({ title, subtitle, backgroundClass = "bg-leof-burgundy", image }) => (
-			<article class="relative flex aspect-[4/5] min-w-44 snap-center overflow-hidden rounded-lg text-background-light sm:min-w-0">
+			<article class="relative flex aspect-4/5 min-w-44 snap-center overflow-hidden rounded-lg text-background-light sm:min-w-0">
 				{image ? (
-					<img
-						src={image.src}
+					<Image
+						src={image}
 						alt=""
+						widths={[176, 320, 480]}
+						sizes="(max-width: 640px) 176px, 320px"
+						format="avif"
+						quality={75}
 						class="absolute inset-0 h-full w-full object-cover"
 						loading="lazy"
-						aria-hidden="true"
 					/>
 				) : (
 					<div class:list={["absolute inset-0", backgroundClass]} aria-hidden="true" />

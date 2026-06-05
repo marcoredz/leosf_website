@@ -1,0 +1,35 @@
+---
+type Partner = {
+	label: string;
+};
+
+interface Props {
+	id?: string;
+	title?: string;
+	partners?: Partner[];
+}
+
+const defaultPartners = Array.from({ length: 28 }, (_, index) => ({
+	label: `Partner ${index + 1}`,
+}));
+
+const { id, title = "Partner", partners = defaultPartners } = Astro.props;
+---
+
+<section id={id} class="bg-background-light px-5 py-12 text-background-dark sm:px-8 sm:py-16">
+	<div class="mx-auto w-full max-w-5xl">
+		<header class="text-center">
+			<h2 class="font-blur text-[clamp(2.25rem,7vw,5.25rem)] uppercase leading-none">
+				{title}
+			</h2>
+		</header>
+
+		<ul class="m-0 mt-8 grid list-none grid-cols-4 gap-2 p-0 sm:mt-10 sm:grid-cols-7 sm:gap-3" aria-label="Partner festival">
+			{
+				partners.map(({ label }) => (
+					<li class="aspect-5/3 rounded bg-background-dark" aria-label={label} />
+				))
+			}
+		</ul>
+	</div>
+</section>
