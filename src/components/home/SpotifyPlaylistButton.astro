@@ -1,0 +1,20 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+	href: string;
+	label?: string;
+}
+
+const { href, label = "ascolta la playlist" } = Astro.props;
+---
+
+<a
+	href={href}
+	target="_blank"
+	rel="noreferrer"
+	class="inline-flex min-h-12 items-center justify-center gap-3 whitespace-nowrap rounded-full bg-background-light px-5 py-3 font-plex text-sm uppercase font-bold leading-none text-background-dark transition-opacity hover:opacity-85 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-background-light sm:text-base"
+>
+	<Icon name="simple-icons:spotify" class="size-5 shrink-0" aria-hidden="true" />
+	<span>{label}</span>
+</a>

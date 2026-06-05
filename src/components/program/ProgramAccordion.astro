@@ -1,0 +1,40 @@
+---
+const rules = [
+	"L'ingresso all'area festival e' libero fino al raggiungimento della capienza consentita.",
+	"Rispetta gli spazi comuni, lo staff, gli artisti e le altre persone presenti.",
+	"Non introdurre vetro, oggetti pericolosi o materiali non autorizzati nell'area evento.",
+	"Segui le indicazioni dello staff per accessi, uscite, parcheggi e aree dedicate.",
+];
+---
+
+<section class="bg-background-light text-background-dark">
+	<div class="mx-auto w-full max-w-5xl px-5 sm:px-8">
+		<details class="program-details">
+			<summary class="flex cursor-pointer list-none items-center justify-between py-3 font-blur text-2xl uppercase leading-none sm:text-4xl">
+				<span>Regolamento</span>
+				<span class="details-icon" aria-hidden="true">v</span>
+			</summary>
+
+			<div class="py-5">
+				<ul class="grid gap-3 font-plex text-sm uppercase leading-tight sm:grid-cols-2 sm:text-base">
+					{rules.map((rule) => <li>{rule}</li>)}
+				</ul>
+			</div>
+		</details>
+	</div>
+</section>
+
+<style>
+	.program-details summary::-webkit-details-marker {
+		display: none;
+	}
+
+	.program-details[open] .details-icon {
+		transform: rotate(180deg);
+	}
+
+	.details-icon {
+		display: inline-block;
+		transition: transform 180ms ease;
+	}
+</style>

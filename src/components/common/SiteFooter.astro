@@ -1,0 +1,40 @@
+---
+import { Icon } from "astro-icon/components";
+
+const contacts = [
+	"info@endofsummerfestival.it",
+	"+39 379 318 7294",
+	"Via Prova, Montaggio 16",
+	"21014 Laveno Mombello",
+];
+
+const socials = [
+	{ label: "Instagram", href: "/#contatti", icon: "simple-icons:instagram" },
+	{ label: "TikTok", href: "/#contatti", icon: "simple-icons:tiktok" },
+	{ label: "Facebook", href: "/#contatti", icon: "simple-icons:facebook" },
+	{ label: "YouTube", href: "/#contatti", icon: "simple-icons:youtube" },
+	{ label: "Spotify", href: "/#contatti", icon: "simple-icons:spotify" },
+];
+---
+
+<footer class="bg-background-dark px-5 py-10 text-center text-background-light sm:px-8">
+	<div class="mx-auto flex w-full max-w-5xl flex-col items-center gap-5">
+		<address class="not-italic">
+			{contacts.map((contact) => <p class="font-plex text-xs leading-relaxed">{contact}</p>)}
+		</address>
+
+		<nav aria-label="Social" class="flex items-center justify-center gap-2">
+			{
+				socials.map(({ label, href, icon }) => (
+					<a
+						href={href}
+						aria-label={label}
+						class="grid h-7 w-7 place-items-center rounded-full border border-background-light/70 text-background-light transition-colors hover:bg-background-light hover:text-background-dark"
+					>
+						<Icon name={icon} class="h-3.5 w-3.5" aria-hidden="true" />
+					</a>
+				))
+			}
+		</nav>
+	</div>
+</footer>

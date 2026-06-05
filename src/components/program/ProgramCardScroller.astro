@@ -1,0 +1,45 @@
+---
+type CardItem = {
+	title: string;
+	subtitle?: string;
+	backgroundClass?: string;
+	image?: {
+		src: string;
+	};
+};
+
+interface Props {
+	items: CardItem[];
+	cardLabel: string;
+}
+
+const { items, cardLabel } = Astro.props;
+---
+
+<div
+	class="-mx-5 flex snap-x gap-3 overflow-x-auto px-5 pb-3 sm:mx-0 sm:grid sm:grid-cols-3 sm:overflow-visible sm:px-0 sm:pb-0"
+	aria-label={cardLabel}
+>
+	{
+		items.map(({ title, subtitle, backgroundClass = "bg-leof-burgundy", image }) => (
+			<article class="relative flex aspect-[4/5] min-w-44 snap-center overflow-hidden rounded-lg text-background-light sm:min-w-0">
+				{image ? (
+					<img
+						src={image.src}
+						alt=""
+						class="absolute inset-0 h-full w-full object-cover"
+						loading="lazy"
+						aria-hidden="true"
+					/>
+				) : (
+					<div class:list={["absolute inset-0", backgroundClass]} aria-hidden="true" />
+				)}
+				<div class="absolute inset-0 bg-background-dark/20" aria-hidden="true" />
+				<div class="relative z-10 flex h-full w-full flex-col justify-end p-5">
+					<h3 class="font-blur text-[clamp(1.75rem,5vw,3rem)] uppercase leading-none">{title}</h3>
+					{subtitle && <p class="mt-2 font-plex text-xs uppercase leading-tight">{subtitle}</p>}
+				</div>
+			</article>
+		))
+	}
+</div>

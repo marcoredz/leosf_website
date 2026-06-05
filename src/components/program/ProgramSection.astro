@@ -1,0 +1,34 @@
+---
+interface Props {
+	id?: string;
+	title: string;
+	eyebrow?: string;
+	background?: string;
+	textColor?: string;
+	align?: "left" | "center";
+}
+
+const {
+	id,
+	title,
+	eyebrow,
+	background = "bg-background-dark",
+	textColor = "text-background-light",
+	align = "center",
+} = Astro.props;
+---
+
+<section id={id} class:list={[background, textColor, "px-5 py-12 sm:px-8 sm:py-16"]}>
+	<div class="mx-auto w-full max-w-5xl">
+		<header class:list={[align === "center" ? "text-center" : "text-left"]}>
+			{eyebrow && <p class="font-plex text-xs uppercase leading-tight sm:text-sm">{eyebrow}</p>}
+			<h2 class="font-blur text-[clamp(2.25rem,7vw,5.25rem)] uppercase leading-none">
+				{title}
+			</h2>
+		</header>
+
+		<div class="mt-8 sm:mt-10">
+			<slot />
+		</div>
+	</div>
+</section>
