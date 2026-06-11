@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import eofLogo from "../../assets/eof_logo_mini.png";
+import eofLogo from "../../assets/eof_logo_og.png";
 
 const menuItems = [
 	{ label: "Programma", href: "/programma" },
@@ -18,7 +18,8 @@ const menuItems = [
 			src={eofLogo}
 			alt="Laveno End Of Summer Fest"
 			format="webp"
-			quality={80}
+			width={180}
+			quality={50}
 			loading="eager"
 		/>
 	</a>
@@ -160,6 +161,8 @@ const menuItems = [
 
 <style>
 	.site-header {
+		--site-header-blur-tail: clamp(2.25rem, 7vw, 5rem);
+
 		position: fixed;
 		top: 0;
 		left: 0;
@@ -171,12 +174,30 @@ const menuItems = [
 		justify-content: space-between;
 		padding: max(0.75rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) 0.75rem max(1rem, env(safe-area-inset-left));
 		color: var(--color-background-light);
-		background: var(--color-background-dark);
 		transition: transform 220ms ease;
 	}
 
+	.site-header::before {
+		content: "";
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		height: calc(100% + var(--site-header-blur-tail));
+		pointer-events: none;
+		backdrop-filter: blur(18px) saturate(130%);
+		-webkit-backdrop-filter: blur(18px) saturate(130%);
+		mask-image: linear-gradient(to bottom, black 0%, black 54%, transparent 100%);
+		-webkit-mask-image: linear-gradient(to bottom, black 0%, black 54%, transparent 100%);
+	}
+
+	.site-header > * {
+		position: relative;
+		z-index: 1;
+	}
+
 	.site-header.is-hidden {
-		transform: translateY(-100%);
+		transform: translateY(calc(-100% - var(--site-header-blur-tail)));
 	}
 
 	.site-header-logo {
