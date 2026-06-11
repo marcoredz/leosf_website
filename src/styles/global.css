@@ -22,8 +22,11 @@
   --color-leof-pink: #bb84b0;
   --color-leof-burgundy: #732a5d;
   --color-leof-purple: #4e3183;
+  --color-leof-accentPink: #D53D86;
   --color-leof-orange-light: #ee9c3d;
   --color-leof-red: #cf4939;
+  --color-leof-lightblue: #4090BF;
+  --color-leof-yellow: #F1BE41;
 
   --font-blur: "Blur Bold", system-ui, sans-serif;
   --font-plex: "IBM Plex Mono", ui-monospace, monospace;
