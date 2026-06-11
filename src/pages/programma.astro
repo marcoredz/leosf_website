@@ -1,5 +1,8 @@
 ---
-import landingImage from "../assets/landing_image.jpg";
+import landingImage from "../assets/landing-image.jpg";
+import workshopPostit from "../assets/workshop-postit.jpg";
+import popupAvis from "../assets/popup-avis.jpg";
+import popupLegambiente from "../assets/popup-legambiente.jpg";
 import FestivalMapSection from "../components/common/FestivalMapSection.astro";
 import LineupSection from "../components/common/LineupSection.astro";
 import PartnerSection from "../components/common/PartnerSection.astro";
@@ -10,14 +13,14 @@ import ProgramSection from "../components/program/ProgramSection.astro";
 import Layout from "../layouts/Layout.astro";
 
 const activities = [
-	{ title: "Yoga", backgroundClass: "bg-leof-burgundy" },
+	{ title: "", image: workshopPostit },
 	{ title: "Fitness", backgroundClass: "bg-leof-green" },
 	{ title: "Talk", backgroundClass: "bg-leof-orange" },
 ];
 
 const popUps = [
-	{ title: "NHC", backgroundClass: "bg-leof-burgundy" },
-	{ title: "N2V", backgroundClass: "bg-leof-green" },
+	{ title: "Avis", image: popupAvis },
+	{ title: "Legambiente", image: popupLegambiente },
 	{ title: "Market", backgroundClass: "bg-leof-purple" },
 ];
 
