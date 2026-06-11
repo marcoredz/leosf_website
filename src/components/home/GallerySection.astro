@@ -24,42 +24,42 @@ const photos: GalleryPhoto[] = [
 		alt: "Pubblico del festival sotto palco",
 		className: "col-span-3 row-span-2",
 		sizes: "(max-width: 640px) 60vw, 600px",
-		widths: [300, 600, 900],
+		widths: [300, 500],
 	},
 	{
 		src: dancePhoto,
 		alt: "Ragazza che balla durante il festival",
 		className: "col-span-2 row-span-1",
 		sizes: "(max-width: 640px) 40vw, 400px",
-		widths: [200, 400, 600],
+		widths: [200, 400],
 	},
 	{
 		src: stagePhoto,
 		alt: "Artista sul palco durante il concerto",
 		className: "col-span-2 row-span-2",
 		sizes: "(max-width: 640px) 40vw, 400px",
-		widths: [200, 400, 600],
+		widths: [200, 400],
 	},
 	{
 		src: sunsetPhoto,
 		alt: "Momento all'aperto durante il festival",
 		className: "col-span-3 row-span-1",
 		sizes: "(max-width: 640px) 60vw, 600px",
-		widths: [300, 600, 900],
+		widths: [300, 500],
 	},
 	{
 		src: frontRowPhoto,
 		alt: "Pubblico in prima fila al concerto",
 		className: "col-span-3 row-span-2",
 		sizes: "(max-width: 640px) 60vw, 600px",
-		widths: [300, 600, 900],
+		widths: [300, 500],
 	},
 	{
 		src: festivalPhoto,
 		alt: "Persone e atmosfera del festival",
 		className: "col-span-2 row-span-2",
 		sizes: "(max-width: 640px) 40vw, 400px",
-		widths: [200, 400, 600],
+		widths: [200, 400],
 	},
 ];
 
@@ -93,7 +93,7 @@ const placeholders = await Promise.all(
 								widths={widths}
 								sizes={sizes}
 								format="avif"
-								quality={75}
+								quality={60}
 								class="h-full w-full object-cover"
 								loading="lazy"
 								decoding="async"
