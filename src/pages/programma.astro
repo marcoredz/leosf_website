@@ -1,5 +1,5 @@
 ---
-import landingImage from "../assets/landing-image.jpg";
+import chicoria from "../assets/chicoria.jpg";
 import workshopPostit from "../assets/workshop-postit.jpg";
 import popupAvis from "../assets/popup-avis.jpg";
 import popupLegambiente from "../assets/popup-legambiente.jpg";
@@ -7,7 +7,7 @@ import FestivalMapSection from "../components/common/FestivalMapSection.astro";
 import LineupSection from "../components/common/LineupSection.astro";
 import PartnerSection from "../components/common/PartnerSection.astro";
 import SiteFooter from "../components/common/SiteFooter.astro";
-import ProgramAccordion from "../components/program/ProgramAccordion.astro";
+import RulesAccordion from "../components/program/RulesAccordion.astro";
 import ProgramCardScroller from "../components/program/ProgramCardScroller.astro";
 import ProgramSection from "../components/program/ProgramSection.astro";
 import Layout from "../layouts/Layout.astro";
@@ -25,7 +25,7 @@ const popUps = [
 ];
 
 const pastEditions = [
-	{ title: "2025", subtitle: "10.000 persone", image: landingImage },
+	{ title: "2025", subtitle: "10.000 persone", image: chicoria },
 	{ title: "2024", subtitle: "Area live", backgroundClass: "bg-leof-orange" },
 	{ title: "2023", subtitle: "Lago e musica", backgroundClass: "bg-leof-green" },
 ];
@@ -70,7 +70,7 @@ const pastEditions = [
 			<ProgramCardScroller items={pastEditions} cardLabel="Edizioni passate" />
 		</ProgramSection>
 
-		<ProgramAccordion />
+		<RulesAccordion />
 
 		<PartnerSection />
 
