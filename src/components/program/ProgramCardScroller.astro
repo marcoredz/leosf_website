@@ -28,10 +28,10 @@ const { items, cardLabel } = Astro.props;
 					<Image
 						src={image}
 						alt=""
-						widths={[176, 320, 480]}
-						sizes="(max-width: 640px) 176px, 320px"
+						widths={[176, 480]}
+						sizes="(max-width: 640px) 176px, 480px"
 						format="avif"
-						quality={60}
+						quality={70}
 						class="absolute inset-0 h-full w-full object-cover"
 						loading="lazy"
 					/>
@@ -40,10 +40,37 @@ const { items, cardLabel } = Astro.props;
 				)}
 				<div class="absolute inset-0 bg-background-dark/20" aria-hidden="true" />
 				<div class="relative z-10 flex h-full w-full flex-col justify-end p-5">
-					<h3 class="font-blur text-[clamp(1.75rem,5vw,3rem)] uppercase leading-none">{title}</h3>
+					<h3
+						class="program-card-title font-blur text-[clamp(1.75rem,5vw,3rem)] uppercase leading-none"
+					>
+						{title}
+					</h3>
 					{subtitle && <p class="mt-2 font-plex text-xs uppercase leading-tight">{subtitle}</p>}
 				</div>
 			</article>
 		))
 	}
 </div>
+
+<script>
+	const fitProgramCardTitles = () => {
+		const titles = document.querySelectorAll<HTMLElement>(".program-card-title");
+
+		titles.forEach((title) => {
+			title.style.fontSize = "";
+
+			const baseSize = Number.parseFloat(window.getComputedStyle(title).fontSize);
+			const minSize = baseSize * 0.72;
+			let currentSize = baseSize;
+
+			while (title.scrollWidth > title.clientWidth && currentSize > minSize) {
+				currentSize -= 1;
+				title.style.fontSize = `${currentSize}px`;
+			}
+		});
+	};
+
+	fitProgramCardTitles();
+	window.addEventListener("resize", fitProgramCardTitles);
+	document.fonts?.ready.then(fitProgramCardTitles);
+</script>
