@@ -1,4 +1,11 @@
 ---
+import { Image } from "astro:assets";
+import eyeDivider from "../../assets/eye-divider.png";
+import moonDivider from "../../assets/moon-divider.png";
+import sparkGreen from "../../assets/spark-green.png";
+import sparkRed from "../../assets/spark-red.png";
+import sparkViolet from "../../assets/spark-violet.png";
+
 type LineupEvent = {
 	time: string;
 	artist: string;
@@ -7,7 +14,7 @@ type LineupEvent = {
 type LineupDay = {
 	id: string;
 	day: string;
-	backgroundClass: string;
+	spark: ImageMetadata;
 	events: LineupEvent[];
 };
 
@@ -15,14 +22,14 @@ const lineup: LineupDay[] = [
 	{
 		id: "venerdi",
 		day: "Venerdì 28/08",
-		backgroundClass: "bg-leof-orange",
+		spark: sparkRed,
 		events: [
 			{ time: "17:00 - 17:50", artist: "DJSET" },
 			{ time: "18:00 - 18:30", artist: "BIAVA" },
 			{ time: "18:40 - 19:10", artist: "DOXX" },
 			{ time: "19:20 - 19:50", artist: "GAZA / 29GIULIO" },
 			{ time: "20:00 - 20:30", artist: "MATSBY" },
-			{ time: "20:40 - 21:20", artist: "TBA" },
+			{ time: "20:40 - 21:20", artist: "PRINCIPE" },
 			{ time: "21:30 - 22:10", artist: "TBA" },
 			{ time: "22:20 - 23:00", artist: "TBA" },
 			{ time: "23:00 - 00:00", artist: "JEMEL (DJSEX)" },
@@ -32,7 +39,7 @@ const lineup: LineupDay[] = [
 	{
 		id: "sabato",
 		day: "Sabato 29/08",
-		backgroundClass: "bg-leof-pink",
+		spark: sparkViolet,
 		events: [
 			{ time: "17:00 - 17:50", artist: "DJSET" },
 			{ time: "18:00 - 18:30", artist: "CONTEST > CIRCO" },
@@ -42,14 +49,14 @@ const lineup: LineupDay[] = [
 			{ time: "20:30 - 21:20", artist: "TAIZAL + AFFANNO" },
 			{ time: "21:30 - 22:15", artist: "TBA" },
 			{ time: "22:20 - 23:00", artist: "TBA" },
-			{ time: "23:10 - 00:00", artist: "TBA" },
+			{ time: "23:10 - 00:00", artist: "CHRYVERDE DISET" },
 			{ time: "00:00 - 01:00", artist: "VIBEE DJSET" },
 		],
 	},
 	{
 		id: "domenica",
 		day: "Domenica 30/08",
-		backgroundClass: "bg-leof-green",
+		spark: sparkGreen,
 		events: [
 			{ time: "17:00 - 17:50", artist: "DJ SET" },
 			{ time: "18:00 - 18:30", artist: "GEREMIA" },
@@ -65,57 +72,87 @@ const lineup: LineupDay[] = [
 ];
 ---
 
-<section class="bg-background-dark px-5 py-14 text-white sm:px-8 sm:py-20">
-	<div class="mx-auto w-full max-w-5xl">
-		<h2 class="text-center font-blur text-[clamp(3rem,9vw,7rem)] uppercase leading-none">
+<section class="relative bg-background-dark px-6 pb-16 pt-14 text-background-light sm:px-8 sm:pb-24 sm:pt-20">
+	<div class="pointer-events-none absolute inset-x-0 top-0 h-24 -translate-y-full bg-gradient-to-b from-transparent to-background-dark" aria-hidden="true"></div>
+
+	<div class="mx-auto w-full max-w-4xl">
+		<Image
+			src={eyeDivider}
+			alt=""
+			width={640}
+			height={38}
+			class="mx-auto mb-10 h-auto w-full max-w-3xl object-contain opacity-85 sm:mb-14"
+			loading="lazy"
+		/>
+
+		<h2 class="text-center font-blur text-[clamp(2.7rem,8vw,6.25rem)] uppercase leading-none">
 			Line Up 2026
 		</h2>
+
+		<div class="mt-14 flex flex-col gap-16 sm:mt-18 sm:gap-20">
+			{lineup.map(({ id, day, spark, events }) => (
+				<section aria-labelledby={`lineup-${id}`}>
+					<div class="grid grid-cols-[2.75rem_1fr_2.75rem] items-center gap-3 sm:grid-cols-[4.5rem_1fr_4.5rem] sm:gap-6">
+						<Image
+							src={spark}
+							alt=""
+							width={72}
+							height={72}
+							class="mx-auto size-9 object-contain sm:size-13"
+							loading="lazy"
+						/>
+						<h3
+							id={`lineup-${id}`}
+							class="text-center font-blur text-[clamp(2rem,6vw,4.5rem)] uppercase leading-none"
+						>
+							{day}
+						</h3>
+						<Image
+							src={spark}
+							alt=""
+							width={72}
+							height={72}
+							class="mx-auto size-9 object-contain sm:size-13"
+							loading="lazy"
+						/>
+					</div>
+
+					<ol class="mt-7 flex flex-col gap-2.5 sm:mt-9 sm:gap-3">
+						{events.map(({ time, artist }, eventIndex) => {
+							const isRedacted = artist === "TBA";
+							const redactedVariant = `lineup-redacted-${(eventIndex % 3) + 1}`;
+
+							return (
+								<li class="grid min-h-6 grid-cols-[minmax(7.4rem,auto)_1fr] items-baseline gap-3 font-plex text-[clamp(1rem,4.1vw,2rem)] uppercase leading-tight sm:grid-cols-[minmax(12rem,auto)_1fr] sm:gap-6">
+									<time class="whitespace-nowrap">{time}</time>
+									<span
+										class:list={[
+											"min-w-0 text-right",
+											isRedacted && "lineup-redacted",
+											isRedacted && redactedVariant,
+										]}
+									>
+										{isRedacted ? (
+											<span class="sr-only">Artista da annunciare</span>
+										) : (
+											artist
+										)}
+									</span>
+								</li>
+							);
+						})}
+					</ol>
+				</section>
+			))}
+		</div>
+
+		<Image
+			src={moonDivider}
+			alt=""
+			width={640}
+			height={46}
+			class="mx-auto mt-16 h-auto w-full max-w-3xl object-contain opacity-80 sm:mt-20"
+			loading="lazy"
+		/>
 	</div>
 </section>
-
-{
-	lineup.map(({ id, day, backgroundClass, events }) => (
-		<section
-			aria-labelledby={`lineup-${id}`}
-			class:list={[
-				backgroundClass,
-				"px-5 py-12 text-background-dark sm:px-8 sm:py-16",
-			]}
-		>
-			<div class="mx-auto w-full max-w-5xl">
-				<h3
-					id={`lineup-${id}`}
-					class="font-blur text-[clamp(2.5rem,8vw,5.5rem)] uppercase leading-none"
-				>
-					{day}
-				</h3>
-
-				<ol class="mt-6 flex flex-col gap-3 sm:mt-8 sm:gap-4">
-					{events.map(({ time, artist }, eventIndex) => {
-						const isRedacted = artist === "TBA";
-						const redactedVariant = `lineup-redacted-${(eventIndex % 3) + 1}`;
-
-						return (
-							<li class="grid min-h-8 grid-cols-[minmax(8.5rem,auto)_1fr] items-baseline gap-4 text-sm uppercase leading-tight sm:grid-cols-[minmax(12rem,auto)_1fr] sm:text-2xl lg:text-3xl">
-								<time class="whitespace-nowrap">{time}</time>
-								<span
-									class:list={[
-										"text-right font-plex",
-										isRedacted && "lineup-redacted",
-										isRedacted && redactedVariant,
-									]}
-								>
-									{isRedacted ? (
-										<span class="sr-only">Artista da annunciare</span>
-									) : (
-										artist
-									)}
-								</span>
-							</li>
-						);
-					})}
-				</ol>
-			</div>
-		</section>
-	))
-}
