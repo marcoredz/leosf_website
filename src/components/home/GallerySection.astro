@@ -10,7 +10,6 @@ import festivalPhoto from "../../assets/chicoria.jpg";
 
 type GalleryPhoto = {
 	src: ImageMetadata;
-	alt: string;
 	className: string;
 	sizes: string;
 	widths: number[];
@@ -21,42 +20,36 @@ const driveGalleryUrl = "https://drive.google.com/";
 const photos: GalleryPhoto[] = [
 	{
 		src: crowdPhoto,
-		alt: "Pubblico del festival sotto palco",
 		className: "col-span-3 row-span-2",
 		sizes: "(max-width: 640px) 60vw, 600px",
 		widths: [300, 500],
 	},
 	{
 		src: dancePhoto,
-		alt: "Ragazza che balla durante il festival",
 		className: "col-span-2 row-span-1",
 		sizes: "(max-width: 640px) 40vw, 400px",
 		widths: [200, 400],
 	},
 	{
 		src: stagePhoto,
-		alt: "Artista sul palco durante il concerto",
 		className: "col-span-2 row-span-2",
 		sizes: "(max-width: 640px) 40vw, 400px",
 		widths: [200, 400],
 	},
 	{
 		src: sunsetPhoto,
-		alt: "Momento all'aperto durante il festival",
 		className: "col-span-3 row-span-1",
 		sizes: "(max-width: 640px) 60vw, 600px",
 		widths: [300, 500],
 	},
 	{
 		src: frontRowPhoto,
-		alt: "Pubblico in prima fila al concerto",
 		className: "col-span-3 row-span-2",
 		sizes: "(max-width: 640px) 60vw, 600px",
 		widths: [300, 500],
 	},
 	{
 		src: festivalPhoto,
-		alt: "Persone e atmosfera del festival",
 		className: "col-span-2 row-span-2",
 		sizes: "(max-width: 640px) 40vw, 400px",
 		widths: [200, 400],
@@ -82,14 +75,14 @@ const placeholders = await Promise.all(
 				aria-label="Anteprima foto del festival"
 			>
 				{
-					photos.map(({ src, alt, className, sizes, widths }, index) => (
+					photos.map(({ src, className, sizes, widths }, index) => (
 						<li
 							class:list={["min-w-0 overflow-hidden rounded-[1.35rem] bg-background-dark", className]}
 							style={`background-image: url(${placeholders[index].src}); background-size: cover; background-position: center;`}
 						>
 							<Image
 								src={src}
-								alt={alt}
+								alt=""
 								widths={widths}
 								sizes={sizes}
 								format="avif"
