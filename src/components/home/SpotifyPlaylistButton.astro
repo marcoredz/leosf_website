@@ -1,0 +1,25 @@
+---
+import { Image } from "astro:assets";
+import spotifyButton from "../../assets/spotify-button.png";
+---
+
+<a
+	href="https://open.spotify.com/playlist/6eCBnz6tWHKffBUsiDtQts/"
+
+	target="_blank"
+	rel="noreferrer"
+	aria-label="Ascolta la playlist su Spotify"
+	class="transition-opacity hover:opacity-85 focus-visible:outline-background-light"
+>
+	<Image
+		src={spotifyButton}
+		alt="Spotify Playlist Button"
+		widths={[320, 420]}
+		sizes="(min-width: 640px) 420px, 320px"
+		class="h-auto w-[420px] rounded-full sm:w-[320px]"
+		format="avif"
+		quality={80}
+		loading="eager"
+		aria-hidden="true"
+	/>
+</a>

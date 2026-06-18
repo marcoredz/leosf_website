@@ -1,0 +1,187 @@
+---
+import { Image } from "astro:assets";
+import eraseTextLong from "../../assets/erase-text-long.png";
+import eraseTextShort from "../../assets/erase-text-short.png";
+import eyeDivider from "../../assets/eye-divider.png";
+import moonDivider from "../../assets/moon-divider.png";
+import sparkGreen from "../../assets/spark-green.png";
+import sparkRed from "../../assets/spark-red.png";
+import sparkViolet from "../../assets/spark-violet.png";
+
+type LineupEvent = {
+	time: string;
+	artist: string;
+	longness?: 'short' | 'long';
+};
+
+type LineupDay = {
+	id: string;
+	day: string;
+	spark: ImageMetadata;
+	events: LineupEvent[];
+};
+
+interface Props {
+	blendWithPreviousSection?: boolean;
+}
+
+const { blendWithPreviousSection = false } = Astro.props;
+
+const lineup: LineupDay[] = [
+	{
+		id: "venerdi",
+		day: "Venerdì 28/08",
+		spark: sparkRed,
+		events: [
+			{ time: "17:00 - 17:50", artist: "DJSET" },
+			{ time: "18:00 - 18:30", artist: "BIAVA" },
+			{ time: "18:40 - 19:10", artist: "DOXX" },
+			{ time: "19:20 - 19:50", artist: "GAZA / 29GIULIO" },
+			{ time: "20:00 - 20:30", artist: "MATSBY" },
+			{ time: "20:40 - 21:20", artist: "PRINCIPE" },
+			{ time: "21:30 - 22:10", artist: "TBA", longness: "long" },
+			{ time: "22:20 - 23:00", artist: "TBA", longness: "short" },
+			{ time: "23:00 - 00:00", artist: "JEMEL (DJSEX)" },
+			{ time: "00:00 - 01:00", artist: "AUSTRALOPITECHNO" },
+		],
+	},
+	{
+		id: "sabato",
+		day: "Sabato 29/08",
+		spark: sparkViolet,
+		events: [
+			{ time: "17:00 - 17:50", artist: "DJSET" },
+			{ time: "18:00 - 18:30", artist: "CONTEST > CIRCO" },
+			{ time: "18:40 - 19:10", artist: "MANZO / GAZA" },
+			{ time: "19:20 - 19:50", artist: "BHADMARI / SAIRO" },
+			{ time: "20:00 - 20:30", artist: "BARKEE BAY" },
+			{ time: "20:30 - 21:20", artist: "TAIZAL + AFFANNO" },
+			{ time: "21:30 - 22:15", artist: "TBA", longness: "long" },
+			{ time: "22:20 - 23:00", artist: "TBA", longness: "short" },
+			{ time: "23:10 - 00:00", artist: "CHRYVERDE DISET" },
+			{ time: "00:00 - 01:00", artist: "VIBEE DJSET" },
+		],
+	},
+	{
+		id: "domenica",
+		day: "Domenica 30/08",
+		spark: sparkGreen,
+		events: [
+			{ time: "17:00 - 17:50", artist: "DJ SET" },
+			{ time: "18:00 - 18:30", artist: "GEREMIA" },
+			{ time: "18:40 - 19:10", artist: "EVA" },
+			{ time: "19:20 - 19:50", artist: "BLU" },
+			{ time: "20:00 - 20:30", artist: "VOLPI" },
+			{ time: "20:40 - 21:20", artist: "LUCA RE" },
+			{ time: "21:30 - 22:15", artist: "TBA", longness: "short" },
+			{ time: "22:25 - 23:10", artist: "LONGO DJ SET" },
+			{ time: "23:15 - 00:30", artist: "DEIV DJ SET" },
+		],
+	},
+];
+---
+
+<section class="relative bg-background-dark px-6 pb-16 pt-14 text-background-light sm:px-8 sm:pb-24 sm:pt-20">
+	{blendWithPreviousSection && (
+		<div class="pointer-events-none absolute inset-x-0 top-0 h-24 -translate-y-full bg-linear-to-b from-transparent to-background-dark" aria-hidden="true"></div>
+	)}
+
+	<div class="mx-auto w-full max-w-4xl">
+		<Image
+			src={eyeDivider}
+			alt=""
+			width={640}
+			height={38}
+			format="avif"
+			quality={80}
+			class="mx-auto mb-10 h-auto w-full max-w-3xl object-contain sm:mb-14"
+			loading="lazy"
+		/>
+
+		<h2 class="text-center text-background-light font-blur text-[clamp(2.7rem,8vw,6.25rem)] uppercase leading-none">
+			Line Up 2026
+		</h2>
+
+		<div class="mt-14 flex flex-col gap-16 sm:mt-18 sm:gap-20">
+			{lineup.map(({ id, day, spark, events }) => (
+				<section aria-labelledby={`lineup-${id}`}>
+					<div class="grid grid-cols-[2.75rem_1fr_2.75rem] items-center gap-3 sm:grid-cols-[4.5rem_1fr_4.5rem] sm:gap-6">
+						<Image
+							src={spark}
+							alt=""
+							widths={[72]}
+							quality={80}
+							format="avif"
+							class="mx-auto size-9 object-contain sm:size-13"
+							loading="lazy"
+						/>
+						<h3
+							id={`lineup-${id}`}
+							class="text-center text-background-light font-blur text-[clamp(2rem,6vw,4.5rem)] uppercase leading-none"
+						>
+							{day}
+						</h3>
+						<Image
+							src={spark}
+							alt=""
+							widths={[72]}
+							quality={80}
+							format="avif"
+							class="mx-auto size-9 object-contain sm:size-13"
+							loading="lazy"
+						/>
+					</div>
+
+					<ol class="mt-7 flex flex-col gap-2.5 sm:mt-9 sm:gap-3">
+						{events.map(({ time, artist, longness }, eventIndex) => {
+							const isRedacted = artist === "TBA";
+							const isShortRedaction = longness === "short";
+							const redactedImage = isShortRedaction ? eraseTextShort : eraseTextLong;
+							const redactedWidthClass = isShortRedaction
+								? "w-[clamp(5.5rem,18vw,10rem)]"
+								: "w-[clamp(7rem,24vw,14rem)]";
+
+							return (
+								<li class="grid min-h-6 grid-cols-[minmax(7.4rem,auto)_1fr] items-baseline gap-3 font-plex text-[clamp(1rem,4.1vw,2rem)] uppercase leading-tight sm:grid-cols-[minmax(12rem,auto)_1fr] sm:gap-6">
+									<time class="whitespace-nowrap">{time}</time>
+									<span class="min-w-0 text-right">
+										{isRedacted ? (
+											<>
+												<span class="sr-only">Artista da annunciare</span>
+												<Image
+													src={redactedImage}
+													alt=""
+													widths={[200, 300]}
+													quality={20}
+													format="avif"
+													class:list={[
+														"ml-auto inline-block h-auto align-middle",
+														redactedWidthClass,
+													]}
+													loading="lazy"
+												/>
+											</>
+										) : (
+											artist
+										)}
+									</span>
+								</li>
+							);
+						})}
+					</ol>
+				</section>
+			))}
+		</div>
+
+		<Image
+			src={moonDivider}
+			alt=""
+			width={640}
+			height={46}
+			format="avif"
+			quality={80}
+			class="mx-auto mt-16 h-auto w-full max-w-3xl object-contain opacity-80 sm:mt-20"
+			loading="lazy"
+		/>
+	</div>
+</section>

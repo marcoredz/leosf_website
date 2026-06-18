@@ -1,6 +1,18 @@
 ---
-import GlobalMenu from "../components/GlobalMenu.astro";
+import GlobalMenu from "../components/common/GlobalMenu.astro";
+import faviconPng from "../assets/common/eof_logo_dark.png";
+import faviconSvg from "../assets/common/eof_logo.svg";
 import "../styles/global.css";
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const {
+	title = "Laveno End Of Summer Fest 2026",
+	description = "Laveno End Of Summer Fest 2026, V Edizione, 28-29-30 agosto.",
+} = Astro.props;
 ---
 
 <!doctype html>
@@ -8,14 +20,11 @@ import "../styles/global.css";
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<link rel="icon" type="image/svg+xml" href={faviconSvg.src} />
+		<link rel="icon" type="image/png" href={faviconPng.src} />
 		<meta name="generator" content={Astro.generator} />
-		<title>Laveno End Of Summer Fest 2026</title>
-		<meta
-			name="description"
-			content="Laveno End Of Summer Fest 2026, V Edizione, 28-29-30 agosto."
-		/>
+		<title>{title}</title>
+		<meta name="description" content={description} />
 	</head>
 	<body>
 		<GlobalMenu />

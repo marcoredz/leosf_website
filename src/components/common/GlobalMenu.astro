@@ -1,10 +1,10 @@
 ---
-import eofLogo from "../assets/eof_logo_transp.png";
+import { Image } from "astro:assets";
+import eofLogo from "../../assets/common/eof_logo_og.png";
 
 const menuItems = [
-	{ label: "Home", href: "/#home" },
-	{ label: "Programma", href: "/#programma" },
-	{ label: "Il Festival", href: "/#il-festival" },
+	{ label: "Programma", href: "/programma" },
+	{ label: "Il Festival", href: "/il-festival" },
 	{ label: "Gallery", href: "/#gallery" },
 	{ label: "News", href: "/#news" },
 	{ label: "Partecipa", href: "/#partecipa" },
@@ -14,12 +14,28 @@ const menuItems = [
 
 <header class="site-header" data-site-header>
 	<a href="/" aria-label="Laveno End Of Summer Fest" class="site-header-logo">
-		<img
-			src={eofLogo.src}
+		<Image
+			src={eofLogo}
 			alt="Laveno End Of Summer Fest"
+			format="webp"
+			width={180}
+			quality={50}
 			loading="eager"
 		/>
 	</a>
+
+	<!-- Navigation for desktop, hidden on mobile -->
+	<nav class="site-header-nav" aria-label="Navigazione principale">
+		<ul>
+			{
+				menuItems.map(({ label, href }) => (
+					<li>
+						<a href={href}>{label}</a>
+					</li>
+				))
+			}
+		</ul>
+	</nav>
 
 	<button
 		type="button"
@@ -35,6 +51,7 @@ const menuItems = [
 	</button>
 </header>
 
+<!-- Mobile menu, hidden on desktop -->
 <nav
 	id="site-menu"
 	class="site-menu"
@@ -71,6 +88,7 @@ const menuItems = [
 	const openButton = document.querySelector<HTMLButtonElement>("[data-menu-open]");
 	const closeButton = document.querySelector<HTMLButtonElement>("[data-menu-close]");
 	const menuLinks = document.querySelectorAll<HTMLAnchorElement>("[data-menu-link]");
+	const desktopMenuQuery = window.matchMedia("(min-width: 1024px)");
 	let lastScrollY = window.scrollY;
 	let isScrollTicking = false;
 
@@ -102,7 +120,7 @@ const menuItems = [
 		window.requestAnimationFrame(updateHeaderVisibility);
 	}
 
-	function setMenuState(isOpen: boolean) {
+	function setMenuState(isOpen: boolean, restoreFocus = true) {
 		menu?.classList.toggle("is-open", isOpen);
 		openButton?.classList.toggle("is-active", isOpen);
 		openButton?.setAttribute("aria-expanded", String(isOpen));
@@ -112,7 +130,7 @@ const menuItems = [
 
 		if (isOpen) {
 			closeButton?.focus();
-		} else {
+		} else if (restoreFocus) {
 			openButton?.focus();
 		}
 	}
@@ -122,6 +140,12 @@ const menuItems = [
 
 	menuLinks.forEach((link) => {
 		link.addEventListener("click", () => setMenuState(false));
+	});
+
+	desktopMenuQuery.addEventListener("change", (event) => {
+		if (event.matches) {
+			setMenuState(false, false);
+		}
 	});
 
 	document.addEventListener("keydown", (event) => {
@@ -137,6 +161,8 @@ const menuItems = [
 
 <style>
 	.site-header {
+		--site-header-blur-tail: clamp(2.25rem, 7vw, 5rem);
+
 		position: fixed;
 		top: 0;
 		left: 0;
@@ -148,12 +174,30 @@ const menuItems = [
 		justify-content: space-between;
 		padding: max(0.75rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) 0.75rem max(1rem, env(safe-area-inset-left));
 		color: var(--color-background-light);
-		background: var(--color-background-dark);
 		transition: transform 220ms ease;
 	}
 
+	.site-header::before {
+		content: "";
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		height: calc(100% + var(--site-header-blur-tail));
+		pointer-events: none;
+		backdrop-filter: blur(18px) saturate(130%);
+		-webkit-backdrop-filter: blur(18px) saturate(130%);
+		mask-image: linear-gradient(to bottom, black 0%, black 54%, transparent 100%);
+		-webkit-mask-image: linear-gradient(to bottom, black 0%, black 54%, transparent 100%);
+	}
+
+	.site-header > * {
+		position: relative;
+		z-index: 1;
+	}
+
 	.site-header.is-hidden {
-		transform: translateY(-100%);
+		transform: translateY(calc(-100% - var(--site-header-blur-tail)));
 	}
 
 	.site-header-logo {
@@ -167,6 +211,35 @@ const menuItems = [
 		display: block;
 		width: 100%;
 		height: auto;
+	}
+
+	.site-header-nav {
+		display: none;
+	}
+
+	.site-header-nav ul {
+		display: flex;
+		align-items: center;
+		gap: clamp(1.25rem, 2vw, 2.25rem);
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.site-header-nav a {
+		display: inline-flex;
+		align-items: center;
+		font-family: var(--font-plex);
+		font-size: 0.8rem;
+		line-height: 1;
+		text-transform: uppercase;
+		text-decoration: none;
+		color: currentColor;
+		transition: color 180ms ease;
+	}
+
+	.site-header-nav a:hover {
+		color: var(--color-leof-red);
 	}
 
 	.menu-toggle,
@@ -329,6 +402,33 @@ const menuItems = [
 
 	:global(body.menu-overlay-open) {
 		overflow: hidden;
+	}
+
+	@media (min-width: 1024px) {
+		.site-header {
+			height: 5rem;
+			padding-right: max(2rem, env(safe-area-inset-right));
+			padding-left: max(2rem, env(safe-area-inset-left));
+		}
+
+		.site-header-logo {
+			width: 3.75rem;
+		}
+
+		.site-header-nav {
+			display: block;
+			margin-left: auto;
+		}
+
+		.menu-toggle,
+		.menu-close,
+		.site-menu {
+			display: none;
+		}
+
+		:global(body.menu-overlay-open) {
+			overflow: auto;
+		}
 	}
 
 	@media (max-width: 640px) {

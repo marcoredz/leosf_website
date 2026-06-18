@@ -1,0 +1,118 @@
+---
+import { Image, getImage } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import crowdPhoto from "../../assets/crowd.jpg";
+import dancePhoto from "../../assets/landing-image.jpg";
+import stagePhoto from "../../assets/stage.jpg";
+import frontRowPhoto from "../../assets/pit.jpg";
+import sunsetPhoto from "../../assets/makeup.jpg";
+import festivalPhoto from "../../assets/chicoria.jpg";
+
+type GalleryPhoto = {
+	src: ImageMetadata;
+	className: string;
+	sizes: string;
+	widths: number[];
+};
+
+const driveGalleryUrl = "https://drive.google.com/";
+
+const photos: GalleryPhoto[] = [
+	{
+		src: crowdPhoto,
+		className: "col-span-3 row-span-2",
+		sizes: "(max-width: 640px) 60vw, 600px",
+		widths: [300, 500],
+	},
+	{
+		src: dancePhoto,
+		className: "col-span-2 row-span-1",
+		sizes: "(max-width: 640px) 40vw, 400px",
+		widths: [200, 400],
+	},
+	{
+		src: stagePhoto,
+		className: "col-span-2 row-span-2",
+		sizes: "(max-width: 640px) 40vw, 400px",
+		widths: [200, 400],
+	},
+	{
+		src: sunsetPhoto,
+		className: "col-span-3 row-span-1",
+		sizes: "(max-width: 640px) 60vw, 600px",
+		widths: [300, 500],
+	},
+	{
+		src: frontRowPhoto,
+		className: "col-span-3 row-span-2",
+		sizes: "(max-width: 640px) 60vw, 600px",
+		widths: [300, 500],
+	},
+	{
+		src: festivalPhoto,
+		className: "col-span-2 row-span-2",
+		sizes: "(max-width: 640px) 40vw, 400px",
+		widths: [200, 400],
+	},
+];
+
+const placeholders = await Promise.all(
+	photos.map(({ src }) => getImage({ src, width: 20, quality: 10, format: "avif" }))
+);
+---
+
+<section id="gallery" class="bg-leof-burgundy px-5 py-16 text-background-light sm:px-8 sm:py-20">
+	<div class="mx-auto w-full max-w-5xl">
+		<header class="text-center">
+			<h2 class="font-blur text-[clamp(3rem,9vw,7rem)] uppercase leading-none">
+				Gallery
+			</h2>
+		</header>
+
+		<div class="relative mt-10 overflow-hidden pb-28 sm:mt-12 sm:pb-32">
+			<ul
+				class="grid auto-rows-[minmax(6.5rem,18vw)] grid-cols-5 gap-3 sm:auto-rows-[minmax(9rem,13vw)] sm:gap-4 lg:auto-rows-[10rem]"
+				aria-label="Anteprima foto del festival"
+			>
+				{
+					photos.map(({ src, className, sizes, widths }, index) => (
+						<li
+							class:list={["min-w-0 overflow-hidden rounded-[1.35rem] bg-background-dark", className]}
+							style={`background-image: url(${placeholders[index].src}); background-size: cover; background-position: center;`}
+						>
+							<Image
+								src={src}
+								alt=""
+								widths={widths}
+								sizes={sizes}
+								format="avif"
+								quality={60}
+								class="h-full w-full object-cover"
+								loading="lazy"
+								decoding="async"
+							/>
+						</li>
+					))
+				}
+			</ul>
+
+			<div
+				class="pointer-events-none absolute inset-x-0 bottom-0 h-3/4"
+				style="background: linear-gradient(to bottom, transparent 0%, var(--color-leof-burgundy) 75%);"
+				aria-hidden="true"
+			>
+			</div>
+		</div>
+
+		<div class="-mt-16 flex justify-center sm:-mt-4.5rem">
+			<a
+				href={driveGalleryUrl}
+				target="_blank"
+				rel="noreferrer"
+				class="relative z-10 inline-flex min-h-12 items-center justify-center rounded-full bg-background-light px-6 py-3 font-blur text-xl uppercase leading-none text-background-dark transition-opacity hover:opacity-85 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-background-light sm:text-2xl"
+			>
+				Guarda di più
+			</a>
+		</div>
+	</div>
+</section>
