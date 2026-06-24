@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 import eofLogo from "../../assets/common/eof_logo_og.png";
 
 const menuItems = [
+	{ label: "Home", href: "/" },
 	{ label: "Programma", href: "/programma" },
 	{ label: "Il Festival", href: "/il-festival" },
 	{ label: "Gallery", href: "/#gallery" },
@@ -10,6 +11,8 @@ const menuItems = [
 	{ label: "Partecipa", href: "/#partecipa" },
 	{ label: "Contatti", href: "/#contatti" },
 ];
+
+const desktopMenuItems = menuItems.filter(({ label }) => label !== "Home");
 ---
 
 <header class="site-header" data-site-header>
@@ -28,7 +31,7 @@ const menuItems = [
 	<nav class="site-header-nav" aria-label="Navigazione principale">
 		<ul>
 			{
-				menuItems.map(({ label, href }) => (
+				desktopMenuItems.map(({ label, href }) => (
 					<li>
 						<a href={href}>{label}</a>
 					</li>
