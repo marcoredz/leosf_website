@@ -1,4 +1,5 @@
 ---
+import ComingSoonPage from "../components/home/ComingSoonPage.astro";
 import FestivalMapSection from "../components/common/FestivalMapSection.astro";
 import LineupSection from "../components/common/LineupSection.astro";
 import PartnerSection from "../components/common/PartnerSection.astro";
@@ -6,15 +7,23 @@ import SiteFooter from "../components/common/SiteFooter.astro";
 import GallerySection from "../components/home/GallerySection.astro";
 import LandingSection from "../components/home/LandingSection.astro";
 import Layout from "../layouts/Layout.astro";
+
+const showComingSoon = import.meta.env.PUBLIC_SHOW_COMING_SOON === "true";
 ---
 
-<Layout>
-	<main>
-		<LandingSection />
-		<LineupSection blendWithPreviousSection />
-		<PartnerSection />
-		<FestivalMapSection />
-		<GallerySection />
-		<SiteFooter />
-	</main>
+<Layout showMenu={!showComingSoon}>
+	{
+		showComingSoon ? (
+			<ComingSoonPage />
+		) : (
+			<main>
+				<LandingSection />
+				<LineupSection blendWithPreviousSection />
+				<PartnerSection />
+				<FestivalMapSection />
+				<GallerySection />
+				<SiteFooter />
+			</main>
+		)
+	}
 </Layout>
