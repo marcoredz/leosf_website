@@ -8,11 +8,13 @@ import "../styles/global.css";
 interface Props {
 	title?: string;
 	description?: string;
+	showMenu?: boolean;
 }
 
 const {
 	title = "Laveno End Of Summer Fest 2026",
 	description = "Laveno End Of Summer Fest 2026, V Edizione, 28-29-30 agosto.",
+	showMenu = true,
 } = Astro.props;
 ---
 
@@ -29,7 +31,7 @@ const {
 		<Analytics />
 	</head>
 	<body>
-		<GlobalMenu />
+		{showMenu && <GlobalMenu />}
 		<slot />
 	</body>
 </html>
