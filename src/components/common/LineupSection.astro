@@ -2,16 +2,26 @@
 import { Image } from "astro:assets";
 import eraseTextLong from "../../assets/ui/erase-text-long.png";
 import eraseTextShort from "../../assets/ui/erase-text-short.png";
+import eraseTextGreenLong from "../../assets/ui/erase-text-green-long.png";
+import eraseTextGreenShort from "../../assets/ui/erase-text-green-short.png";
+import eraseTextOrangeLong from "../../assets/ui/erase-text-orange-long.png";
+import eraseTextOrangeShort from "../../assets/ui/erase-text-orange-short.png";
+import eraseTextVioletLong from "../../assets/ui/erase-text-violet-long.png";
+import eraseTextVioletShort from "../../assets/ui/erase-text-violet-short.png";
 import eyeDivider from "../../assets/ui/eye-divider.png";
 import moonDivider from "../../assets/ui/moon-divider.png";
 import sparkGreen from "../../assets/ui/spark-green.png";
 import sparkRed from "../../assets/ui/spark-red.png";
 import sparkViolet from "../../assets/ui/spark-violet.png";
 
+type RedactionLength = "short" | "long";
+type RedactionColor = "neutral" | "orange" | "green" | "violet";
+
 type LineupEvent = {
 	time: string;
 	artist: string;
-	longness?: 'short' | 'long';
+	longness?: RedactionLength;
+	color?: Exclude<RedactionColor, "neutral">;
 };
 
 type LineupDay = {
@@ -27,6 +37,30 @@ interface Props {
 
 const { blendWithPreviousSection = false } = Astro.props;
 
+const redactedImages: Record<RedactionColor, Record<RedactionLength, ImageMetadata>> = {
+	neutral: {
+		short: eraseTextShort,
+		long: eraseTextLong,
+	},
+	orange: {
+		short: eraseTextOrangeShort,
+		long: eraseTextOrangeLong,
+	},
+	green: {
+		short: eraseTextGreenShort,
+		long: eraseTextGreenLong,
+	},
+	violet: {
+		short: eraseTextVioletShort,
+		long: eraseTextVioletLong,
+	},
+};
+
+const getRedactedImage = (
+	length: RedactionLength = "long",
+	color: RedactionColor = "neutral",
+) => redactedImages[color][length];
+
 const lineup: LineupDay[] = [
 	{
 		id: "venerdi",
@@ -39,8 +73,8 @@ const lineup: LineupDay[] = [
 			{ time: "19:20 - 19:50", artist: "GAZA / 29GIULIO" },
 			{ time: "20:00 - 20:30", artist: "MATSBY" },
 			{ time: "20:40 - 21:20", artist: "PRINCIPE" },
-			{ time: "21:30 - 22:10", artist: "TBA", longness: "long" },
-			{ time: "22:20 - 23:00", artist: "TBA", longness: "short" },
+			{ time: "21:30 - 22:10", artist: "TBA", longness: "long" , color: "orange"},
+			{ time: "22:20 - 23:00", artist: "TBA", longness: "short", color: "orange" },
 			{ time: "23:00 - 00:00", artist: "JEMEL (DJSEX)" },
 			{ time: "00:00 - 01:00", artist: "AUSTRALOPITECHNO" },
 		],
@@ -56,8 +90,8 @@ const lineup: LineupDay[] = [
 			{ time: "19:20 - 19:50", artist: "BHADMARI / SAIRO" },
 			{ time: "20:00 - 20:30", artist: "BARKEE BAY" },
 			{ time: "20:30 - 21:20", artist: "TAIZAL + AFFANNO" },
-			{ time: "21:30 - 22:15", artist: "TBA", longness: "long" },
-			{ time: "22:20 - 23:00", artist: "TBA", longness: "short" },
+			{ time: "21:30 - 22:15", artist: "TBA", longness: "long", color: "violet" },
+			{ time: "22:20 - 23:00", artist: "TBA", longness: "short", color: "violet" },
 			{ time: "23:10 - 00:00", artist: "CHRYVERDE DISET" },
 			{ time: "00:00 - 01:00", artist: "VIBEE DJSET" },
 		],
@@ -73,7 +107,7 @@ const lineup: LineupDay[] = [
 			{ time: "19:20 - 19:50", artist: "BLU" },
 			{ time: "20:00 - 20:30", artist: "VOLPI" },
 			{ time: "20:40 - 21:20", artist: "LUCA RE" },
-			{ time: "21:30 - 22:15", artist: "TBA", longness: "short" },
+			{ time: "21:30 - 22:15", artist: "TBA", longness: "short", color: "green" },
 			{ time: "22:25 - 23:10", artist: "LONGO DJ SET" },
 			{ time: "23:15 - 00:30", artist: "DEIV DJ SET" },
 		],
@@ -133,10 +167,10 @@ const lineup: LineupDay[] = [
 					</div>
 
 					<ol class="mt-7 flex flex-col gap-2.5 sm:mt-9 sm:gap-3">
-						{events.map(({ time, artist, longness }, eventIndex) => {
+						{events.map(({ time, artist, longness, color }) => {
 							const isRedacted = artist === "TBA";
 							const isShortRedaction = longness === "short";
-							const redactedImage = isShortRedaction ? eraseTextShort : eraseTextLong;
+							const redactedImage = getRedactedImage(longness, color);
 							const redactedWidthClass = isShortRedaction
 								? "w-[clamp(5.5rem,18vw,10rem)]"
 								: "w-[clamp(7rem,24vw,14rem)]";
