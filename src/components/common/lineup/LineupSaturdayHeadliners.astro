@@ -1,0 +1,61 @@
+---
+import { Image } from "astro:assets";
+import dismeVazteImage from "../../../assets/artists/disme_vazte.jpeg";
+
+type Headliner = {
+	time: string;
+	artist: string;
+};
+
+interface Props {
+	headliners: Headliner[];
+}
+
+const { headliners } = Astro.props;
+
+const getTime = (artistName: string) =>
+	headliners.find(({ artist }) => artist === artistName)?.time ?? "";
+---
+
+<li class="my-4 sm:my-5">
+	<article class="relative isolate aspect-video overflow-hidden rounded-2xl border-2 border-background-light bg-background-light text-background-light">
+		<Image
+			src={dismeVazteImage}
+			alt=""
+			widths={[640, 960, 1280]}
+			sizes="(min-width: 768px) 56rem, calc(100vw - 3rem)"
+			quality={84}
+			format="avif"
+			class="absolute inset-0 -z-10 size-full object-cover"
+			loading="lazy"
+		/>
+		<div class="absolute inset-0 -z-10 bg-linear-to-t from-background-dark/70 via-background-dark/12 to-transparent"></div>
+		<div class="grid h-full grid-cols-2">
+			<button
+				type="button"
+				class="group flex h-full flex-col justify-end p-3 text-left transition-colors hover:bg-background-dark/18 focus-visible:bg-background-dark/18 focus-visible:outline focus-visible:-outline-offset-4 focus-visible:outline-background-light sm:p-5"
+				aria-label="Apri scheda VAZ TE"
+			>
+				<time class="w-fit rounded bg-leof-pink px-2 py-1 font-plex font-extrabold text-[clamp(0.78rem,2.8vw,1rem)] uppercase leading-none text-background-dark">
+					{getTime("VAZ TE")}
+				</time>
+				<span class="mt-2 block font-blur text-[clamp(2.2rem,10vw,5.6rem)] uppercase leading-none text-background-light transition-transform duration-300 group-hover:translate-x-1">
+					VAZ TE
+				</span>
+			</button>
+
+			<button
+				type="button"
+				class="group flex h-full flex-col items-end justify-end p-3 text-right transition-colors hover:bg-background-dark/18 focus-visible:bg-background-dark/18 focus-visible:outline focus-visible:-outline-offset-4 focus-visible:outline-background-light sm:p-5"
+				aria-label="Apri scheda DISME"
+			>
+				<time class="w-fit rounded bg-leof-pink px-2 py-1 font-plex font-extrabold text-[clamp(0.78rem,2.8vw,1rem)] uppercase leading-none text-background-dark">
+					{getTime("DISME")}
+				</time>
+				<span class="mt-2 block font-blur text-[clamp(2.5rem,11vw,6rem)] uppercase leading-none text-background-light transition-transform duration-300 group-hover:-translate-x-1">
+					DISME
+				</span>
+			</button>
+		</div>
+	</article>
+</li>

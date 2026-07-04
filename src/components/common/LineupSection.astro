@@ -13,6 +13,9 @@ import moonDivider from "../../assets/ui/moon-divider.png";
 import sparkGreen from "../../assets/ui/spark-green.png";
 import sparkRed from "../../assets/ui/spark-red.png";
 import sparkViolet from "../../assets/ui/spark-violet.png";
+import LineupFridayHeadliners from "./lineup/LineupFridayHeadliners.astro";
+import LineupSaturdayHeadliners from "./lineup/LineupSaturdayHeadliners.astro";
+import LineupSundayHeadliners from "./lineup/LineupSundayHeadliners.astro";
 
 type RedactionLength = "short" | "long";
 type RedactionColor = "neutral" | "orange" | "green" | "violet";
@@ -22,6 +25,7 @@ type LineupEvent = {
 	artist: string;
 	longness?: RedactionLength;
 	color?: Exclude<RedactionColor, "neutral">;
+	isHeadliner?: boolean;
 };
 
 type LineupDay = {
@@ -72,8 +76,8 @@ const lineup: LineupDay[] = [
 			{ time: "19:20 - 19:50", artist: "29GIULIO" },
 			{ time: "20:00 - 20:30", artist: "VEROSIMILE" },
 			{ time: "20:40 - 21:20", artist: "PRINCIPE" },
-			{ time: "21:30 - 22:10", artist: "TBA", longness: "long" , color: "orange"},
-			{ time: "22:20 - 23:00", artist: "TBA", longness: "short", color: "orange" },
+			{ time: "21:30 - 22:10", artist: "SALLY CRUZ", isHeadliner: true }, // Headliner 1
+			{ time: "22:20 - 23:00", artist: "MARTE", isHeadliner: true }, // Headliner 2
 			{ time: "23:00 - 00:00", artist: "DON'T TELL MAMA" },
 			{ time: "00:00 - 01:00", artist: "AUSTRALOPITECHNO" },
 		],
@@ -87,9 +91,9 @@ const lineup: LineupDay[] = [
 			{ time: "18:00 - 18:30", artist: "CONTEST" },
 			{ time: "18:40 - 19:10", artist: "MANZO" },
 			{ time: "20:30 - 21:20", artist: "TAIZAL + AFFANNO" },
-			{ time: "21:30 - 22:15", artist: "TBA", longness: "short", color: "violet" },
-			{ time: "22:20 - 23:00", artist: "TBA", longness: "short", color: "violet" },
-			{ time: "23:10 - 00:00", artist: "CHRYVERDE DISET" },
+			{ time: "21:30 - 22:15", artist: "VAZ TE", isHeadliner: true }, // Headliner 1
+			{ time: "22:20 - 23:00", artist: "DISME", isHeadliner: true }, // Headliner 2
+			{ time: "23:10 - 00:00", artist: "CHRYVERDE DJ SET" },
 			// { time: "00:00 - 01:00", artist: "VIBEE DJSET" },
 		],
 	},
@@ -105,7 +109,7 @@ const lineup: LineupDay[] = [
 			{ time: "20:00 - 20:30", artist: "LIL JOLIE" },
 			{ time: "20:30 - 21:20", artist: "VOLPI" },
 			{ time: "21:30 - 22:15", artist: "LUCA RE" },
-			{ time: "22:20 - 23:00", artist: "TBA", longness: "short", color: "green" },
+			{ time: "22:20 - 23:00", artist: "SISSI", isHeadliner: true }, // Headliner 1
 			{ time: "23:10 - 00:00", artist: "LONGO DJ SET" },
 			// { time: "00:00 - 01:00", artist: "DEIV DJ SET" },
 		],
@@ -164,8 +168,18 @@ const lineup: LineupDay[] = [
 						/>
 					</div>
 
-					<ol class="mt-7 flex flex-col gap-2.5 sm:mt-9 sm:gap-3">
-						{events.map(({ time, artist, longness, color }) => {
+					{(() => {
+						const firstHeadlinerIndex = events.findIndex(({ isHeadliner }) => isHeadliner);
+						const headlinerEvents = events.filter(({ isHeadliner }) => isHeadliner);
+						const eventsBeforeHeadliners = events
+							.slice(0, firstHeadlinerIndex)
+							.filter(({ isHeadliner }) => !isHeadliner);
+						const eventsAfterHeadliners = events
+							.slice(firstHeadlinerIndex)
+							.filter(({ isHeadliner }) => !isHeadliner);
+						const hasHeadlinerSection = ["venerdi", "sabato", "domenica"].includes(id) && firstHeadlinerIndex >= 0 && headlinerEvents.length > 0;
+
+						const renderEvent = ({ time, artist, longness, color }: LineupEvent) => {
 							const isRedacted = artist === "TBA";
 							const isShortRedaction = longness === "short";
 							const redactedImage = getRedactedImage(longness, color);
@@ -199,8 +213,24 @@ const lineup: LineupDay[] = [
 									</span>
 								</li>
 							);
-						})}
-					</ol>
+						};
+
+						return (
+							<ol class="mt-7 flex flex-col gap-2.5 sm:mt-9 sm:gap-3">
+								{hasHeadlinerSection
+									? (
+										<>
+											{eventsBeforeHeadliners.map(renderEvent)}
+											{id === "venerdi" && <LineupFridayHeadliners headliners={headlinerEvents} />}
+											{id === "sabato" && <LineupSaturdayHeadliners headliners={headlinerEvents} />}
+											{id === "domenica" && <LineupSundayHeadliners headliners={headlinerEvents} />}
+											{eventsAfterHeadliners.map(renderEvent)}
+										</>
+									)
+									: events.map(renderEvent)}
+							</ol>
+						);
+					})()}
 				</section>
 			))}
 		</div>

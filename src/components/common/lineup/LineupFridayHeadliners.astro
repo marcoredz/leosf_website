@@ -1,0 +1,65 @@
+---
+import { Image } from "astro:assets";
+import marteImage from "../../../assets/artists/marte.jpeg";
+import sallyCruzImage from "../../../assets/artists/sallycruz.jpg";
+
+type Headliner = {
+	time: string;
+	artist: string;
+};
+
+interface Props {
+	headliners: Headliner[];
+}
+
+const { headliners } = Astro.props;
+
+const getTime = (artistName: string) =>
+	headliners.find(({ artist }) => artist === artistName)?.time ?? "";
+---
+
+<li class="my-4 grid grid-cols-2 gap-2.5 sm:my-5 sm:gap-4">
+	<article class="group relative isolate aspect-3/5 overflow-hidden rounded-2xl border-2 border-background-light bg-background-light text-background-dark">
+		<Image
+			src={sallyCruzImage}
+			alt=""
+			widths={[420, 640, 840]}
+			sizes="50vw"
+			quality={82}
+			format="avif"
+			class="absolute inset-0 -z-10 size-full object-cover transition-transform duration-500 group-hover:scale-105"
+			loading="lazy"
+		/>
+		<div class="absolute inset-0 -z-10 bg-linear-to-t from-background-dark/78 via-background-dark/20 to-transparent"></div>
+		<div class="flex h-full flex-col justify-end p-3 sm:p-5">
+			<time class="w-fit rounded bg-leof-red px-2 py-1 font-extrabold font-plex text-[clamp(0.8rem,2.8vw,1rem)] uppercase leading-none text-background-light">
+				{getTime("SALLY CRUZ")}
+			</time>
+			<h4 class="mt-2 font-blur text-[clamp(1.8rem,8vw,4.5rem)] uppercase leading-none text-background-light">
+				SALLY CRUZ
+			</h4>
+		</div>
+	</article>
+
+	<article class="group relative isolate aspect-3/5 overflow-hidden rounded-2xl border-2 border-background-light bg-background-light text-background-dark">
+		<Image
+			src={marteImage}
+			alt=""
+			widths={[420, 640, 840]}
+			sizes="50vw"
+			quality={82}
+			format="avif"
+			class="absolute inset-0 -z-10 size-full object-cover transition-transform duration-500 group-hover:scale-105"
+			loading="lazy"
+		/>
+		<div class="absolute inset-0 -z-10 bg-linear-to-t from-background-dark/78 via-background-dark/20 to-transparent"></div>
+		<div class="flex h-full flex-col justify-end p-3 sm:p-5">
+			<time class="w-fit rounded bg-leof-red px-2 py-1 font-extrabold font-plex text-[clamp(0.8rem,2.8vw,1rem)] uppercase leading-none text-background-light">
+				{getTime("MARTE")}
+			</time>
+			<h4 class="mt-2 font-blur text-[clamp(2.3rem,10vw,5.4rem)] uppercase leading-none text-background-light">
+				MARTE
+			</h4>
+		</div>
+	</article>
+</li>
