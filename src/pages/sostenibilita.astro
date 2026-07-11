@@ -1,0 +1,455 @@
+---
+import { Image, getImage } from "astro:assets";
+import EtiforCarousel from "../components/EtiforCarousel.astro";
+import aerialForest from "../assets/aerial-forest.jpeg";
+import donationButton from "../assets/dona-un-albero-button.png";
+import tree from "../assets/tree.png";
+import Layout from "../layouts/Layout.astro";
+import parcoTicino1 from "../assets/parco-lombardo-valle-ticino/WOWnature_Parco Lombardo del Ticino_05.04.25_HD-1.jpg";
+import parcoTicino3 from "../assets/parco-lombardo-valle-ticino/WOWnature_Parco Lombardo del Ticino_05.04.25_HD-3.jpg";
+import parcoTicino4 from "../assets/parco-lombardo-valle-ticino/Parco Ticino4.jpg";
+import parcoTicino5 from "../assets/parco-lombardo-valle-ticino/Parco Ticino5.jpg";
+import plantingCloseup from "../assets/parco-lombardo-valle-ticino/WOWnature_Parco Lombardo del Ticino_05.04.25_HD-15.jpg";
+import parcoTicino8 from "../assets/parco-lombardo-valle-ticino/WOWnature_Parco Lombardo del Ticino_05.04.25_HD-8.jpg";
+import parcoTicino18 from "../assets/parco-lombardo-valle-ticino/WOWnature_Parco Lombardo del Ticino_05.04.25_HD-18.jpg";
+
+const heroPlaceholder = await getImage({
+	 src: aerialForest,
+	 width: 24,
+	 quality: 10,
+	 format: "avif",
+});
+
+const carouselPhotos = [
+	{ src: parcoTicino1, alt: "Il Parco del Ticino" },
+	{ src: parcoTicino3, alt: "Persone in cammino nel bosco" },
+	{ src: parcoTicino4, alt: "Persone impegnate a piantare alberi" },
+	{ src: plantingCloseup, alt: "Un giovane albero appena piantato" },
+	{ src: parcoTicino5, alt: "Alberi piantati nel bosco" },
+	{ src: parcoTicino8, alt: "Un incontro nel verde del Parco del Ticino" },
+	{ src: parcoTicino18, alt: "Un'area del Parco del Ticino" },
+];
+
+const placeholderText =
+	"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis.";
+---
+
+<Layout
+	title="Sostenibilità | Laveno End Of Summer Fest 2026"
+	description="La visione sostenibile del Laveno End Of Summer Fest e il progetto Etifor per il Parco del Ticino."
+>
+	<main class="sustainability-page">
+		<section class="sustainability-hero" aria-labelledby="sustainability-title">
+			<div
+				class="sustainability-hero-image"
+				style={`background-image: url(${heroPlaceholder.src});`}
+				aria-hidden="true"
+			>
+				<Image
+					src={aerialForest}
+					alt=""
+					widths={[640, 1024, 1536, 2048]}
+					sizes="100vw"
+					format="avif"
+					quality={65}
+					class="h-full w-full object-cover"
+					loading="eager"
+				/>
+			</div>
+			<div class="sustainability-hero-shade" aria-hidden="true"></div>
+			<div class="sustainability-hero-copy">
+				<h1 id="sustainability-title">Sostenibilità</h1>
+				<p>Aiuta il Festival a rendere<br />il futuro più green</p>
+			</div>
+			<a
+				href="#sustainability-content"
+				class="sustainability-scroll-indicator"
+				aria-label="Scopri il progetto di sostenibilità"
+			>
+				<svg viewBox="0 0 24 32" aria-hidden="true" focusable="false">
+					<path d="M12 2v25M4 19l8 8 8-8" />
+				</svg>
+			</a>
+		</section>
+
+		<div id="sustainability-content" class="sustainability-green-field">
+			<section class="sustainability-intro" aria-label="La nostra visione e il nostro impegno">
+				<article>
+					<h2>La nostra visione</h2>
+					<p>{placeholderText}</p>
+				</article>
+
+				<article>
+					<h2>Il nostro impegno</h2>
+					<p>{placeholderText}</p>
+				</article>
+			</section>
+
+			<section class="etifor-showcase" aria-labelledby="etifor-title">
+				<div class="etifor-tree-left" aria-hidden="true">
+					<Image
+						src={tree}
+						alt=""
+						width={1500}
+						quality={75}
+						class="etifor-tree-left-image"
+						loading="lazy"
+					/>
+				</div>
+
+				<div class="etifor-tree-right" aria-hidden="true">
+					<Image
+						src={tree}
+						alt=""
+						width={1500}
+						quality={75}
+						class="etifor-tree-right-image"
+						loading="lazy"
+					/>
+				</div>
+
+				<h2 id="etifor-title">Etifor</h2>
+
+				<EtiforCarousel photos={carouselPhotos} />
+
+				<a
+					href="https://www.etifor.com/it/"
+					target="_blank"
+					rel="noreferrer"
+					class="donation-link"
+				>
+					<Image src={donationButton} alt="Dona un albero" width={180} quality={90} />
+				</a>
+			</section>
+
+			<section class="sustainability-details" aria-label="Il progetto Etifor">
+				<article>
+					<h2>Chi è Etifor</h2>
+					<p>{placeholderText}</p>
+				</article>
+
+				<article>
+					<h2>Qual è il suo obiettivo</h2>
+					<p>{placeholderText}</p>
+				</article>
+
+				<article>
+					<h2>Perché lo sosteniamo</h2>
+					<p>{placeholderText}</p>
+				</article>
+			</section>
+		</div>
+	</main>
+</Layout>
+
+<style>
+	.sustainability-page {
+		--sustainability-padding: clamp(1.25rem, 5vw, 5rem);
+		background: var(--color-leof-green-accent);
+		color: var(--color-background-light);
+	}
+
+	.sustainability-hero {
+		position: relative;
+		display: grid;
+		min-height: 100svh;
+		place-items: center;
+		overflow: hidden;
+		background: var(--color-background-dark);
+	}
+
+	.sustainability-hero-image,
+	.sustainability-hero-shade {
+		position: absolute;
+		inset: 0;
+	}
+
+	.sustainability-hero-image {
+		background-position: center;
+		background-size: cover;
+		/* filter: blur(8px); */
+		transform: scale(1.05);
+	}
+
+	.sustainability-hero-image img {
+		display: block;
+	}
+
+	.sustainability-hero-shade {
+		background: rgb(0 0 0 / 0.2);
+	}
+
+	.sustainability-hero-copy {
+		position: relative;
+		z-index: 1;
+		align-self: center;
+		justify-self: center;
+		margin-top: 4rem;
+		padding: 1.5rem;
+		text-align: center;
+		text-shadow: 0 0.15rem 0.55rem rgb(0 0 0 / 0.35);
+	}
+
+	.sustainability-hero-copy h1 {
+		margin: 0;
+		font-family: var(--font-blur);
+		font-size: clamp(2.25rem, 8.8vw, 7rem);
+		line-height: 0.95;
+		text-transform: uppercase;
+	}
+
+	.sustainability-hero-copy p {
+		margin: 0.8rem 0 0;
+		font-family: var(--font-plex);
+		font-size: clamp(0.72rem, 2.1vw, 1.25rem);
+		line-height: 1.15;
+	}
+
+	.sustainability-scroll-indicator {
+		position: absolute;
+		bottom: clamp(1.5rem, 4vw, 2.75rem);
+		left: 50%;
+		z-index: 2;
+		display: grid;
+		width: 4rem;
+		height: 4rem;
+		place-items: center;
+		color: #fff;
+		border: 2px solid #fff;
+		border-radius: 50%;
+		background: rgb(0 0 0 / 0.48);
+		box-shadow: 0 0.2rem 1rem rgb(0 0 0 / 0.3);
+		transform: translateX(-50%);
+		transition: background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+		animation: sustainability-scroll-bounce 1.8s ease-in-out infinite;
+	}
+
+	.sustainability-scroll-indicator:hover,
+	.sustainability-scroll-indicator:focus-visible {
+		background: rgb(0 0 0 / 0.38);
+		border-color: var(--color-background-light);
+	}
+
+	.sustainability-scroll-indicator:focus-visible {
+		outline: 2px solid #fff;
+		outline-offset: 4px;
+	}
+
+	.sustainability-scroll-indicator svg {
+		display: block;
+		width: 1.4rem;
+		height: 1.8rem;
+		fill: none;
+		stroke: currentColor;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		stroke-width: 2.4;
+	}
+
+	@keyframes sustainability-scroll-bounce {
+		0%,
+		100% {
+			transform: translate(-50%, 0);
+		}
+
+		50% {
+			transform: translate(-50%, 0.45rem);
+		}
+	}
+
+	.sustainability-green-field {
+		position: relative;
+		overflow: hidden;
+		background: var(--color-leof-green-accent);
+	}
+
+	.sustainability-intro,
+	.sustainability-details {
+		position: relative;
+		z-index: 2;
+		width: min(100%, 78rem);
+		margin: 0 auto;
+		padding: 2.6rem var(--sustainability-padding) 0;
+	}
+
+	.sustainability-intro article,
+	.sustainability-details article {
+		max-width: 50rem;
+	}
+
+	.sustainability-intro article + article {
+		margin-top: 3.6rem;
+	}
+
+	.sustainability-intro h2,
+	.sustainability-details h2 {
+		margin: 0;
+		font-family: var(--font-blur);
+		font-size: clamp(2rem, 6vw, 4.5rem);
+		line-height: 0.92;
+	}
+
+	.sustainability-intro p,
+	.sustainability-details p {
+		max-width: 42rem;
+		margin: 1rem 0 0;
+		font-family: var(--font-plex);
+		font-size: clamp(0.69rem, 1.45vw, 1rem);
+		line-height: 1.18;
+	}
+
+	.etifor-showcase {
+		position: relative;
+		z-index: 1;
+		isolation: isolate;
+		padding: 7rem 0 0;
+		text-align: center;
+	}
+
+	.etifor-tree-left,
+	.etifor-tree-right {
+		position: absolute;
+		/* Mobile: coordinate fisse, immediate da regolare. */
+		top: -8rem;
+		z-index: 10;
+		width: min(44vw, 36rem);
+		height: max(34rem, 119vw);
+		overflow: hidden;
+		pointer-events: none;
+	}
+
+	.etifor-tree-left {
+		left: -7rem;
+	}
+
+	.etifor-tree-right {
+		top: 26rem;
+		right: -4rem;
+	}
+
+	.etifor-tree-left-image,
+	.etifor-tree-right-image {
+		position: absolute;
+		top: 0;
+		z-index: 1;
+		width: max(42rem, 150vw);
+		max-width: none;
+		height: auto;
+	}
+
+	/* A sinistra viene mostrato il lato destro dell’albero. */
+	.etifor-tree-left-image {
+		left: calc(100% - max(42rem, 150vw));
+	}
+
+	/* A destra viene mostrato il lato sinistro dell’albero. */
+	.etifor-tree-right-image {
+		left: 0;
+	}
+
+	.etifor-showcase h2 {
+		position: relative;
+		z-index: 1;
+		margin: 0;
+		font-family: var(--font-blur);
+		font-size: clamp(4.2rem, 18vw, 12rem);
+		line-height: 0.8;
+		text-transform: uppercase;
+	}
+
+	.donation-link {
+		position: relative;
+		z-index: 2;
+		display: inline-flex;
+		margin-top: 2.1rem;
+		transition: transform 180ms ease;
+	}
+
+	.donation-link:hover {
+		transform: scale(1.04) rotate(-1deg);
+	}
+
+	.donation-link img {
+		display: block;
+		width: clamp(8.5rem, 36vw, 11.25rem);
+		height: auto;
+	}
+
+	.sustainability-details {
+		padding-top: 4.2rem;
+		padding-bottom: 4rem;
+	}
+
+	.sustainability-details article + article {
+		margin-top: 3.3rem;
+	}
+
+	@media (min-width: 768px) {
+		.sustainability-intro,
+		.sustainability-details {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 3rem 6vw;
+		}
+
+		.sustainability-intro article + article,
+		.sustainability-details article + article {
+			margin-top: 0;
+		}
+
+		.sustainability-details article:last-child {
+			grid-column: 1 / -1;
+		}
+
+		.etifor-showcase {
+			padding-top: 9rem;
+		}
+
+		.etifor-tree-left-image,
+		.etifor-tree-right-image {
+			left: calc(100% - min(105rem, 140vw));
+			width: min(105rem, 140vw);
+		}
+
+		.etifor-tree-left,
+		.etifor-tree-right {
+			/* Desktop: coordinate separate da quelle mobile. */
+			height: min(84rem, 112vw);
+		}
+
+		.etifor-tree-left {
+			top: -20rem;
+			left: -20rem;
+		}
+
+		.etifor-tree-right {
+			top: 18rem;
+			right: -16rem;
+		}
+
+		.etifor-tree-right-image {
+			left: 0;
+		}
+
+	}
+
+	@media (min-width: 1200px) {
+		.sustainability-hero-copy h1 {
+			font-size: clamp(5rem, 8vw, 8.5rem);
+		}
+
+		.sustainability-intro,
+		.sustainability-details {
+			padding-right: max(var(--sustainability-padding), calc((100vw - 78rem) / 2));
+			padding-left: max(var(--sustainability-padding), calc((100vw - 78rem) / 2));
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.donation-link,
+		.sustainability-scroll-indicator {
+			transition: none;
+			animation: none;
+		}
+	}
+</style>

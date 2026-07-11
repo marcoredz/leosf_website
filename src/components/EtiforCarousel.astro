@@ -1,0 +1,145 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+	photos: Array<{
+		src: ImageMetadata;
+		alt: string;
+	}>;
+}
+
+const { photos } = Astro.props;
+---
+
+<div class="etifor-carousel" data-etifor-carousel>
+	<div
+		class="etifor-carousel-track"
+		tabindex="0"
+		aria-label="Immagini del progetto Etifor nel Parco del Ticino"
+		data-etifor-carousel-track
+	>
+		{photos.map(({ src, alt }, index) => (
+			<figure class="etifor-slide">
+				<Image
+					src={src}
+					alt={alt}
+					width={720}
+					format="webp"
+					quality={60}
+					class="h-full w-full object-cover"
+					loading={index < 3 ? "eager" : "lazy"}
+					decoding="async"
+				/>
+			</figure>
+		))}
+	</div>
+</div>
+
+<script>
+	const carouselTrack = document.querySelector<HTMLElement>("[data-etifor-carousel-track]");
+	const carouselSlides = carouselTrack?.querySelectorAll<HTMLElement>(".etifor-slide");
+
+	if (carouselTrack && carouselSlides?.length) {
+		const initialSlide = carouselSlides[Math.min(2, carouselSlides.length - 1)];
+		let frameId = 0;
+
+		const updateActiveSlide = () => {
+			const trackCenter = carouselTrack.scrollLeft + carouselTrack.clientWidth / 2;
+			let closestSlide = carouselSlides[0];
+			let closestDistance = Number.POSITIVE_INFINITY;
+
+			carouselSlides.forEach((slide) => {
+				const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
+				const distance = Math.abs(slideCenter - trackCenter);
+
+				if (distance < closestDistance) {
+					closestSlide = slide;
+					closestDistance = distance;
+				}
+			});
+
+			carouselSlides.forEach((slide) => {
+				slide.classList.toggle("is-active", slide === closestSlide);
+			});
+		};
+
+		const handleScroll = () => {
+			window.cancelAnimationFrame(frameId);
+			frameId = window.requestAnimationFrame(updateActiveSlide);
+		};
+
+		window.requestAnimationFrame(() => {
+			carouselTrack.scrollLeft =
+				initialSlide.offsetLeft - (carouselTrack.clientWidth - initialSlide.clientWidth) / 2;
+			updateActiveSlide();
+		});
+
+		carouselTrack.addEventListener("scroll", handleScroll, { passive: true });
+	}
+</script>
+
+<style>
+	.etifor-carousel {
+		position: relative;
+		z-index: 2;
+		margin-top: 1.4rem;
+	}
+
+	.etifor-carousel-track {
+		display: flex;
+		gap: 1rem;
+		overflow-x: auto;
+		padding: 0 max(1rem, calc((100% - min(75vw, 25rem)) / 2));
+		scroll-snap-type: x mandatory;
+		scroll-behavior: smooth;
+		-webkit-overflow-scrolling: touch;
+		overscroll-behavior-inline: contain;
+		scrollbar-width: none;
+	}
+
+	.etifor-carousel-track::-webkit-scrollbar {
+		display: none;
+	}
+
+	.etifor-slide {
+		flex: 0 0 min(75vw, 25rem);
+		aspect-ratio: 1 / 1;
+		margin: 0;
+		overflow: hidden;
+		border-radius: 1.2rem;
+		background: var(--color-background-dark);
+		scroll-snap-align: center;
+		transform: scale(0.84);
+		transition: transform 180ms ease;
+	}
+
+	.etifor-slide.is-active {
+		transform: scale(1);
+	}
+
+	.etifor-slide img {
+		display: block;
+	}
+
+	@media (min-width: 768px) {
+		.etifor-carousel-track {
+			gap: 1.25rem;
+			padding-inline: calc((100% - min(34vw, 25rem)) / 2);
+		}
+
+		.etifor-slide {
+			flex-basis: min(34vw, 25rem);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.etifor-carousel-track {
+			scroll-behavior: auto;
+		}
+
+		.etifor-slide {
+			transition: none;
+		}
+	}
+</style>
