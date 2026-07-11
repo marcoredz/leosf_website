@@ -306,11 +306,10 @@ const placeholderText =
 		text-align: center;
 	}
 
+	/* Mobile */
 	.etifor-tree-left,
 	.etifor-tree-right {
 		position: absolute;
-		/* Mobile: coordinate fisse, immediate da regolare. */
-		top: -8rem;
 		z-index: 10;
 		width: min(44vw, 36rem);
 		height: max(34rem, 119vw);
@@ -319,12 +318,13 @@ const placeholderText =
 	}
 
 	.etifor-tree-left {
-		left: -7rem;
+		top: -8rem;
+		left: -6rem;
 	}
 
 	.etifor-tree-right {
-		top: 26rem;
-		right: -4rem;
+		top: 22rem;
+		right: -5rem;
 	}
 
 	.etifor-tree-left-image,
