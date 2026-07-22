@@ -20,7 +20,10 @@ const { photos } = Astro.props;
 		data-etifor-carousel-track
 	>
 		{photos.map(({ src, alt }, index) => (
-			<figure class="etifor-slide" data-etifor-slide={index}>
+			<figure
+				class:list={["etifor-slide", { "is-active": index === Math.min(2, photos.length - 1) }]}
+				data-etifor-slide={index}
+			>
 				<Image
 					src={src}
 					alt={alt}
@@ -30,6 +33,7 @@ const { photos } = Astro.props;
 					class="h-full w-full object-cover"
 					loading={index < 3 ? "eager" : "lazy"}
 					decoding="async"
+					draggable="false"
 				/>
 			</figure>
 		))}
@@ -51,29 +55,41 @@ const { photos } = Astro.props;
 </div>
 
 <script>
-	const carouselTrack = document.querySelector<HTMLElement>("[data-etifor-carousel-track]");
-	const carouselSlides = carouselTrack?.querySelectorAll<HTMLElement>(".etifor-slide");
-	const carouselDots = document.querySelectorAll<HTMLButtonElement>("[data-etifor-dot]");
+	document.querySelectorAll<HTMLElement>("[data-etifor-carousel]").forEach((carousel) => {
+		const carouselTrack = carousel.querySelector<HTMLElement>("[data-etifor-carousel-track]");
+		const carouselSlides = Array.from(
+			carousel.querySelectorAll<HTMLElement>("[data-etifor-slide]"),
+		);
+		const carouselDots = carousel.querySelectorAll<HTMLButtonElement>("[data-etifor-dot]");
 
-	if (carouselTrack && carouselSlides?.length) {
+		if (!carouselTrack || !carouselSlides.length) return;
+
 		const initialSlide = carouselSlides[Math.min(2, carouselSlides.length - 1)];
 		let frameId = 0;
+		let isDragging = false;
+		let dragStartX = 0;
+		let dragStartScrollLeft = 0;
+
+		const centerSlide = (slide: HTMLElement, behavior: ScrollBehavior = "smooth") => {
+			carouselTrack.scrollTo({
+				left: slide.offsetLeft - (carouselTrack.clientWidth - slide.clientWidth) / 2,
+				behavior,
+			});
+		};
+
+		const getClosestSlide = () => {
+			const trackCenter = carouselTrack.scrollLeft + carouselTrack.clientWidth / 2;
+			return carouselSlides.reduce((closest, slide) => {
+				const distance = Math.abs(slide.offsetLeft + slide.offsetWidth / 2 - trackCenter);
+				const closestDistance = Math.abs(
+					closest.offsetLeft + closest.offsetWidth / 2 - trackCenter,
+				);
+				return distance < closestDistance ? slide : closest;
+			});
+		};
 
 		const updateActiveSlide = () => {
-			const trackCenter = carouselTrack.scrollLeft + carouselTrack.clientWidth / 2;
-			let closestSlide = carouselSlides[0];
-			let closestDistance = Number.POSITIVE_INFINITY;
-
-			carouselSlides.forEach((slide) => {
-				const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
-				const distance = Math.abs(slideCenter - trackCenter);
-
-				if (distance < closestDistance) {
-					closestSlide = slide;
-					closestDistance = distance;
-				}
-			});
-
+			const closestSlide = getClosestSlide();
 			const activeIndex = Number(closestSlide.dataset.etiforSlide ?? 0);
 
 			carouselSlides.forEach((slide) => {
@@ -92,22 +108,43 @@ const { photos } = Astro.props;
 		};
 
 		window.requestAnimationFrame(() => {
-			carouselTrack.scrollLeft =
-				initialSlide.offsetLeft - (carouselTrack.clientWidth - initialSlide.clientWidth) / 2;
+			centerSlide(initialSlide, "auto");
 			updateActiveSlide();
 		});
 
 		carouselTrack.addEventListener("scroll", handleScroll, { passive: true });
 		carouselDots.forEach((dot, index) => {
-			dot.addEventListener("click", () => {
-				const slide = carouselSlides[index];
-				carouselTrack.scrollTo({
-					left: slide.offsetLeft - (carouselTrack.clientWidth - slide.clientWidth) / 2,
-					behavior: "smooth",
-				});
-			});
+			dot.addEventListener("click", () => centerSlide(carouselSlides[index]));
 		});
-	}
+
+		carouselTrack.addEventListener("pointerdown", (event) => {
+			if (event.pointerType !== "mouse" || event.button !== 0) return;
+			isDragging = true;
+			dragStartX = event.clientX;
+			dragStartScrollLeft = carouselTrack.scrollLeft;
+			carouselTrack.setPointerCapture(event.pointerId);
+			carouselTrack.classList.add("is-dragging");
+		});
+
+		carouselTrack.addEventListener("pointermove", (event) => {
+			if (!isDragging) return;
+			event.preventDefault();
+			carouselTrack.scrollLeft = dragStartScrollLeft - (event.clientX - dragStartX);
+		});
+
+		const finishDragging = (event: PointerEvent) => {
+			if (!isDragging) return;
+			isDragging = false;
+			carouselTrack.classList.remove("is-dragging");
+			if (carouselTrack.hasPointerCapture(event.pointerId)) {
+				carouselTrack.releasePointerCapture(event.pointerId);
+			}
+			centerSlide(getClosestSlide());
+		};
+
+		carouselTrack.addEventListener("pointerup", finishDragging);
+		carouselTrack.addEventListener("pointercancel", finishDragging);
+	});
 </script>
 
 <style>
@@ -129,6 +166,13 @@ const { photos } = Astro.props;
 		scrollbar-width: none;
 	}
 
+	.etifor-carousel-track.is-dragging {
+		cursor: grabbing;
+		scroll-behavior: auto;
+		scroll-snap-type: none;
+		user-select: none;
+	}
+
 	.etifor-carousel-track::-webkit-scrollbar {
 		display: none;
 	}
@@ -141,6 +185,15 @@ const { photos } = Astro.props;
 		border-radius: clamp(1.15rem, 6vw, 2rem);
 		background: var(--color-background-dark);
 		scroll-snap-align: center;
+		transform: scale(0.82);
+		transition: transform 240ms ease, opacity 240ms ease;
+		opacity: 0.72;
+	}
+
+	.etifor-slide.is-active {
+		z-index: 1;
+		transform: scale(1);
+		opacity: 1;
 	}
 
 	.etifor-slide img {
@@ -177,6 +230,7 @@ const { photos } = Astro.props;
 
 	@media (min-width: 768px) {
 		.etifor-carousel-track {
+			cursor: grab;
 			gap: 1.25rem;
 			padding-inline: calc((100% - min(32vw, 24rem)) / 2);
 		}
@@ -191,7 +245,8 @@ const { photos } = Astro.props;
 			scroll-behavior: auto;
 		}
 
-		.etifor-carousel-dot {
+		.etifor-carousel-dot,
+		.etifor-slide {
 			transition: none;
 		}
 	}

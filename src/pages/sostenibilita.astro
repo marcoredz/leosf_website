@@ -1,6 +1,7 @@
 ---
 import { Image, getImage } from "astro:assets";
-import EtiforCarousel from "../components/EtiforCarousel.astro";
+import EtiforCarousel from "../components/sustainability/EtiforCarousel.astro";
+import GoalsCarousel from "../components/sustainability/GoalsCarousel.astro";
 import SiteFooter from "../components/common/SiteFooter.astro";
 import Layout from "../layouts/Layout.astro";
 import aerialForest from "../assets/aerial-forest.jpeg";
@@ -43,8 +44,6 @@ const goals = [
 	"Coinvolgere sponsor e fornitori nel percorso",
 	"Sostenere un progetto WOWnature con obiettivi verificabili",
 ];
-
-const loopingGoals = [goals.at(-1), ...goals, goals[0]];
 
 const impacts = [
 	{ title: "Biodiversità", image: leafSketch },
@@ -202,41 +201,7 @@ const carouselPhotos = [
 
 			<section class="goals-section" aria-labelledby="goals-title">
 				<h2 id="goals-title">Obiettivi 2026</h2>
-				<div class="goals-carousel" data-goals-carousel>
-					<ul
-						class="goals-track"
-						tabindex="0"
-						aria-label="Obiettivi di sostenibilità 2026"
-						data-goals-track
-					>
-						{loopingGoals.map((goal, index) => {
-							const isClone = index === 0 || index === loopingGoals.length - 1;
-							const goalIndex = index === 0 ? goals.length - 1 : index === loopingGoals.length - 1 ? 0 : index - 1;
-
-							return (
-								<li
-									class="goal-slide"
-									data-goal-slide
-									data-goal-index={goalIndex}
-									aria-hidden={isClone ? "true" : undefined}
-								>
-									<p>{goal}</p>
-								</li>
-							);
-						})}
-					</ul>
-					<div class="goals-dots" aria-label="Seleziona un obiettivo">
-						{goals.map((_, index) => (
-							<button
-								type="button"
-								class:list={["goals-dot", { "is-active": index === 0 }]}
-								aria-label={`Vai all'obiettivo ${index + 1}`}
-								aria-current={index === 0 ? "true" : undefined}
-								data-goal-dot={index}
-							></button>
-						))}
-					</div>
-				</div>
+				<GoalsCarousel goals={goals} />
 			</section>
 
 			<section class="change-section" aria-labelledby="change-title">
@@ -281,66 +246,6 @@ const carouselPhotos = [
 	</main>
 	<SiteFooter variant="sustainability" />
 </Layout>
-
-<script>
-	const goalsTrack = document.querySelector<HTMLElement>("[data-goals-track]");
-	const goalSlides = goalsTrack?.querySelectorAll<HTMLElement>("[data-goal-slide]");
-	const goalDots = document.querySelectorAll<HTMLButtonElement>("[data-goal-dot]");
-
-	if (goalsTrack && goalSlides?.length) {
-		let frameId = 0;
-		const firstGoal = goalSlides[1];
-
-		const centerSlide = (slide: HTMLElement, behavior: ScrollBehavior = "smooth") => {
-			goalsTrack.scrollTo({
-				left: slide.offsetLeft - (goalsTrack.clientWidth - slide.clientWidth) / 2,
-				behavior,
-			});
-		};
-
-		const updateActiveGoal = () => {
-			const trackCenter = goalsTrack.scrollLeft + goalsTrack.clientWidth / 2;
-			let closestSlide = goalSlides[0];
-			let closestDistance = Number.POSITIVE_INFINITY;
-
-			goalSlides.forEach((slide) => {
-				const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
-				const distance = Math.abs(slideCenter - trackCenter);
-
-				if (distance < closestDistance) {
-					closestSlide = slide;
-					closestDistance = distance;
-				}
-			});
-
-			const activeIndex = Number(closestSlide.dataset.goalIndex ?? 0);
-			goalSlides.forEach((slide) => slide.classList.toggle("is-active", slide === closestSlide));
-			goalDots.forEach((dot, index) => {
-				const isActive = index === activeIndex;
-				dot.classList.toggle("is-active", isActive);
-				dot.toggleAttribute("aria-current", isActive);
-			});
-		};
-
-		window.requestAnimationFrame(() => {
-			centerSlide(firstGoal, "auto");
-			updateActiveGoal();
-		});
-
-		goalsTrack.addEventListener(
-			"scroll",
-			() => {
-				window.cancelAnimationFrame(frameId);
-				frameId = window.requestAnimationFrame(updateActiveGoal);
-			},
-			{ passive: true },
-		);
-
-		goalDots.forEach((dot, index) => {
-			dot.addEventListener("click", () => centerSlide(goalSlides[index + 1]));
-		});
-	}
-</script>
 
 <style>
 	.sustainability-page {
@@ -718,72 +623,6 @@ const carouselPhotos = [
 		line-height: 1;
 	}
 
-	.goals-carousel {
-		margin-top: 3.2rem;
-	}
-
-	.goals-track {
-		display: flex;
-		gap: 2rem;
-		overflow-x: auto;
-		margin: 0;
-		padding: 0 calc((100% - min(68vw, 20rem)) / 2);
-		list-style: none;
-		scroll-behavior: smooth;
-		scroll-snap-type: x mandatory;
-		scrollbar-width: none;
-		-webkit-overflow-scrolling: touch;
-		overscroll-behavior-inline: contain;
-	}
-
-	.goals-track::-webkit-scrollbar {
-		display: none;
-	}
-
-	.goal-slide {
-		display: grid;
-		flex: 0 0 min(68vw, 20rem);
-		aspect-ratio: 1;
-		place-items: center;
-		padding: 1.7rem;
-		color: var(--page-green);
-		border-radius: clamp(1.6rem, 8vw, 2.6rem);
-		background: var(--page-light);
-		scroll-snap-align: center;
-	}
-
-	.goal-slide p {
-		max-width: 14rem;
-		margin: 0;
-		font-family: var(--font-plex);
-		font-size: clamp(0.67rem, 3vw, 0.95rem);
-		font-weight: 700;
-		line-height: 1.35;
-	}
-
-	.goals-dots {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 0.36rem;
-		margin-top: 1.7rem;
-	}
-
-	.goals-dot {
-		width: 0.48rem;
-		height: 0.48rem;
-		padding: 0;
-		border: 0;
-		border-radius: 50%;
-		background: rgb(224 221 221 / 0.52);
-		transition: background-color 160ms ease, transform 160ms ease;
-	}
-
-	.goals-dot.is-active {
-		background: var(--page-light);
-		transform: scale(1.06);
-	}
-
 	.change-section {
 		padding: 4.25rem 0 1.35rem;
 		background: var(--page-light);
@@ -939,13 +778,6 @@ const carouselPhotos = [
 			margin: 0;
 		}
 
-		.goals-track {
-			padding-inline: calc((100% - min(42vw, 24rem)) / 2);
-		}
-
-		.goal-slide {
-			flex-basis: min(42vw, 24rem);
-		}
 	}
 
 	@media (min-width: 1024px) {
@@ -973,13 +805,8 @@ const carouselPhotos = [
 
 	@media (prefers-reduced-motion: reduce) {
 		.donation-link,
-		.sustainability-scroll-indicator,
-		.goals-dot {
+		.sustainability-scroll-indicator {
 			transition: none;
-		}
-
-		.goals-track {
-			scroll-behavior: auto;
 		}
 	}
 </style>

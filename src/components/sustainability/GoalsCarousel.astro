@@ -1,0 +1,240 @@
+---
+interface Props {
+	goals: string[];
+}
+
+const { goals } = Astro.props;
+---
+
+<div class="goals-carousel" data-goals-carousel>
+	<ul
+		class="goals-track"
+		tabindex="0"
+		aria-label="Obiettivi di sostenibilità 2026"
+		data-goals-track
+	>
+		{goals.map((goal, index) => {
+			return (
+				<li
+					class:list={["goal-slide", { "is-active": index === 0 }]}
+					data-goal-slide
+					data-goal-index={index}
+				>
+					<p>{goal}</p>
+				</li>
+			);
+		})}
+	</ul>
+	<div class="goals-dots" aria-label="Seleziona un obiettivo">
+		{goals.map((_, index) => (
+			<button
+				type="button"
+				class:list={["goals-dot", { "is-active": index === 0 }]}
+				aria-label={`Vai all'obiettivo ${index + 1}`}
+				aria-current={index === 0 ? "true" : undefined}
+				data-goal-dot={index}
+			></button>
+		))}
+	</div>
+</div>
+
+<script>
+	document.querySelectorAll<HTMLElement>("[data-goals-carousel]").forEach((carousel) => {
+		const track = carousel.querySelector<HTMLElement>("[data-goals-track]");
+		const slides = Array.from(carousel.querySelectorAll<HTMLElement>("[data-goal-slide]"));
+		const dots = carousel.querySelectorAll<HTMLButtonElement>("[data-goal-dot]");
+
+		if (!track || !slides.length) return;
+
+		const firstGoal = slides[0];
+		let frameId = 0;
+		let isDragging = false;
+		let dragStartX = 0;
+		let dragStartScrollLeft = 0;
+
+		const centerSlide = (slide: HTMLElement, behavior: ScrollBehavior = "smooth") => {
+			track.scrollTo({
+				left: slide.offsetLeft - (track.clientWidth - slide.clientWidth) / 2,
+				behavior,
+			});
+		};
+
+		const getClosestSlide = () => {
+			const trackCenter = track.scrollLeft + track.clientWidth / 2;
+			return slides.reduce((closest, slide) => {
+				const distance = Math.abs(slide.offsetLeft + slide.offsetWidth / 2 - trackCenter);
+				const closestDistance = Math.abs(
+					closest.offsetLeft + closest.offsetWidth / 2 - trackCenter,
+				);
+				return distance < closestDistance ? slide : closest;
+			});
+		};
+
+		const updateActiveGoal = () => {
+			const closestSlide = getClosestSlide();
+			const activeIndex = Number(closestSlide.dataset.goalIndex ?? 0);
+
+			slides.forEach((slide) => slide.classList.toggle("is-active", slide === closestSlide));
+			dots.forEach((dot, index) => {
+				const isActive = index === activeIndex;
+				dot.classList.toggle("is-active", isActive);
+				dot.toggleAttribute("aria-current", isActive);
+			});
+		};
+
+		window.requestAnimationFrame(() => {
+			centerSlide(firstGoal, "auto");
+			updateActiveGoal();
+		});
+
+		track.addEventListener(
+			"scroll",
+			() => {
+				window.cancelAnimationFrame(frameId);
+				frameId = window.requestAnimationFrame(updateActiveGoal);
+			},
+			{ passive: true },
+		);
+
+		dots.forEach((dot, index) => {
+			dot.addEventListener("click", () => centerSlide(slides[index]));
+		});
+
+		track.addEventListener("pointerdown", (event) => {
+			if (event.pointerType !== "mouse" || event.button !== 0) return;
+			isDragging = true;
+			dragStartX = event.clientX;
+			dragStartScrollLeft = track.scrollLeft;
+			track.setPointerCapture(event.pointerId);
+			track.classList.add("is-dragging");
+		});
+
+		track.addEventListener("pointermove", (event) => {
+			if (!isDragging) return;
+			event.preventDefault();
+			track.scrollLeft = dragStartScrollLeft - (event.clientX - dragStartX);
+		});
+
+		const finishDragging = (event: PointerEvent) => {
+			if (!isDragging) return;
+			isDragging = false;
+			track.classList.remove("is-dragging");
+			if (track.hasPointerCapture(event.pointerId)) track.releasePointerCapture(event.pointerId);
+			centerSlide(getClosestSlide());
+		};
+
+		track.addEventListener("pointerup", finishDragging);
+		track.addEventListener("pointercancel", finishDragging);
+	});
+</script>
+
+<style>
+	.goals-carousel {
+		margin-top: 3.2rem;
+	}
+
+	.goals-track {
+		display: flex;
+		gap: 2rem;
+		overflow-x: auto;
+		margin: 0;
+		padding: 0 calc((100% - min(68vw, 20rem)) / 2);
+		list-style: none;
+		scroll-behavior: smooth;
+		scroll-snap-type: x mandatory;
+		scrollbar-width: none;
+		-webkit-overflow-scrolling: touch;
+		overscroll-behavior-inline: contain;
+	}
+
+	.goals-track::-webkit-scrollbar {
+		display: none;
+	}
+
+	.goals-track.is-dragging {
+		cursor: grabbing;
+		scroll-behavior: auto;
+		scroll-snap-type: none;
+		user-select: none;
+	}
+
+	.goal-slide {
+		display: grid;
+		flex: 0 0 min(68vw, 20rem);
+		aspect-ratio: 1;
+		place-items: center;
+		padding: 1.7rem;
+		color: var(--page-green);
+		border-radius: clamp(1.6rem, 8vw, 2.6rem);
+		background: var(--page-light);
+		scroll-snap-align: center;
+		transform: scale(0.82);
+		transition: transform 240ms ease, opacity 240ms ease;
+		opacity: 0.72;
+	}
+
+	.goal-slide.is-active {
+		z-index: 1;
+		transform: scale(1);
+		opacity: 1;
+	}
+
+	.goal-slide p {
+		max-width: 14rem;
+		margin: 0;
+		font-family: var(--font-plex);
+		font-size: 18px;
+		font-weight: 700;
+		line-height: 1.35;
+	}
+
+	.goals-dots {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.36rem;
+		margin-top: 1.7rem;
+	}
+
+	.goals-dot {
+		width: 0.48rem;
+		height: 0.48rem;
+		padding: 0;
+		border: 0;
+		border-radius: 50%;
+		background: rgb(224 221 221 / 0.52);
+		transition: background-color 160ms ease, transform 160ms ease;
+	}
+
+	.goals-dot.is-active {
+		background: var(--page-light);
+		transform: scale(1.06);
+	}
+
+	.goals-dot:focus-visible {
+		outline: 3px solid currentColor;
+		outline-offset: 4px;
+	}
+
+	@media (min-width: 768px) {
+		.goals-track {
+			cursor: grab;
+			padding-inline: calc((100% - min(42vw, 24rem)) / 2);
+		}
+
+		.goal-slide {
+			flex-basis: min(42vw, 24rem);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.goals-track {
+			scroll-behavior: auto;
+		}
+
+		.goals-dot,
+		.goal-slide {
+			transition: none;
+		}
+	}
+</style>

@@ -3,14 +3,15 @@ import { Icon } from "astro-icon/components";
 
 const contacts = [
 	"info@endofsummerfestival.it",
-	"+39 379 318 7294 (Referente: Carolina Barzan)",
+	"+39 379 318 7294",
+	"Via Prof. Monteggia 16",
 	"21014 Laveno Mombello",
 ];
 
 const socials = [
 	{ label: "Instagram", href: "https://www.instagram.com/lavenoendofsummerfestival", icon: "simple-icons:instagram" },
 	{ label: "TikTok", href: "https://vm.tiktok.com/ZNRTJPnRQ/", icon: "simple-icons:tiktok" },
-	// { label: "Spotify", href: "/#contatti", icon: "simple-icons:spotify" },
+	{ label: "Spotify", href: "https://open.spotify.com/playlist/6eCBnz6tWHKffBUsiDtQts/", icon: "simple-icons:spotify" },
 ];
 ---
 
@@ -25,6 +26,7 @@ const socials = [
 				socials.map(({ label, href, icon }) => (
 					<a
 						href={href}
+						target="_blank"
 						aria-label={label}
 						class="grid h-7 w-7 place-items-center rounded-full border border-background-light/70 text-background-light transition-colors hover:bg-background-light hover:text-background-dark"
 					>
