@@ -12,6 +12,12 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Poppins Bold";
+  src: url("/fonts/Poppins-Bold.ttf") format("truetype");
+  font-display: swap;
+}
+
 @theme {
   --color-background-dark: #2f2122;
   --color-background-light: #e0dddd;
@@ -31,6 +37,7 @@
 
   --font-blur: "Blur Bold", system-ui, sans-serif;
   --font-plex: "IBM Plex Mono", ui-monospace, monospace;
+  --font-poppins: "Poppins Bold", system-ui, sans-serif;
 }
 
 @layer base {
