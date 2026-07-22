@@ -20,7 +20,7 @@ const { photos } = Astro.props;
 		data-etifor-carousel-track
 	>
 		{photos.map(({ src, alt }, index) => (
-			<figure class="etifor-slide">
+			<figure class="etifor-slide" data-etifor-slide={index}>
 				<Image
 					src={src}
 					alt={alt}
@@ -34,11 +34,26 @@ const { photos } = Astro.props;
 			</figure>
 		))}
 	</div>
+	<div class="etifor-carousel-dots" aria-label="Seleziona un'immagine">
+		{photos.map((_, index) => (
+			<button
+				type="button"
+				class:list={[
+					"etifor-carousel-dot",
+					{ "is-active": index === Math.min(2, photos.length - 1) },
+				]}
+				aria-label={`Vai all'immagine ${index + 1}`}
+				aria-current={index === Math.min(2, photos.length - 1) ? "true" : undefined}
+				data-etifor-dot={index}
+			></button>
+		))}
+	</div>
 </div>
 
 <script>
 	const carouselTrack = document.querySelector<HTMLElement>("[data-etifor-carousel-track]");
 	const carouselSlides = carouselTrack?.querySelectorAll<HTMLElement>(".etifor-slide");
+	const carouselDots = document.querySelectorAll<HTMLButtonElement>("[data-etifor-dot]");
 
 	if (carouselTrack && carouselSlides?.length) {
 		const initialSlide = carouselSlides[Math.min(2, carouselSlides.length - 1)];
@@ -59,8 +74,15 @@ const { photos } = Astro.props;
 				}
 			});
 
+			const activeIndex = Number(closestSlide.dataset.etiforSlide ?? 0);
+
 			carouselSlides.forEach((slide) => {
 				slide.classList.toggle("is-active", slide === closestSlide);
+			});
+			carouselDots.forEach((dot, index) => {
+				const isActive = index === activeIndex;
+				dot.classList.toggle("is-active", isActive);
+				dot.toggleAttribute("aria-current", isActive);
 			});
 		};
 
@@ -76,6 +98,15 @@ const { photos } = Astro.props;
 		});
 
 		carouselTrack.addEventListener("scroll", handleScroll, { passive: true });
+		carouselDots.forEach((dot, index) => {
+			dot.addEventListener("click", () => {
+				const slide = carouselSlides[index];
+				carouselTrack.scrollTo({
+					left: slide.offsetLeft - (carouselTrack.clientWidth - slide.clientWidth) / 2,
+					behavior: "smooth",
+				});
+			});
+		});
 	}
 </script>
 
@@ -83,14 +114,14 @@ const { photos } = Astro.props;
 	.etifor-carousel {
 		position: relative;
 		z-index: 2;
-		margin-top: 1.4rem;
+		margin-top: 4.3rem;
 	}
 
 	.etifor-carousel-track {
 		display: flex;
 		gap: 1rem;
 		overflow-x: auto;
-		padding: 0 max(1rem, calc((100% - min(75vw, 25rem)) / 2));
+		padding: 0 max(1rem, calc((100% - min(69vw, 22rem)) / 2));
 		scroll-snap-type: x mandatory;
 		scroll-behavior: smooth;
 		-webkit-overflow-scrolling: touch;
@@ -103,33 +134,55 @@ const { photos } = Astro.props;
 	}
 
 	.etifor-slide {
-		flex: 0 0 min(75vw, 25rem);
+		flex: 0 0 min(69vw, 22rem);
 		aspect-ratio: 1 / 1;
 		margin: 0;
 		overflow: hidden;
-		border-radius: 1.2rem;
+		border-radius: clamp(1.15rem, 6vw, 2rem);
 		background: var(--color-background-dark);
 		scroll-snap-align: center;
-		transform: scale(0.84);
-		transition: transform 180ms ease;
-	}
-
-	.etifor-slide.is-active {
-		transform: scale(1);
 	}
 
 	.etifor-slide img {
 		display: block;
 	}
 
+	.etifor-carousel-dots {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.36rem;
+		margin-top: 1.25rem;
+	}
+
+	.etifor-carousel-dot {
+		width: 0.48rem;
+		height: 0.48rem;
+		padding: 0;
+		border: 0;
+		border-radius: 50%;
+		background: rgb(224 221 221 / 0.5);
+		transition: background-color 160ms ease, transform 160ms ease;
+	}
+
+	.etifor-carousel-dot.is-active {
+		background: var(--color-background-light);
+		transform: scale(1.08);
+	}
+
+	.etifor-carousel-dot:focus-visible {
+		outline: 2px solid var(--color-background-light);
+		outline-offset: 3px;
+	}
+
 	@media (min-width: 768px) {
 		.etifor-carousel-track {
 			gap: 1.25rem;
-			padding-inline: calc((100% - min(34vw, 25rem)) / 2);
+			padding-inline: calc((100% - min(32vw, 24rem)) / 2);
 		}
 
 		.etifor-slide {
-			flex-basis: min(34vw, 25rem);
+			flex-basis: min(32vw, 24rem);
 		}
 	}
 
@@ -138,7 +191,7 @@ const { photos } = Astro.props;
 			scroll-behavior: auto;
 		}
 
-		.etifor-slide {
+		.etifor-carousel-dot {
 			transition: none;
 		}
 	}
