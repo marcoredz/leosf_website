@@ -1,0 +1,86 @@
+---
+interface Props {
+	variant?: "default" | "hero";
+}
+
+const { variant = "default" } = Astro.props;
+---
+
+<div class:list={["donation-cta", { "donation-cta--hero": variant === "hero" }]}>
+	<a
+		href="https://www.etifor.com/it/"
+		target="_blank"
+		rel="noreferrer"
+		class="donation-link"
+	>
+		DONA UN ALBERO
+	</a>
+	<p>Usa il codice *** per avere uno sconto del 10%</p>
+</div>
+
+<style>
+	.donation-cta {
+		margin-top: 2.15rem;
+		text-align: center;
+	}
+
+	.donation-cta p {
+		max-width: 31rem;
+		margin: 0.9rem auto 0;
+		font-family: var(--font-plex);
+		font-size: 14px;
+		line-height: 1.35;
+	}
+
+	.donation-link {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 1rem 0.75rem 0.8rem;
+		border-radius: 18px;
+		color: #fff;
+		background: var(--page-green);
+		font-family: var(--font-blur);
+		font-size: clamp(1.1rem, 4.8vw, 1.55rem);
+		line-height: 0.9;
+		text-decoration: none;
+		text-transform: uppercase;
+		white-space: nowrap;
+		transition: transform 180ms ease;
+	}
+
+	.donation-link:hover {
+		transform: scale(1.04);
+	}
+
+	.donation-link:focus-visible {
+		outline: 3px solid currentColor;
+		outline-offset: 4px;
+	}
+
+	.donation-cta--hero {
+		/* margin-top: clamp(1.75rem, 4vh, 2.75rem); */
+		margin-top: 3.15rem;
+		color: #fff;
+		text-shadow: 0 0.18rem 0.8rem rgb(0 0 0 / 0.45);
+	}
+
+	.donation-cta--hero p {
+		text-shadow:
+			0 0.15rem 0.35rem rgb(0 0 0 / 0.8),
+			0 0.25rem 0.9rem rgb(0 0 0 / 0.55);
+	}
+
+	.donation-cta--hero .donation-link {
+		color: var(--page-green);
+		background: #fff;
+		box-shadow: 0 0.3rem 0.9rem rgb(0 0 0 / 0.25);
+		text-shadow: none;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.donation-link {
+			transition: none;
+		}
+	}
+</style>

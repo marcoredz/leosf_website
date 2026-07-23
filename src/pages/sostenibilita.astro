@@ -2,6 +2,7 @@
 import { Image, getImage } from "astro:assets";
 import EtiforCarousel from "../components/sustainability/EtiforCarousel.astro";
 import GoalsCarousel from "../components/sustainability/GoalsCarousel.astro";
+import DonationCta from "../components/sustainability/DonationCta.astro";
 import SiteFooter from "../components/common/SiteFooter.astro";
 import Layout from "../layouts/Layout.astro";
 import aerialForest from "../assets/aerial-forest.jpeg";
@@ -89,6 +90,7 @@ const carouselPhotos = [
 			<div class="sustainability-hero-copy">
 				<h1 id="sustainability-title">Sostenibilità</h1>
 				<p>Un festival che si prende<br />cura del territorio</p>
+				<DonationCta variant="hero" />
 			</div>
 			<a
 				href="#sustainability-content"
@@ -212,14 +214,7 @@ const carouselPhotos = [
 						Partecipa al festival in modo responsabile, sostieni i progetti ambientali e
 						aiutaci a costruire un evento sempre più sostenibile.
 					</p>
-					<a
-						href="https://www.etifor.com/it/"
-						target="_blank"
-						rel="noreferrer"
-						class="donation-link"
-					>
-						DONA UN ALBERO
-					</a>
+					<DonationCta />
 					<div class="change-icons" aria-label="Crescita degli alberi">
 						<Image
 							src={treeLifesteps}
@@ -333,6 +328,9 @@ const carouselPhotos = [
 		font-size: clamp(0.78rem, 3.6vw, 1.2rem);
 		font-weight: 700;
 		line-height: 1.3;
+		text-shadow:
+			0 0.15rem 0.35rem rgb(0 0 0 / 0.8),
+			0 0.25rem 0.9rem rgb(0 0 0 / 0.55);
 	}
 
 	.sustainability-scroll-indicator {
@@ -349,16 +347,15 @@ const carouselPhotos = [
 		font-size: 3rem;
 		line-height: 1;
 		text-decoration: none;
-		transform: translateX(-50%) scaleX(0.82);
+		transform: translateX(-50%);
 		transition: transform 180ms ease;
 	}
 
 	.sustainability-scroll-indicator:hover {
-		transform: translate(-50%, 0.25rem) scaleX(0.82);
+		transform: translate(-50%, 0.25rem);
 	}
 
 	.sustainability-scroll-indicator:focus-visible,
-	.donation-link:focus-visible,
 	.goals-dot:focus-visible {
 		outline: 3px solid currentColor;
 		outline-offset: 4px;
@@ -500,12 +497,12 @@ const carouselPhotos = [
 
 	.etifor-tree-left {
 		top: -8rem;
-		left: -6rem;
+		left: -7rem;
 	}
 
 	.etifor-tree-right {
 		top: 40rem;
-		right: -4rem;
+		right: -7rem;
 	}
 
 	.etifor-tree-left-image,
@@ -659,28 +656,6 @@ const carouselPhotos = [
 		line-height: 1.35;
 	}
 
-	.donation-link {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		padding: 0.90rem 0.75rem;
-		margin-top: 2.15rem;
-		background: var(--page-green);
-		border-radius: 18px;
-		color: #fff;
-		font-family: var(--font-blur);
-		font-size: clamp(1.1rem, 4.8vw, 1.55rem);
-		line-height: 0.9;
-		white-space: nowrap;
-		text-decoration: none;
-		text-transform: uppercase;
-		transition: transform 180ms ease;
-	}
-
-	.donation-link:hover {
-		transform: scale(1.04);
-	}
-
 	.change-icons {
 		width: 60%;
 		margin: 1.8rem auto 0;
@@ -710,6 +685,13 @@ const carouselPhotos = [
 		object-fit: cover;
 	}
 
+	@media(min-width: 480px) {
+		.etifor-tree-right {
+			top: 40rem;
+			right: -9rem;
+		}
+	}
+
 	@media (min-width: 640px) {
 		.approach-list {
 			grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -732,7 +714,12 @@ const carouselPhotos = [
 		}
 	}
 
+	/* Desktop layout */
 	@media (min-width: 768px) {
+		.sustainability-forest-blend {
+			height: clamp(13rem, 28vw, 22rem);
+		}
+
 		.etifor-tree-left-image,
 		.etifor-tree-right-image {
 			left: calc(100% - min(105rem, 140vw));
@@ -804,7 +791,6 @@ const carouselPhotos = [
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.donation-link,
 		.sustainability-scroll-indicator {
 			transition: none;
 		}
