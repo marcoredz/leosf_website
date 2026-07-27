@@ -72,6 +72,7 @@ const lineup: LineupDay[] = [
 		spark: sparkRed,
 		events: [
 			{ time: "17:00 - 17:50", artist: "DJ SET" },
+			{ time: "18:00 - 18:30", artist: "ROEDEER - FESTA DEL RUGBY" },
 			{ time: "18:40 - 19:10", artist: "DOXX" },
 			{ time: "19:20 - 19:50", artist: "29GIULIO" },
 			{ time: "20:00 - 20:30", artist: "VEROSIMILE" },
@@ -90,6 +91,8 @@ const lineup: LineupDay[] = [
 			{ time: "17:00 - 17:50", artist: "DJ SET" },
 			{ time: "18:00 - 18:30", artist: "CONTEST" },
 			{ time: "18:40 - 19:10", artist: "MANZO" },
+			{ time: "19:20 - 19:50", artist: "ZAGA" },
+			{ time: "20:00 - 20:30", artist: "MATSBY" },
 			{ time: "20:30 - 21:20", artist: "TAIZAL + AFFANNO" },
 			{ time: "21:30 - 22:15", artist: "VAZ TE", isHeadliner: true }, // Headliner 1
 			{ time: "22:20 - 23:00", artist: "DISME", isHeadliner: true }, // Headliner 2
@@ -106,12 +109,12 @@ const lineup: LineupDay[] = [
 			{ time: "18:00 - 18:30", artist: "CONTEST" },
 			{ time: "18:40 - 19:10", artist: "EVA" },
 			{ time: "19:20 - 19:50", artist: "BLU" },
-			{ time: "20:00 - 20:30", artist: "LIL JOLIE" },
+			{ time: "20:00 - 20:30", artist: "LIL JOLIE", isHeadliner: true }, // Headliner 1
 			{ time: "20:30 - 21:20", artist: "VOLPI" },
 			{ time: "21:30 - 22:15", artist: "LUCA RE" },
-			{ time: "22:20 - 23:00", artist: "SISSI", isHeadliner: true }, // Headliner 1
+			{ time: "22:20 - 23:00", artist: "SISSI", isHeadliner: true }, // Headliner 2
 			{ time: "23:10 - 00:00", artist: "LONGO DJ SET" },
-			// { time: "00:00 - 01:00", artist: "DEIV DJ SET" },
+			{ time: "00:00 - 01:00", artist: "DEIV DJ SET" },
 		],
 	},
 ];
@@ -217,13 +220,18 @@ const lineup: LineupDay[] = [
 
 						return (
 							<ol class="mt-7 flex flex-col gap-2.5 sm:mt-9 sm:gap-3">
-								{hasHeadlinerSection
+								{id === "domenica"
+									? events.map((event) =>
+											event.isHeadliner
+												? <LineupSundayHeadliners headliners={[event]} />
+												: renderEvent(event),
+										)
+									: hasHeadlinerSection
 									? (
 										<>
 											{eventsBeforeHeadliners.map(renderEvent)}
 											{id === "venerdi" && <LineupFridayHeadliners headliners={headlinerEvents} />}
 											{id === "sabato" && <LineupSaturdayHeadliners headliners={headlinerEvents} />}
-											{id === "domenica" && <LineupSundayHeadliners headliners={headlinerEvents} />}
 											{eventsAfterHeadliners.map(renderEvent)}
 										</>
 									)

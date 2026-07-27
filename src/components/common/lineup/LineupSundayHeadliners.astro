@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import lilJolieImage from "../../../assets/artists/liljolie2.jpg";
 import sissiImage from "../../../assets/artists/sissi2.avif";
 
 type Headliner = {
@@ -13,30 +14,38 @@ interface Props {
 
 const { headliners } = Astro.props;
 
-const getTime = (artistName: string) =>
-	headliners.find(({ artist }) => artist === artistName)?.time ?? "";
+const headlinerImages = {
+	"LIL JOLIE": lilJolieImage,
+	SISSI: sissiImage,
+} as const;
 ---
 
-<li class="my-4 sm:my-5">
-	<article class="group relative isolate aspect-video overflow-hidden rounded-2xl border-2 border-background-light bg-background-light text-background-dark">
-		<Image
-			src={sissiImage}
-			alt=""
-			widths={[420, 640, 840]}
-			sizes="(min-width: 768px) 56rem, calc(100vw - 3rem)"
-			quality={82}
-			format="avif"
-			class="absolute inset-0 -z-10 size-full object-cover transition-transform duration-500 group-hover:scale-105"
-			loading="lazy"
-		/>
-		<div class="absolute inset-0 -z-10 bg-linear-to-t from-background-dark/78 via-background-dark/20 to-transparent"></div>
-		<div class="flex h-full flex-col justify-end p-4 sm:p-6">
-			<time class="w-fit rounded bg-leof-green px-2 py-1 font-plex text-[clamp(0.8rem,2.8vw,1rem)] font-extrabold uppercase leading-none text-background-light">
-				{getTime("SISSI")}
-			</time>
-			<h4 class="mt-2 font-blur text-[clamp(3.4rem,18vw,7rem)] uppercase leading-none text-background-light">
-				SISSI
-			</h4>
-		</div>
-	</article>
-</li>
+{headliners.map(({ time, artist }) => {
+	const image = headlinerImages[artist as keyof typeof headlinerImages];
+
+	return (
+		<li class="my-4 sm:my-5">
+			<article class="group relative isolate aspect-video overflow-hidden rounded-2xl border-2 border-background-light bg-background-light text-background-dark">
+				<Image
+					src={image}
+					alt=""
+					widths={[420, 640, 840]}
+					sizes="(min-width: 768px) 56rem, calc(100vw - 3rem)"
+					quality={82}
+					format="avif"
+					class="absolute inset-0 -z-10 size-full object-cover transition-transform duration-500 group-hover:scale-105"
+					loading="lazy"
+				/>
+				<div class="absolute inset-0 -z-10 bg-linear-to-t from-background-dark/78 via-background-dark/20 to-transparent"></div>
+				<div class="flex h-full flex-col justify-end p-4 sm:p-6">
+					<time class="w-fit rounded bg-leof-green px-2 py-1 font-plex text-[clamp(1rem,3.5vw,1.3rem)] font-extrabold uppercase leading-none text-background-light">
+						{time}
+					</time>
+					<h4 class="mt-2 font-blur text-[clamp(2.2rem,10vw,5.6rem)] uppercase leading-none text-background-light">
+						{artist}
+					</h4>
+				</div>
+			</article>
+		</li>
+	);
+})}
