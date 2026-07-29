@@ -86,12 +86,11 @@ const expandedPhotos = await Promise.all(
 			<div class="gallery-lightbox-content" data-gallery-content>
 				<button
 					type="button"
-					class="gallery-lightbox-close"
+					class="fixed right-4 top-4 grid size-9 cursor-pointer place-items-center rounded-full text-background-light transition-transform hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-leof-pink sm:right-5 sm:top-5"
 					aria-label="Chiudi la foto"
 					data-gallery-close
 				>
-					<span aria-hidden="true"></span>
-					<span aria-hidden="true"></span>
+					<span class="font-blur text-[2rem] leading-none" aria-hidden="true">X</span>
 				</button>
 
 				<div class="gallery-lightbox-media" data-gallery-media>
@@ -467,37 +466,6 @@ const expandedPhotos = await Promise.all(
 		}
 	}
 
-	.gallery-lightbox-close {
-		position: fixed;
-		top: max(1rem, env(safe-area-inset-top));
-		right: max(1rem, env(safe-area-inset-right));
-		display: grid;
-		width: 3.25rem;
-		height: 3.25rem;
-		place-items: center;
-		border: 1px solid rgb(224 221 221 / 50%);
-		border-radius: 999px;
-		color: var(--color-background-light);
-		background: rgb(47 33 34 / 55%);
-		cursor: pointer;
-	}
-
-	.gallery-lightbox-close span {
-		position: absolute;
-		width: 1.35rem;
-		height: 0.125rem;
-		border-radius: 999px;
-		background: currentColor;
-	}
-
-	.gallery-lightbox-close span:first-child {
-		transform: rotate(45deg);
-	}
-
-	.gallery-lightbox-close span:last-child {
-		transform: rotate(-45deg);
-	}
-
 	.gallery-lightbox-controls {
 		position: fixed;
 		bottom: max(1rem, env(safe-area-inset-bottom));
@@ -530,13 +498,11 @@ const expandedPhotos = await Promise.all(
 		text-align: center;
 	}
 
-	.gallery-lightbox-close:hover,
 	.gallery-lightbox-navigation:hover {
 		color: var(--color-background-dark);
 		background: var(--color-background-light);
 	}
 
-	.gallery-lightbox-close:focus-visible,
 	.gallery-lightbox-navigation:focus-visible {
 		outline: 0.2rem solid var(--color-leof-orange);
 		outline-offset: 0.2rem;
