@@ -78,10 +78,9 @@ const carouselPhotos = [
 				<Image
 					src={aerialForest}
 					alt=""
-					widths={[640, 1024, 1536, 2048]}
-					sizes="100vw"
+					widths={[640, 1280]}
 					format="avif"
-					quality={68}
+					quality={50}
 					class="h-full w-full object-cover"
 					loading="eager"
 				/>
@@ -208,12 +207,13 @@ const carouselPhotos = [
 
 			<section class="change-section" aria-labelledby="change-title">
 				<div class="content-shell change-copy">
-					<h2 id="change-title">Diventa parte<br />del cambiamento</h2>
+					<h2 id="change-title">Diventa parte del cambiamento</h2>
 					<h3>Ogni scelta conta</h3>
 					<p>
 						Partecipa al festival in modo responsabile, sostieni i progetti ambientali e
 						aiutaci a costruire un evento sempre più sostenibile.
 					</p>
+					<br />
 					<DonationCta />
 					<div class="change-icons" aria-label="Crescita degli alberi">
 						<Image
@@ -232,7 +232,7 @@ const carouselPhotos = [
 						alt="Veduta aerea del Parco Lombardo della Valle del Ticino"
 						width={1200}
 						format="webp"
-						quality={50}
+						quality={65}
 						loading="lazy"
 					/>
 				</figure>
@@ -754,15 +754,12 @@ const carouselPhotos = [
 		}
 
 		.approach-intro {
-			display: grid;
-			grid-template-columns: minmax(16rem, 0.8fr) minmax(20rem, 1.2fr);
-			align-items: end;
-			gap: 5vw;
+			display: block;
 			margin-top: 2.5rem;
 		}
 
 		.approach-intro p {
-			margin: 0;
+			margin-top: 0.42rem;
 		}
 
 	}
