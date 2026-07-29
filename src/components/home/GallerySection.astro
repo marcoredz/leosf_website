@@ -15,7 +15,7 @@ type GalleryPhoto = {
 	widths: number[];
 };
 
-const driveGalleryUrl = "https://drive.google.com/";
+const galleryUrl = "/gallery";
 
 const photos: GalleryPhoto[] = [
 	{
@@ -106,9 +106,7 @@ const placeholders = await Promise.all(
 
 		<div class="-mt-16 flex justify-center sm:-mt-4.5rem">
 			<a
-				href={driveGalleryUrl}
-				target="_blank"
-				rel="noreferrer"
+				href={galleryUrl}
 				class="relative z-10 inline-flex min-h-12 items-center justify-center rounded-full bg-background-light px-6 py-3 font-blur text-xl uppercase leading-none text-background-dark transition-opacity hover:opacity-85 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-background-light sm:text-2xl"
 			>
 				Guarda di più
