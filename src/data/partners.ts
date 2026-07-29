@@ -19,9 +19,4 @@ export const partners = [
 		role: "Partner culturale",
 		logo: ccdgBlack,
 	},
-	{
-		name: "Comune di Laveno Mombello",
-		role: "Asset verticale",
-		logo: comuneLavenoVerBlack,
-	},
 ] as const;
