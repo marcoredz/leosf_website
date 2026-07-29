@@ -2,6 +2,8 @@
 import { Image } from "astro:assets";
 import lilJolieImage from "../../../assets/artists/liljolie2.jpg";
 import sissiImage from "../../../assets/artists/sissi2.avif";
+import sparkGreen from "../../../assets/ui/spark-green.png";
+import ArtistDetailCard from "./ArtistDetailCard.astro";
 
 type Headliner = {
 	time: string;
@@ -18,6 +20,9 @@ const headlinerImages = {
 	"LIL JOLIE": lilJolieImage,
 	SISSI: sissiImage,
 } as const;
+
+const getDialogId = (artistName: string) =>
+	`${artistName.toLowerCase().replaceAll(" ", "-")}-detail`;
 ---
 
 {headliners.map(({ time, artist }) => {
@@ -25,7 +30,12 @@ const headlinerImages = {
 
 	return (
 		<li class="my-4 sm:my-5">
-			<article class="group relative isolate aspect-video overflow-hidden rounded-2xl border-2 border-background-light bg-background-light text-background-dark">
+			<button
+				type="button"
+				class="group relative isolate flex aspect-video w-full cursor-pointer flex-col overflow-hidden rounded-2xl border-2 border-background-light bg-background-light text-left text-background-dark"
+				aria-label={`Apri scheda ${artist}`}
+				data-artist-detail-open={getDialogId(artist)}
+			>
 				<Image
 					src={image}
 					alt=""
@@ -45,7 +55,38 @@ const headlinerImages = {
 						{artist}
 					</h4>
 				</div>
-			</article>
+			</button>
 		</li>
 	);
 })}
+
+<ArtistDetailCard
+	dialogId="lil-jolie-detail"
+	artist="LIL JOLIE"
+	date="DOMENICA 30/08"
+	time="20:00"
+	image={lilJolieImage}
+	imageAlt="Lil Jolie"
+	spark={sparkGreen}
+	accentClass="text-leof-green"
+	bio={`Lil Jolie, pseudonimo di Angela Ciancio (Calvi Risorta - CE, 29 marzo 2000), è una <b>cantautrice</b> italiana.
+
+Con il nome d'arte ispirato ad Angelina Jolie, esordisce nel 2018 su SoundCloud e si fa notare nella scena urban italiana.
+
+Dopo Amici23 e l’EP <i>La vita non uccide</i> (2024), arriva tra le Nuove Proposte di Sanremo 2025 con <i>Vale LP</i>.
+<b>Pop, R&B e rap</b> introspettivo: scrive di fragilità e identità con stile personale e diretto.`}
+/>
+<ArtistDetailCard
+	dialogId="sissi-detail"
+	artist="SISSI"
+	date="DOMENICA 30/08"
+	time="22:20"
+	image={sissiImage}
+	imageAlt="Sissi"
+	spark={sparkGreen}
+	accentClass="text-leof-green"
+	bio={`Sissi, nome d'arte di Silvia Cesana (Merone - CO, 1999).
+
+Si fa conoscere nel 2019 a X Factor e poi ad Amici21. Da lì pubblica brani che diventano subito riconoscibili: <i>Per farti paura</i>, <i>Sento</i> e <i>Come come</i>, quest’ultima certificata Disco d’Oro.
+Nel 2022 esce con <i>Leggera</i>, il suo primo EP. Oggi Sissi lavora su un <b>sound pop-soul</b> molto personale, diretto e senza filtri: canta le fragilità, le storie d’amore e la voglia di ricominciare, con una voce che ha fatto della <b>sincerità</b> il suo punto forte.`}
+/>
