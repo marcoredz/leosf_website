@@ -484,25 +484,27 @@ const carouselPhotos = [
 		height: auto;
 	}
 
-	/* La disposizione e il ritaglio degli alberi restano quelli già presenti. */
+	/* Gli alberi usano valori condivisi per mantenere coerente il ritaglio ai vari breakpoint. */
 	.etifor-tree-left,
 	.etifor-tree-right {
+		--tree-image-width: max(34rem, 135vw);
+
 		position: absolute;
 		z-index: 10;
-		width: min(44vw, 36rem);
-		height: max(34rem, 119vw);
+		width: min(68vw, 24rem);
+		height: max(36rem, 125vw);
 		overflow: hidden;
 		pointer-events: none;
 	}
 
 	.etifor-tree-left {
 		top: -8rem;
-		left: -7rem;
+		left: -5.5rem;
 	}
 
 	.etifor-tree-right {
-		top: 40rem;
-		right: -7rem;
+		top: 38rem;
+		right: -5.5rem;
 	}
 
 	.etifor-tree-left-image,
@@ -510,13 +512,13 @@ const carouselPhotos = [
 		position: absolute;
 		top: 0;
 		z-index: 1;
-		width: max(42rem, 150vw);
+		width: var(--tree-image-width);
 		max-width: none;
 		height: auto;
 	}
 
 	.etifor-tree-left-image {
-		left: calc(100% - max(42rem, 150vw));
+		left: calc(100% - var(--tree-image-width));
 	}
 
 	.etifor-tree-right-image {
@@ -685,10 +687,44 @@ const carouselPhotos = [
 		object-fit: cover;
 	}
 
-	@media(min-width: 480px) {
+	@media (min-width: 360px) {
+		.etifor-tree-left {
+			top: 0rem;
+			left: -11rem;
+		}
+
 		.etifor-tree-right {
-			top: 40rem;
-			right: -9rem;
+			top: 43rem;
+			right: -7.5rem;
+		}
+	}
+
+	@media (min-width: 480px) {
+		.etifor-tree-left,
+		.etifor-tree-right {
+			width: min(62vw, 25rem);
+		}
+
+		.etifor-tree-left {
+			top: -3rem;
+			left: -12rem;
+		}
+
+		.etifor-tree-right {
+			top: 45rem;
+			right: -11rem;
+		}
+	}
+
+	@media (min-width: 500px) {
+		/* .etifor-tree-left {
+			top: -3rem;
+			left: -12rem;
+		} */
+
+		.etifor-tree-right {
+			top: 43rem;
+			right: -14rem;
 		}
 	}
 
@@ -712,6 +748,16 @@ const carouselPhotos = [
 		.ticino-image {
 			aspect-ratio: 2 / 1;
 		}
+
+		.etifor-tree-left {
+			top: -9rem;
+			left: -15.5rem;
+		}
+
+		.etifor-tree-right {
+			top: 37rem;
+			right: -11rem;
+		}
 	}
 
 	/* Desktop layout */
@@ -720,29 +766,22 @@ const carouselPhotos = [
 			height: clamp(13rem, 28vw, 22rem);
 		}
 
-		.etifor-tree-left-image,
-		.etifor-tree-right-image {
-			left: calc(100% - min(105rem, 140vw));
-			width: min(105rem, 140vw);
-		}
-
 		.etifor-tree-left,
 		.etifor-tree-right {
-			height: min(84rem, 112vw);
+			--tree-image-width: min(90rem, 132vw);
+
+			width: min(48vw, 34rem);
+			height: min(78rem, 108vw);
 		}
 
 		.etifor-tree-left {
-			top: -20rem;
-			left: -20rem;
+			top: -16rem;
+			left: -17rem;
 		}
 
 		.etifor-tree-right {
-			top: 18rem;
-			right: -16rem;
-		}
-
-		.etifor-tree-right-image {
-			left: 0;
+			top: 28rem;
+			right: -11rem;
 		}
 
 		.sustainability-hero-copy {
@@ -765,6 +804,24 @@ const carouselPhotos = [
 	}
 
 	@media (min-width: 1024px) {
+		.etifor-tree-left,
+		.etifor-tree-right {
+			--tree-image-width: min(100rem, 128vw);
+
+			width: min(43vw, 36rem);
+			height: min(82rem, 104vw);
+		}
+
+		.etifor-tree-left {
+			top: -18rem;
+			left: -16rem;
+		}
+
+		.etifor-tree-right {
+			top: 30rem;
+			right: -12rem;
+		}
+
 		.approach-list {
 			grid-template-columns: repeat(4, minmax(0, 1fr));
 			margin-top: 4rem;
@@ -784,6 +841,46 @@ const carouselPhotos = [
 
 		.change-section {
 			padding-top: 6rem;
+		}
+	}
+
+	@media (min-width: 1280px) {
+		.etifor-tree-left,
+		.etifor-tree-right {
+			--tree-image-width: min(105rem, 120vw);
+
+			width: min(40vw, 38rem);
+			height: min(84rem, 98vw);
+		}
+
+		.etifor-tree-left {
+			top: -19rem;
+			left: -18rem;
+		}
+
+		.etifor-tree-right {
+			top: 26rem;
+			right: -12rem;
+		}
+	}
+
+	@media (min-width: 1536px) {
+		.etifor-tree-left,
+		.etifor-tree-right {
+			--tree-image-width: min(110rem, 112vw);
+
+			width: min(37vw, 40rem);
+			height: min(86rem, 92vw);
+		}
+
+		.etifor-tree-left {
+			top: -20rem;
+			left: -20rem;
+		}
+
+		.etifor-tree-right {
+			top: 26rem;
+			right: -12rem;
 		}
 	}
 
