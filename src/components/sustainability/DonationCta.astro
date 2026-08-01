@@ -8,14 +8,14 @@ const { variant = "default" } = Astro.props;
 
 <div class:list={["donation-cta", { "donation-cta--hero": variant === "hero" }]}>
 	<a
-		href="https://www.etifor.com/it/"
+		href="https://www.wownature.eu/areewow/parco-lombardo-della-valle-del-ticino/"
 		target="_blank"
 		rel="noreferrer"
 		class="donation-link"
 	>
 		DONA UN ALBERO
 	</a>
-	<p>Usa il codice *** per avere uno sconto del 10%</p>
+	<p>Quest'estate il ritmo non si ferma sul palco. Con il codice <b>LAVENOFEST20</b> adotti un albero su WOWnature con il <b>20%</b> di sconto: la colonna sonora della tua estate può anche far crescere un bosco</p>
 </div>
 
 <style>
@@ -66,9 +66,14 @@ const { variant = "default" } = Astro.props;
 	}
 
 	.donation-cta--hero p {
+		padding: 0.8rem 1rem;
+		border-radius: 1.5rem;
+		background: rgba(9, 50, 15, 0.635);
+		box-shadow: 0 0.35rem 1rem rgba(24, 33, 25, 0.272);
+		-webkit-backdrop-filter: blur(1px);
+		backdrop-filter: blur(1px);
 		text-shadow:
-			0 0.15rem 0.35rem rgb(0 0 0 / 0.8),
-			0 0.25rem 0.9rem rgb(0 0 0 / 0.55);
+			0 0.1rem 0.25rem rgb(0 0 0 / 0.35);
 	}
 
 	.donation-cta--hero .donation-link {
