@@ -37,7 +37,11 @@ import Layout from "../layouts/Layout.astro";
 										width={260}
 										format="webp"
 										quality={90}
-										class="max-h-24 w-auto max-w-full object-contain"
+										class={
+											name.includes("Noise")
+												? "max-h-40 w-auto max-w-full object-contain"
+												: "max-h-24 w-auto max-w-full object-contain"
+										}
 										loading="lazy"
 										decoding="async"
 									/>
