@@ -1,0 +1,134 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+	dialogId: string;
+	year: string;
+	title: string;
+	description: string;
+	attendance: string;
+	peak: string;
+	image?: ImageMetadata;
+	imageAlt?: string;
+	accentClass?: string;
+	visualClass?: string;
+}
+
+const {
+	dialogId,
+	year,
+	title,
+	description,
+	attendance,
+	peak,
+	image,
+	imageAlt = "",
+	accentClass = "text-leof-orange",
+	visualClass = "bg-leof-orange",
+} = Astro.props;
+---
+
+<dialog
+	id={dialogId}
+	class="m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-5xl overflow-visible border-0 bg-transparent p-0 backdrop:bg-background-dark/88 sm:max-h-[calc(100dvh-4rem)] sm:w-[calc(100%-4rem)]"
+	aria-labelledby={`${dialogId}-title`}
+	aria-describedby={`${dialogId}-description`}
+	data-past-edition-dialog
+>
+	<article
+		class="relative flex max-h-[calc(100dvh-2rem)] flex-col overflow-hidden rounded-[1.35rem] bg-background-light text-background-dark shadow-2xl sm:max-h-[calc(100dvh-4rem)] sm:rounded-[1.75rem] md:grid md:h-[min(70dvh,38rem)] md:grid-cols-[minmax(17rem,0.9fr)_minmax(0,1.35fr)]"
+	>
+		<button
+			type="button"
+			class="absolute right-4 top-4 z-20 grid size-10 cursor-pointer place-items-center rounded-full bg-background-light/90 text-background-dark shadow-sm transition-transform hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-leof-pink sm:right-5 sm:top-5 md:bg-transparent md:shadow-none"
+			aria-label={`Chiudi il racconto dell'edizione ${year}`}
+			data-past-edition-close
+		>
+			<span class="translate-y-0.5 font-blur text-[2rem] leading-[0.7]" aria-hidden="true">X</span>
+		</button>
+
+		<div class:list={["relative h-48 shrink-0 overflow-hidden sm:h-60 md:h-full", visualClass]}>
+			{
+				image ? (
+					<>
+						<Image
+							src={image}
+							alt={imageAlt}
+							widths={[480, 720, 960]}
+							sizes="(max-width: 767px) calc(100vw - 2rem), 38vw"
+							quality={50}
+							format="avif"
+							class="size-full object-cover object-[center_30%]"
+							loading="lazy"
+						/>
+						<div class="absolute inset-0 bg-linear-to-t from-background-dark/65 via-transparent to-background-dark/10" aria-hidden="true" />
+					</>
+				) : (
+					<>
+						<div class="absolute -left-8 -top-12 size-44 rounded-full border-[2rem] border-background-light/15 sm:size-64" aria-hidden="true" />
+						<div class="absolute -bottom-16 -right-12 size-52 rotate-12 rounded-[3rem] bg-background-dark/10 sm:size-72" aria-hidden="true" />
+					</>
+				)
+			}
+			<p class="absolute bottom-4 left-5 font-blur text-[clamp(3.6rem,17vw,7rem)] leading-[0.75] text-background-light sm:bottom-6 sm:left-7 md:text-[clamp(4.5rem,8vw,7.5rem)]">
+				{year}
+			</p>
+		</div>
+
+		<div class="min-h-0 overflow-y-auto overscroll-contain px-5 pb-6 pt-6 sm:px-8 sm:pb-8 sm:pt-8 md:px-10 md:pb-10 md:pt-12" tabindex="0">
+			<h3
+				id={`${dialogId}-title`}
+				class:list={[
+					"mt-2 font-blur text-[clamp(2.15rem,9vw,4rem)] uppercase leading-[0.9]",
+					accentClass,
+				]}
+			>
+				{title}
+			</h3>
+
+			<p id={`${dialogId}-description`} class="mt-5 font-plex text-sm leading-relaxed sm:mt-6 sm:text-base">
+				{description}
+			</p>
+
+			<dl class="mt-6 grid grid-cols-2 overflow-hidden rounded-xl bg-background-dark text-background-light sm:mt-8">
+				<div class="border-r border-background-light/20 px-4 py-4 sm:px-5 sm:py-5">
+					<dt class="font-plex text-[0.62rem] uppercase tracking-wider text-background-light/70 sm:text-xs">Presenze</dt>
+					<dd class="mt-1 font-blur text-[clamp(1.55rem,7vw,2.5rem)] leading-none">{attendance}</dd>
+				</div>
+				<div class="px-4 py-4 sm:px-5 sm:py-5">
+					<dt class="font-plex text-[0.62rem] uppercase tracking-wider text-background-light/70 sm:text-xs">Picco persone</dt>
+					<dd class="mt-1 font-blur text-[clamp(1.55rem,7vw,2.5rem)] leading-none">{peak}</dd>
+				</div>
+			</dl>
+		</div>
+	</article>
+</dialog>
+
+<script>
+	const openButtons = document.querySelectorAll<HTMLButtonElement>("[data-past-edition-open]");
+
+	openButtons.forEach((button) => {
+		const dialogId = button.dataset.pastEditionOpen;
+		const dialog = dialogId ? document.getElementById(dialogId) : null;
+
+		if (!(dialog instanceof HTMLDialogElement)) return;
+
+		button.addEventListener("click", () => dialog.showModal());
+
+		dialog.querySelector<HTMLButtonElement>("[data-past-edition-close]")?.addEventListener("click", () => dialog.close());
+
+		dialog.addEventListener("click", (event) => {
+			if (event.target === dialog) dialog.close();
+		});
+	});
+</script>
+
+<style>
+	@media (hover: none) and (pointer: coarse) {
+		dialog[data-past-edition-dialog]
+			[data-past-edition-close]:focus-visible {
+			outline: none;
+		}
+	}
+</style>
