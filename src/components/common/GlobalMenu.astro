@@ -1,6 +1,8 @@
 ---
 import { Image } from "astro:assets";
+import bunnyCartoonFigure from "../../assets/ui/bunny-cartoon-figure.png";
 import eofLogo from "../../assets/common/eof-logo-og.png";
+import menuCartoonFigure from "../../assets/ui/menu-cartoon-figure.png";
 
 const menuItems = [
 	{ label: "Home", href: "/" },
@@ -71,6 +73,28 @@ const desktopMenuItems = menuItems.filter(({ label }) => label !== "Home");
 		<span aria-hidden="true"></span>
 		<span aria-hidden="true"></span>
 	</button>
+
+	<Image
+		class="site-menu-figure"
+		src={menuCartoonFigure}
+		alt=""
+		aria-hidden="true"
+		format="avif"
+		width={450}
+		quality={70}
+		loading="lazy"
+	/>
+
+	<Image
+		class="site-menu-bunny"
+		src={bunnyCartoonFigure}
+		alt=""
+		aria-hidden="true"
+		format="avif"
+		width={320}
+		quality={60}
+		loading="lazy"
+	/>
 
 	<ul class="site-menu-list">
 		{
@@ -337,6 +361,8 @@ const desktopMenuItems = menuItems.filter(({ label }) => label !== "Home");
 	}
 
 	.site-menu-list {
+		position: relative;
+		z-index: 1;
 		display: flex;
 		width: min(100%, 58rem);
 		flex-direction: column;
@@ -409,24 +435,39 @@ const desktopMenuItems = menuItems.filter(({ label }) => label !== "Home");
 
 	@media (max-width: 1023px) {
 		.site-menu {
-			color: var(--color-background-light);
-			background-color: var(--color-background-dark);
-			background:
-				radial-gradient(circle at 8% 12%, var(--color-leof-orange) 0 3.15rem, transparent 3.2rem),
-				radial-gradient(circle at 94% 78%, var(--color-leof-accentPink) 0 4.25rem, transparent 4.3rem),
-				linear-gradient(
-					154deg,
-					transparent 0 47%,
-					color-mix(in srgb, var(--color-leof-purple) 42%, transparent) 47% 52%,
-					transparent 52%
-				),
-				var(--color-background-dark);
+			color: var(--color-background-dark);
+			background-color: var(--color-background-light);
+			background: var(--color-background-light);
+		}
+
+		.site-menu-figure {
+			position: absolute;
+			z-index: 0;
+			top: 2.5rem;
+			left: -2.5rem;
+			display: block;
+			width: clamp(16rem, 65vw, 28rem);
+			height: auto;
+			pointer-events: none;
+			transform: rotate(-5deg);
+		}
+
+		.site-menu-bunny {
+			position: absolute;
+			z-index: 0;
+			right: 3rem;
+			bottom: 2rem;
+			display: block;
+			width: clamp(12rem, 42vw, 20rem);
+			height: auto;
+			pointer-events: none;
+			transform: rotate(4deg);
 		}
 
 		.menu-close {
 			color: var(--color-background-dark);
 			background: var(--color-leof-yellow);
-			border: 1px solid var(--color-background-dark);
+			border: 2px solid var(--color-background-dark);
 			border-radius: 0.65rem 1.1rem 0.55rem 1rem;
 			box-shadow: 0.25rem 0.3rem 0 var(--color-leof-purple);
 			transform: rotate(2deg);
@@ -450,8 +491,7 @@ const desktopMenuItems = menuItems.filter(({ label }) => label !== "Home");
 		}
 
 		.site-menu-list li {
-			--menu-card-background: var(--color-leof-orange);
-			--menu-card-color: var(--color-background-dark);
+			--menu-card-background: var(--color-background-light);
 			--menu-card-color: color-mix(in srgb, var(--color-background-dark) 55%, black);
 
 			width: fit-content;
@@ -472,12 +512,12 @@ const desktopMenuItems = menuItems.filter(({ label }) => label !== "Home");
 		.site-menu-list a {
 			width: auto;
 			padding: 0.55rem clamp(0.9rem, 4vw, 1.5rem);
-			border: 1px solid var(--color-background-dark);
+			border: 2px solid var(--color-background-dark);
 			border-radius: 0.65rem 1.25rem 0.7rem 1.4rem;
 			font-weight: 600;
 			color: var(--menu-card-color);
 			background: var(--menu-card-background);
-			box-shadow: 0.3rem 0.32rem 0 color-mix(in srgb, var(--color-background-light) 28%, transparent);
+			box-shadow: 0.3rem 0.32rem 0 color-mix(in srgb, var(--color-background-dark) 28%, transparent);
 			transform: translateY(1rem) scale(0.96);
 		}
 
