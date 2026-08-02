@@ -9,15 +9,81 @@ interface Props {
 	title?: string;
 	description?: string;
 	showMenu?: boolean;
+	structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const {
 	title = "Laveno End Of Summer Festival 2026",
 	description = "Laveno End Of Summer Festival 2026, V Edizione, 28-29-30 agosto.",
 	showMenu = true,
+	structuredData,
 } = Astro.props;
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+const organizationId = new URL("/#organization", Astro.site).toString();
+const websiteId = new URL("/#website", Astro.site).toString();
+const logoUrl = new URL(faviconPng.src, Astro.site).toString();
+const pageName = title.split("|")[0].trim();
+
+const schemaGraph: Record<string, unknown>[] = [
+	{
+		"@type": "Organization",
+		"@id": organizationId,
+		name: "Laveno End Of Summer Festival",
+		alternateName: "Laveno (End of) Summer Festival",
+		url: new URL("/", Astro.site).toString(),
+		logo: {
+			"@type": "ImageObject",
+			url: logoUrl,
+		},
+		email: "info@endofsummerfestival.it",
+		telephone: "+39 379 318 7294",
+		sameAs: [
+			"https://www.instagram.com/lavenoendofsummerfestival",
+			"https://vm.tiktok.com/ZNRTJPnRQ/",
+			"https://open.spotify.com/playlist/6eCBnz6tWHKffBUsiDtQts/",
+		],
+	},
+	{
+		"@type": "WebSite",
+		"@id": websiteId,
+		url: new URL("/", Astro.site).toString(),
+		name: "Laveno End Of Summer Festival",
+		alternateName: "End Of Summer Festival Laveno",
+		inLanguage: "it-IT",
+		publisher: { "@id": organizationId },
+	},
+];
+
+if (Astro.url.pathname !== "/") {
+	schemaGraph.push({
+		"@type": "BreadcrumbList",
+		"@id": `${canonicalUrl.toString()}#breadcrumb`,
+		itemListElement: [
+			{
+				"@type": "ListItem",
+				position: 1,
+				name: "Home",
+				item: new URL("/", Astro.site).toString(),
+			},
+			{
+				"@type": "ListItem",
+				position: 2,
+				name: pageName,
+				item: canonicalUrl.toString(),
+			},
+		],
+	});
+}
+
+if (structuredData) {
+	schemaGraph.push(...(Array.isArray(structuredData) ? structuredData : [structuredData]));
+}
+
+const serializedStructuredData = JSON.stringify({
+	"@context": "https://schema.org",
+	"@graph": schemaGraph,
+}).replaceAll("<", "\\u003c");
 ---
 
 <!doctype html>
@@ -31,6 +97,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<meta name="description" content={description} />
+		<script is:inline type="application/ld+json" set:html={serializedStructuredData} />
 		<Analytics />
 	</head>
 	<body>
