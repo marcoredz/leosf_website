@@ -31,9 +31,12 @@ const placeholder = await getImage({ src: landingImage, width: 20, quality: 10, 
 			<p class="landing-edition font-plex text-xl uppercase leading-none sm:text-2xl lg:text-[1.65rem]">
 				V Edizione
 			</p>
-			<h1 class="landing-title mt-12 font-blur text-[clamp(3.25rem,11vw,8.25rem)] uppercase leading-[0.9] tracking-normal lg:mt-14">
-				28-29-30<br class="sm:hidden" /> AGOSTO
+			<h1 class="landing-festival-title mt-8 max-w-[20rem] font-blur text-[clamp(1.3rem,3.8vw,3.4rem)] uppercase leading-[0.92] tracking-normal sm:mt-10 sm:max-w-3xl">
+				Laveno End Of<br class="sm:hidden" /> Summer Festival
 			</h1>
+			<h2 class="landing-title mt-6 font-blur text-[clamp(3.25rem,11vw,8.25rem)] uppercase leading-[0.9] tracking-normal lg:mt-8">
+				28-29-30<br class="sm:hidden" /> AGOSTO
+			</h2>
 
 			<div
 				class="landing-countdown mt-14 grid w-full max-w-3xl grid-cols-4 gap-x-2 sm:mt-16 sm:gap-x-6 lg:mt-18"
@@ -130,7 +133,7 @@ const placeholder = await getImage({ src: landingImage, width: 20, quality: 10, 
 		text-transform: uppercase;
 	}
 
-	@media (min-width: 1024px) and (max-height: 850px) {
+	@media (min-width: 1024px) {
 		.landing-main {
 			padding-bottom: 0;
 		}
@@ -139,8 +142,13 @@ const placeholder = await getImage({ src: landingImage, width: 20, quality: 10, 
 			font-size: 1.35rem;
 		}
 
+		.landing-festival-title {
+			font-size: clamp(1.5rem, 3.2vw, 2.75rem);
+		}
+
 		.landing-title {
 			font-size: clamp(3.25rem, 9vw, 7rem);
+			margin-top: 2.5rem;
 		}
 
 		.landing-location {
@@ -166,8 +174,13 @@ const placeholder = await getImage({ src: landingImage, width: 20, quality: 10, 
 			font-size: 1rem;
 		}
 
+		.landing-festival-title {
+			margin-top: 2rem;
+			font-size: 1.6rem;
+		}
+
 		.landing-title {
-			margin-top: 4.5rem;
+			margin-top: 2rem;
 			font-size: clamp(3rem, 7vw, 5rem);
 		}
 
