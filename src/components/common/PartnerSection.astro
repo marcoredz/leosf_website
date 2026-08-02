@@ -1,35 +1,149 @@
 ---
-type Partner = {
-	label: string;
-};
+import { Image } from "astro:assets";
+import { partners as defaultPartners } from "../../data/partners";
 
 interface Props {
 	id?: string;
 	title?: string;
-	partners?: Partner[];
 }
 
-const defaultPartners = Array.from({ length: 28 }, (_, index) => ({
-	label: `Partner ${index + 1}`,
-}));
-
-const { id, title = "Partner", partners = defaultPartners } = Astro.props;
+const { id, title = "Partner" } = Astro.props;
+const uniquePartnerCount = defaultPartners.length;
+const marqueePartners = Array.from({ length: 4 }, () => defaultPartners).flat();
+const marqueeGroups = [marqueePartners, marqueePartners];
 ---
 
-<section id={id} class="bg-background-light px-5 py-12 text-background-dark sm:px-8 sm:py-16">
-	<div class="mx-auto w-full max-w-5xl">
+<section id={id} class="bg-background-dark py-12 text-background-light sm:py-16">
+	<div class="mx-auto w-full max-w-6xl px-5 sm:px-8">
 		<header class="text-center">
 			<h2 class="font-blur text-[clamp(2.25rem,7vw,5.25rem)] uppercase leading-none">
 				{title}
 			</h2>
 		</header>
+	</div>
 
-		<ul class="m-0 mt-8 grid list-none grid-cols-4 gap-2 p-0 sm:mt-10 sm:grid-cols-7 sm:gap-3" aria-label="Partner festival">
-			{
-				partners.map(({ label }) => (
-					<li class="aspect-5/3 rounded bg-background-dark" aria-label={label} />
-				))
-			}
-		</ul>
+	<div class="mt-8 overflow-hidden bg-background-light py-5 shadow-[0_18px_60px_rgba(0,0,0,0.2)] sm:mt-10 sm:py-7">
+		<div class="partner-marquee" aria-label="Partner festival">
+			<div class="partner-marquee-track">
+				{
+					marqueeGroups.map((group, groupIndex) => (
+						<ul class="partner-marquee-group" aria-hidden={groupIndex > 0 ? "true" : undefined}>
+							{group.map(({ name, role, logo }, partnerIndex) => {
+								const isUniqueLogo = partnerIndex < uniquePartnerCount;
+								const isAccessibleLogo = groupIndex === 0 && isUniqueLogo;
+
+								return (
+									<li
+										class="partner-logo-card bg-background-light"
+										aria-hidden={isAccessibleLogo ? undefined : "true"}
+									>
+										<Image
+											src={logo}
+											alt={isAccessibleLogo ? `${name} - ${role}` : ""}
+											width={220}
+											format="webp"
+											quality={85}
+											class="partner-logo-image max-h-16 w-auto max-w-44 object-contain sm:max-h-20 sm:max-w-56"
+											loading={isAccessibleLogo ? "eager" : "lazy"}
+											decoding="async"
+										/>
+									</li>
+								);
+							})}
+						</ul>
+					))
+				}
+			</div>
+		</div>
+	</div>
+
+	<div class="mx-auto w-full max-w-6xl px-5 sm:px-8">
+		<div class="mt-7 flex justify-center">
+			<a
+				href="/partner"
+				class="inline-flex min-h-12 items-center justify-center rounded border border-background-light px-6 font-plex text-sm uppercase leading-none text-background-light transition-colors hover:bg-background-light hover:text-background-dark"
+			>
+				Vedi tutti
+			</a>
+		</div>
 	</div>
 </section>
+
+<style>
+	.partner-marquee {
+		--partner-marquee-gap: clamp(1rem, 3vw, 2rem);
+
+		display: flex;
+		width: 100%;
+		overflow: hidden;
+		color: var(--color-background-dark);
+	}
+
+	.partner-marquee-track {
+		display: flex;
+		width: 100%;
+		align-items: center;
+		gap: var(--partner-marquee-gap);
+		margin: 0;
+		padding: 0;
+	}
+
+	.partner-marquee-group {
+		display: flex;
+		width: max-content;
+		min-width: 100%;
+		flex: 0 0 auto;
+		align-items: center;
+		gap: var(--partner-marquee-gap);
+		justify-content: space-between;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		animation: partner-scroll 70s linear infinite;
+		will-change: transform;
+	}
+
+	.partner-logo-card {
+		display: grid;
+		width: clamp(10rem, 21vw, 15rem);
+		height: clamp(5.5rem, 11vw, 7.5rem);
+		flex: 0 0 auto;
+		place-items: center;
+		padding: 1rem;
+		border-radius: 0.25rem;
+	}
+
+	.partner-logo-image {
+		filter: brightness(0) saturate(100%) invert(13%) sepia(14%) saturate(542%) hue-rotate(304deg) brightness(94%) contrast(88%);
+	}
+
+	@keyframes partner-scroll {
+		from {
+			transform: translate3d(0, 0, 0);
+		}
+
+		to {
+			transform: translate3d(calc(-100% - var(--partner-marquee-gap)), 0, 0);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.partner-marquee-track {
+			flex-wrap: wrap;
+			justify-content: center;
+		}
+
+		.partner-marquee-group {
+			animation: none;
+			flex-wrap: wrap;
+			justify-content: center;
+			width: 100%;
+			min-width: 0;
+		}
+
+		.partner-marquee-group[aria-hidden="true"],
+		.partner-logo-card[aria-hidden="true"] {
+			display: none;
+		}
+	}
+</style>

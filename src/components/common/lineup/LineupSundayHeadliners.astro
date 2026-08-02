@@ -1,0 +1,92 @@
+---
+import { Image } from "astro:assets";
+import lilJolieImage from "../../../assets/artists/liljolie2.jpg";
+import sissiImage from "../../../assets/artists/sissi2.avif";
+import sparkGreen from "../../../assets/ui/spark-green.png";
+import ArtistDetailCard from "./ArtistDetailCard.astro";
+
+type Headliner = {
+	time: string;
+	artist: string;
+};
+
+interface Props {
+	headliners: Headliner[];
+}
+
+const { headliners } = Astro.props;
+
+const headlinerImages = {
+	"LIL JOLIE": lilJolieImage,
+	SISSI: sissiImage,
+} as const;
+
+const getDialogId = (artistName: string) =>
+	`${artistName.toLowerCase().replaceAll(" ", "-")}-detail`;
+---
+
+{headliners.map(({ time, artist }) => {
+	const image = headlinerImages[artist as keyof typeof headlinerImages];
+
+	return (
+		<li class="my-4 sm:my-5">
+			<button
+				type="button"
+				class="group relative isolate flex aspect-video w-full cursor-pointer flex-col overflow-hidden rounded-2xl border-2 border-background-light bg-background-light text-left text-background-dark"
+				aria-label={`Apri scheda ${artist}`}
+				data-artist-detail-open={getDialogId(artist)}
+			>
+				<Image
+					src={image}
+					alt=""
+					widths={[420, 640, 840]}
+					sizes="(min-width: 768px) 56rem, calc(100vw - 3rem)"
+					quality={82}
+					format="avif"
+					class="absolute inset-0 -z-10 size-full object-cover transition-transform duration-500 group-hover:scale-105"
+					loading="lazy"
+				/>
+				<div class="absolute inset-0 -z-10 bg-linear-to-t from-background-dark/78 via-background-dark/20 to-transparent"></div>
+				<div class="flex h-full flex-col justify-end p-4 sm:p-6">
+					<time class="w-fit rounded bg-leof-green px-2 py-1 font-plex text-[clamp(1rem,3.5vw,1.3rem)] font-extrabold uppercase leading-none text-background-light">
+						{time}
+					</time>
+					<h4 class="mt-2 font-blur text-[clamp(2.2rem,10vw,5.6rem)] uppercase leading-none text-background-light">
+						{artist}
+					</h4>
+				</div>
+			</button>
+		</li>
+	);
+})}
+
+<ArtistDetailCard
+	dialogId="lil-jolie-detail"
+	artist="LIL JOLIE"
+	date="DOMENICA 30/08"
+	time="20:00"
+	image={lilJolieImage}
+	imageAlt="Lil Jolie"
+	spark={sparkGreen}
+	accentClass="text-leof-green"
+	bio={`Lil Jolie, pseudonimo di Angela Ciancio (Calvi Risorta - CE, 29 marzo 2000), è una <b>cantautrice</b> italiana.
+
+Con il nome d'arte ispirato ad Angelina Jolie, esordisce nel 2018 su SoundCloud e si fa notare nella scena urban italiana.
+
+Dopo Amici23 e l’EP <i>La vita non uccide</i> (2024), arriva tra le Nuove Proposte di Sanremo 2025 con <i>Vale LP</i>.
+<b>Pop, R&B e rap</b> introspettivo: scrive di fragilità e identità con stile personale e diretto.`}
+/>
+<ArtistDetailCard
+	dialogId="sissi-detail"
+	artist="SISSI"
+	date="DOMENICA 30/08"
+	time="22:20"
+	image={sissiImage}
+	imageAlt="Sissi"
+	spark={sparkGreen}
+	accentClass="text-leof-green"
+	bio={`Sissi, nome d'arte di Silvia Cesana (Merone - CO, 1999).
+
+Si fa conoscere nel 2019 a X Factor e poi ad Amici21. Da lì pubblica brani che diventano subito riconoscibili: <i>Per farti paura</i>, <i>Sento</i> e <i>Come come</i>, quest’ultima certificata Disco d’Oro.
+Nel 2022 esce con <i>Leggera</i>, il suo primo EP. Oggi Sissi lavora su un <b>sound pop-soul</b> molto personale, diretto e senza filtri: canta le fragilità, le storie d’amore e la voglia di ricominciare, con una voce che ha fatto della <b>sincerità</b> il suo punto forte.`}
+/>

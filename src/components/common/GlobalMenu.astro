@@ -1,15 +1,17 @@
 ---
 import { Image } from "astro:assets";
-import eofLogo from "../../assets/common/eof_logo_og.png";
+import bunnyCartoonFigure from "../../assets/ui/bunny-cartoon-figure.png";
+import eofLogo from "../../assets/common/eof-logo-og.png";
+import menuCartoonFigure from "../../assets/ui/menu-cartoon-figure.png";
 
 const menuItems = [
 	{ label: "Home", href: "/" },
 	{ label: "Programma", href: "/programma" },
 	{ label: "Il Festival", href: "/il-festival" },
-	{ label: "Gallery", href: "/#gallery" },
-	{ label: "News", href: "/#news" },
-	{ label: "Partecipa", href: "/#partecipa" },
-	{ label: "Contatti", href: "/#contatti" },
+	{ label: "Sostenibilità", href: "/sostenibilita" },
+	{ label: "Gallery", href: "/gallery" },
+	{ label: "Partecipa", href: "/partecipa" },
+	{ label: "Contatti", href: "/contatti" },
 ];
 
 const desktopMenuItems = menuItems.filter(({ label }) => label !== "Home");
@@ -71,6 +73,28 @@ const desktopMenuItems = menuItems.filter(({ label }) => label !== "Home");
 		<span aria-hidden="true"></span>
 		<span aria-hidden="true"></span>
 	</button>
+
+	<Image
+		class="site-menu-figure"
+		src={menuCartoonFigure}
+		alt=""
+		aria-hidden="true"
+		format="avif"
+		width={450}
+		quality={70}
+		loading="lazy"
+	/>
+
+	<Image
+		class="site-menu-bunny"
+		src={bunnyCartoonFigure}
+		alt=""
+		aria-hidden="true"
+		format="avif"
+		width={320}
+		quality={60}
+		loading="lazy"
+	/>
 
 	<ul class="site-menu-list">
 		{
@@ -337,6 +361,8 @@ const desktopMenuItems = menuItems.filter(({ label }) => label !== "Home");
 	}
 
 	.site-menu-list {
+		position: relative;
+		z-index: 1;
 		display: flex;
 		width: min(100%, 58rem);
 		flex-direction: column;
@@ -407,6 +433,115 @@ const desktopMenuItems = menuItems.filter(({ label }) => label !== "Home");
 		overflow: hidden;
 	}
 
+	@media (max-width: 1023px) {
+		.site-menu {
+			color: var(--color-background-dark);
+			background-color: var(--color-background-light);
+			background: var(--color-background-light);
+		}
+
+		.site-menu-figure {
+			position: absolute;
+			z-index: 0;
+			top: 2.5rem;
+			left: -2.5rem;
+			display: block;
+			width: clamp(16rem, 65vw, 28rem);
+			height: auto;
+			pointer-events: none;
+			transform: rotate(-5deg);
+		}
+
+		.site-menu-bunny {
+			position: absolute;
+			z-index: 0;
+			right: 3rem;
+			bottom: 2rem;
+			display: block;
+			width: clamp(12rem, 42vw, 20rem);
+			height: auto;
+			pointer-events: none;
+			transform: rotate(4deg);
+		}
+
+		.menu-close {
+			color: var(--color-background-dark);
+			background: var(--color-leof-yellow);
+			border: 2px solid var(--color-background-dark);
+			border-radius: 0.65rem 1.1rem 0.55rem 1rem;
+			box-shadow: 0.25rem 0.3rem 0 var(--color-leof-purple);
+			transform: rotate(2deg);
+		}
+
+		.menu-close:hover,
+		.menu-close:focus-visible {
+			color: var(--color-background-dark);
+			background: var(--color-leof-orange-light);
+			transform: rotate(-3deg) scale(1.05);
+		}
+
+		.menu-close:focus-visible {
+			outline: 0.18rem solid var(--color-background-light);
+			outline-offset: 0.22rem;
+		}
+
+		.site-menu-list {
+			align-items: stretch;
+			gap: clamp(0.75rem, 1.8vh, 1.15rem);
+		}
+
+		.site-menu-list li {
+			--menu-card-background: var(--color-background-light);
+			--menu-card-color: color-mix(in srgb, var(--color-background-dark) 55%, black);
+
+			width: fit-content;
+			max-width: 100%;
+			align-self: flex-end;
+			transform: rotate(-1.25deg);
+		}
+
+		.site-menu-list li:nth-child(even) {
+			align-self: flex-start;
+			transform: rotate(1.25deg);
+		}
+
+		.site-menu-list li:nth-child(4) {
+			--menu-card-background: var(--color-leof-green);
+		}
+
+		.site-menu-list a {
+			width: auto;
+			padding: 0.55rem clamp(0.9rem, 4vw, 1.5rem);
+			border: 2px solid var(--color-background-dark);
+			border-radius: 0.65rem 1.25rem 0.7rem 1.4rem;
+			font-weight: 600;
+			color: var(--menu-card-color);
+			background: var(--menu-card-background);
+			box-shadow: 0.3rem 0.32rem 0 color-mix(in srgb, var(--color-background-dark) 28%, transparent);
+			transform: translateY(1rem) scale(0.96);
+		}
+
+		.site-menu-list li:nth-child(even) a {
+			border-radius: 1.3rem 0.65rem 1.2rem 0.7rem;
+		}
+
+		.site-menu.is-open .site-menu-list a {
+			transform: translateY(0) scale(1);
+		}
+
+		.site-menu-list a:hover,
+		.site-menu-list a:focus-visible {
+			color: var(--menu-card-color);
+			filter: saturate(1.16) brightness(1.06);
+			transform: translateY(-0.12rem) scale(1.025);
+		}
+
+		.site-menu-list a:focus-visible {
+			outline: 0.18rem solid var(--color-background-light);
+			outline-offset: 0.22rem;
+		}
+	}
+
 	@media (min-width: 1024px) {
 		.site-header {
 			height: 5rem;
@@ -421,6 +556,62 @@ const desktopMenuItems = menuItems.filter(({ label }) => label !== "Home");
 		.site-header-nav {
 			display: block;
 			margin-left: auto;
+		}
+
+		.site-header-nav ul {
+			gap: 0.18rem;
+			isolation: isolate;
+		}
+
+		.site-header-nav li {
+			--menu-strip-background: var(--color-background-light);
+			--menu-strip-color: var(--color-background-dark);
+			--menu-strip-color: color-mix(in srgb, var(--color-background-dark) 55%, black);
+
+			transform: translateY(-0.12rem) rotate(-1.25deg);
+		}
+
+		.site-header-nav li:nth-child(even) {
+			transform: translateY(0.12rem) rotate(1.25deg);
+		}
+
+		.site-header-nav li:nth-child(3) {
+			--menu-strip-background: var(--color-leof-green);
+		}
+
+		.site-header-nav a {
+			min-height: 2.35rem;
+			padding: 0.7rem clamp(0.65rem, 1.15vw, 1rem);
+			border: 1px solid var(--color-background-dark);
+			border: 1px solid color-mix(in srgb, var(--color-background-dark) 32%, transparent);
+			border-radius: 0.55rem 1rem 0.65rem 1.15rem;
+			font-weight: 600;
+			color: var(--menu-strip-color);
+			background: var(--menu-strip-background);
+			box-shadow: 0 0.25rem 0 var(--color-background-dark);
+			white-space: nowrap;
+			transition:
+				color 180ms ease,
+				filter 180ms ease,
+				transform 180ms ease,
+				box-shadow 180ms ease;
+		}
+
+		.site-header-nav li:nth-child(even) a {
+			border-radius: 1.1rem 0.6rem 1rem 0.55rem;
+		}
+
+		.site-header-nav a:hover,
+		.site-header-nav a:focus-visible {
+			color: var(--menu-strip-color);
+			filter: saturate(1.18) brightness(1.06);
+			transform: translateY(-0.16rem);
+			box-shadow: 0 0.4rem 0 var(--color-background-dark);
+		}
+
+		.site-header-nav a:focus-visible {
+			outline: 0.18rem solid var(--color-background-light);
+			outline-offset: 0.18rem;
 		}
 
 		.menu-toggle,
@@ -451,9 +642,15 @@ const desktopMenuItems = menuItems.filter(({ label }) => label !== "Home");
 		}
 
 		.site-menu {
-			align-items: flex-end;
-			justify-content: center;
-			padding: 4.75rem 1.25rem 3rem;
+			flex-direction: column;
+			align-items: stretch;
+			justify-content: flex-start;
+			overflow-y: auto;
+			padding:
+				max(6rem, calc(env(safe-area-inset-top) + 5rem))
+				max(1.25rem, env(safe-area-inset-right))
+				max(2rem, env(safe-area-inset-bottom))
+				max(1.25rem, env(safe-area-inset-left));
 			clip-path: circle(0% at calc(100% - 2.4375rem) 2.4375rem);
 		}
 
@@ -461,13 +658,21 @@ const desktopMenuItems = menuItems.filter(({ label }) => label !== "Home");
 			clip-path: circle(160% at calc(100% - 2.4375rem) 2.4375rem);
 		}
 
+		.site-menu-list {
+			flex-shrink: 0;
+			gap: clamp(1rem, 2.75vh, 1.4rem);
+			margin-top: auto;
+		}
+
 		.site-menu-list a {
-			font-size: clamp(1.85rem, 9vw, 3.4rem);
+			font-size: clamp(1.5rem, 7vw, 2.15rem);
+			line-height: 1;
 		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
 		.site-header,
+		.site-header-nav a,
 		.menu-toggle,
 		.menu-close,
 		.site-menu,

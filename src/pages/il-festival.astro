@@ -47,12 +47,6 @@ const heroPlaceholder = await getImage({
 	format: "avif",
 });
 
-const teamPlaceholder = await getImage({
-	src: teamPhoto,
-	width: 24,
-	quality: 10,
-	format: "avif",
-});
 ---
 
 <Layout
@@ -117,39 +111,6 @@ const teamPlaceholder = await getImage({
 				</section>
 			))
 		}
-
-		<section id="team" class="bg-background-light px-5 py-14 text-background-dark sm:px-8 sm:py-20">
-			<div class="mx-auto grid w-full max-w-5xl gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:gap-14">
-				<header>
-					<p class="font-plex text-xs uppercase leading-tight opacity-80 sm:text-sm">
-						04
-					</p>
-					<h2 class="mt-3 font-blur text-[clamp(2.7rem,8vw,6rem)] uppercase leading-none">
-						Team
-					</h2>
-					<p class="mt-6 max-w-xl font-plex text-base uppercase leading-tight sm:text-lg">
-						In aggiornamento.
-					</p>
-				</header>
-
-				<div
-					class="overflow-hidden rounded bg-background-dark"
-					style={`background-image: url(${teamPlaceholder.src}); background-size: cover; background-position: center;`}
-				>
-					<Image
-						src={teamPhoto}
-						alt=""
-						widths={[480, 720, 960, 1280]}
-						sizes="(max-width: 1024px) 100vw, 48vw"
-						format="avif"
-						quality={40}
-						class="aspect-4/3 h-full w-full object-cover"
-						loading="lazy"
-						decoding="async"
-					/>
-				</div>
-			</div>
-		</section>
 
 		<SiteFooter />
 	</main>

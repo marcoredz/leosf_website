@@ -9,6 +9,30 @@
 @font-face {
   font-family: "IBM Plex Mono";
   src: url("/fonts/IBMPlexMono-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("/fonts/IBMPlexMono-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("/fonts/IBMPlexMono-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins Bold";
+  src: url("/fonts/Poppins-Bold.ttf") format("truetype");
   font-display: swap;
 }
 
@@ -19,6 +43,7 @@
   /* --color-leof-orange: #d4693a; */
   --color-leof-orange: #e3632a;
   --color-leof-green: #5e9744;
+  --color-leof-green-accent: #4A9936; 
   --color-leof-pink: #bb84b0;
   --color-leof-burgundy: #732a5d;
   --color-leof-purple: #4e3183;
@@ -30,6 +55,7 @@
 
   --font-blur: "Blur Bold", system-ui, sans-serif;
   --font-plex: "IBM Plex Mono", ui-monospace, monospace;
+  --font-poppins: "Poppins Bold", system-ui, sans-serif;
 }
 
 @layer base {

@@ -1,0 +1,118 @@
+---
+import { Image } from "astro:assets";
+
+interface Props {
+	artist: string;
+	date: string;
+	time: string;
+	image: ImageMetadata;
+	imageAlt: string;
+	bio: string;
+	dialogId: string;
+	spark: ImageMetadata;
+	accentClass?: string;
+}
+
+const {
+	artist,
+	date,
+	time,
+	image,
+	imageAlt,
+	bio,
+	dialogId,
+	spark,
+	accentClass = "text-leof-pink",
+} = Astro.props;
+---
+
+<dialog
+	id={dialogId}
+	class="m-auto w-[min(calc(100%-2.75rem),38rem)] overflow-visible border-0 bg-transparent p-0 backdrop:bg-background-dark/88 md:w-[min(calc(100%_-_4rem),64rem)]"
+	aria-labelledby={`${dialogId}-title`}
+	data-artist-detail-dialog
+>
+	<article
+		class="relative rounded-[1.35rem] bg-background-light px-6 pb-8 pt-14 text-background-dark shadow-2xl sm:rounded-[1.75rem] sm:px-8 sm:pb-10 sm:pt-16 md:grid md:h-[min(70dvh,38rem)] md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-8 md:p-6"
+	>
+		<button
+			type="button"
+			class="absolute right-4 top-4 grid size-9 cursor-pointer place-items-center rounded-full text-background-dark transition-transform hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-leof-pink sm:right-5 sm:top-5"
+			aria-label={`Chiudi la scheda di ${artist}`}
+			data-artist-detail-close
+		>
+			<span class="font-blur text-[2rem] leading-none" aria-hidden="true">X</span>
+		</button>
+
+		<div class="relative overflow-hidden rounded-[1.25rem] md:h-full">
+			<Image
+				src={image}
+				alt={imageAlt}
+				widths={[480, 720, 960]}
+				sizes="(max-width: 639px) calc(100vw - 5.75rem), (min-width: 768px) 21rem, 32rem"
+				quality={84}
+				format="avif"
+				class="aspect-[1.1/1] w-full object-cover md:h-full md:aspect-auto"
+				loading="lazy"
+			/>
+			<Image
+				src={spark}
+				alt=""
+				width={72}
+				height={72}
+				class="absolute left-3 top-3 size-9 object-contain sm:left-4 sm:top-4 sm:size-11"
+			/>
+		</div>
+
+		<div class="md:flex md:min-h-0 md:flex-col md:pb-2 md:pr-12 md:pt-4">
+			<h3
+				id={`${dialogId}-title`}
+				class:list={[
+					"mt-5 text-center font-blur text-[clamp(1.7rem,7vw,2.5rem)] uppercase leading-none md:mt-0 md:text-left",
+					accentClass,
+				]}
+			>
+				{artist}
+			</h3>
+			<p
+				class="mt-3 text-center font-plex text-[clamp(1rem,3.6vw,1.35rem)] leading-none md:text-left"
+			>
+				{date} <span class="mx-1.5">{time}</span>
+			</p>
+			<p
+				class="mt-7 max-h-[28dvh] overflow-y-auto overscroll-contain pr-1 whitespace-pre-line font-plex text-xs leading-tight sm:text-sm md:max-h-none md:min-h-0 md:flex-1"
+				tabindex="0"
+				aria-label={`Biografia di ${artist}`}
+				set:html={bio}
+			></p>
+		</div>
+	</article>
+</dialog>
+
+<script>
+	const openButtons = document.querySelectorAll<HTMLButtonElement>("[data-artist-detail-open]");
+
+	openButtons.forEach((button) => {
+		const dialogId = button.dataset.artistDetailOpen;
+		const dialog = dialogId ? document.getElementById(dialogId) : null;
+
+		if (!(dialog instanceof HTMLDialogElement)) return;
+
+		button.addEventListener("click", () => dialog.showModal());
+
+		dialog.querySelector<HTMLButtonElement>("[data-artist-detail-close]")?.addEventListener("click", () => dialog.close());
+
+		dialog.addEventListener("click", (event) => {
+			if (event.target === dialog) dialog.close();
+		});
+	});
+</script>
+
+<style>
+	@media (hover: none) and (pointer: coarse) {
+		dialog[data-artist-detail-dialog]
+			[data-artist-detail-close]:focus-visible {
+			outline: none;
+		}
+	}
+</style>

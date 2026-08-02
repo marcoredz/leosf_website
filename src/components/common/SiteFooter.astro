@@ -1,23 +1,23 @@
 ---
 import { Icon } from "astro-icon/components";
-
-const contacts = [
-	"info@endofsummerfestival.it",
-	"+39 379 318 7294 (Referente: Carolina Barzan)",
-	"21014 Laveno Mombello",
-];
-
-const socials = [
-	{ label: "Instagram", href: "https://www.instagram.com/lavenoendofsummerfestival", icon: "simple-icons:instagram" },
-	{ label: "TikTok", href: "https://vm.tiktok.com/ZNRTJPnRQ/", icon: "simple-icons:tiktok" },
-	// { label: "Spotify", href: "/#contatti", icon: "simple-icons:spotify" },
-];
+import { contactDetails, socials } from "../../data/contacts";
 ---
 
 <footer class="bg-background-dark px-5 py-10 text-center text-background-light sm:px-8">
-	<div class="mx-auto flex w-full max-w-5xl flex-col items-center gap-5">
-		<address class="not-italic">
-			{contacts.map((contact) => <p class="font-plex text-xs leading-relaxed">{contact}</p>)}
+	<div class="mx-auto flex w-full min-w-0 max-w-5xl flex-col items-center gap-5">
+		<address class="w-full min-w-0 max-w-full not-italic">
+			{
+				contactDetails.map(({ value, href, external }) => (
+					<a
+						href={href}
+						target={external ? "_blank" : undefined}
+						rel={external ? "noreferrer" : undefined}
+						class="block min-w-0 whitespace-pre-line [overflow-wrap:anywhere] font-plex text-xs leading-relaxed transition-colors hover:text-leof-orange-light"
+					>
+						{value}
+					</a>
+				))
+			}
 		</address>
 
 		<nav aria-label="Social" class="flex items-center justify-center gap-2">
@@ -25,6 +25,8 @@ const socials = [
 				socials.map(({ label, href, icon }) => (
 					<a
 						href={href}
+						target="_blank"
+						rel="noreferrer"
 						aria-label={label}
 						class="grid h-7 w-7 place-items-center rounded-full border border-background-light/70 text-background-light transition-colors hover:bg-background-light hover:text-background-dark"
 					>

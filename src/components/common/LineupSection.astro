@@ -2,16 +2,30 @@
 import { Image } from "astro:assets";
 import eraseTextLong from "../../assets/ui/erase-text-long.png";
 import eraseTextShort from "../../assets/ui/erase-text-short.png";
+import eraseTextGreenLong from "../../assets/ui/erase-text-green-long.png";
+import eraseTextGreenShort from "../../assets/ui/erase-text-green-short.png";
+import eraseTextOrangeLong from "../../assets/ui/erase-text-orange-long.png";
+import eraseTextOrangeShort from "../../assets/ui/erase-text-orange-short.png";
+import eraseTextVioletLong from "../../assets/ui/erase-text-violet-long.png";
+import eraseTextVioletShort from "../../assets/ui/erase-text-violet-short.png";
 import eyeDivider from "../../assets/ui/eye-divider.png";
 import moonDivider from "../../assets/ui/moon-divider.png";
 import sparkGreen from "../../assets/ui/spark-green.png";
 import sparkRed from "../../assets/ui/spark-red.png";
 import sparkViolet from "../../assets/ui/spark-violet.png";
+import LineupFridayHeadliners from "./lineup/LineupFridayHeadliners.astro";
+import LineupSaturdayHeadliners from "./lineup/LineupSaturdayHeadliners.astro";
+import LineupSundayHeadliners from "./lineup/LineupSundayHeadliners.astro";
+
+type RedactionLength = "short" | "long";
+type RedactionColor = "neutral" | "orange" | "green" | "violet";
 
 type LineupEvent = {
 	time: string;
 	artist: string;
-	longness?: 'short' | 'long';
+	longness?: RedactionLength;
+	color?: Exclude<RedactionColor, "neutral">;
+	isHeadliner?: boolean;
 };
 
 type LineupDay = {
@@ -27,22 +41,46 @@ interface Props {
 
 const { blendWithPreviousSection = false } = Astro.props;
 
+const redactedImages: Record<RedactionColor, Record<RedactionLength, ImageMetadata>> = {
+	neutral: {
+		short: eraseTextShort,
+		long: eraseTextLong,
+	},
+	orange: {
+		short: eraseTextOrangeShort,
+		long: eraseTextOrangeLong,
+	},
+	green: {
+		short: eraseTextGreenShort,
+		long: eraseTextGreenLong,
+	},
+	violet: {
+		short: eraseTextVioletShort,
+		long: eraseTextVioletLong,
+	},
+};
+
+const getRedactedImage = (
+	length: RedactionLength = "long",
+	color: RedactionColor = "neutral",
+) => redactedImages[color][length];
+
 const lineup: LineupDay[] = [
 	{
 		id: "venerdi",
 		day: "Venerdì 28/08",
 		spark: sparkRed,
 		events: [
-			{ time: "17:00 - 17:50", artist: "DJSET" },
-			{ time: "18:00 - 18:30", artist: "BIAVA" },
+			{ time: "17:00 - 17:50", artist: "DJ SET" },
+			{ time: "18:00 - 18:30", artist: "ROEDEER" },
 			{ time: "18:40 - 19:10", artist: "DOXX" },
-			{ time: "19:20 - 19:50", artist: "GAZA / 29GIULIO" },
-			{ time: "20:00 - 20:30", artist: "MATSBY" },
+			{ time: "19:20 - 19:50", artist: "29GIULIO" },
+			{ time: "20:00 - 20:30", artist: "VEROSIMILE" },
 			{ time: "20:40 - 21:20", artist: "PRINCIPE" },
-			{ time: "21:30 - 22:10", artist: "TBA", longness: "long" },
-			{ time: "22:20 - 23:00", artist: "TBA", longness: "short" },
-			{ time: "23:00 - 00:00", artist: "JEMEL (DJSEX)" },
-			{ time: "00:00 - 01:00", artist: "AUSTRALOPITECHNO" },
+			{ time: "21:30 - 22:10", artist: "SALLY CRUZ", isHeadliner: true }, // Headliner 1
+			{ time: "22:20 - 23:00", artist: "MARTE", isHeadliner: true }, // Headliner 2
+			{ time: "23:00 - 00:00", artist: "DON'T TELL MAMA" },
+			{ time: "00:00 - 01:00", artist: "AUSTRALOPITECHNO DJ SET" },
 		],
 	},
 	{
@@ -50,16 +88,16 @@ const lineup: LineupDay[] = [
 		day: "Sabato 29/08",
 		spark: sparkViolet,
 		events: [
-			{ time: "17:00 - 17:50", artist: "DJSET" },
-			{ time: "18:00 - 18:30", artist: "CONTEST > CIRCO" },
-			{ time: "18:40 - 19:10", artist: "MANZO / GAZA" },
-			{ time: "19:20 - 19:50", artist: "BHADMARI / SAIRO" },
-			{ time: "20:00 - 20:30", artist: "BARKEE BAY" },
+			{ time: "17:00 - 17:50", artist: "DJ SET" },
+			{ time: "18:00 - 18:30", artist: "CONTEST" },
+			{ time: "18:40 - 19:10", artist: "MANZO" },
+			{ time: "19:20 - 19:50", artist: "ZAGA" },
+			{ time: "20:00 - 20:30", artist: "MATSBY" },
 			{ time: "20:30 - 21:20", artist: "TAIZAL + AFFANNO" },
-			{ time: "21:30 - 22:15", artist: "TBA", longness: "long" },
-			{ time: "22:20 - 23:00", artist: "TBA", longness: "short" },
-			{ time: "23:10 - 00:00", artist: "CHRYVERDE DISET" },
-			{ time: "00:00 - 01:00", artist: "VIBEE DJSET" },
+			{ time: "21:30 - 22:15", artist: "VAZ TE", isHeadliner: true }, // Headliner 1
+			{ time: "22:20 - 23:00", artist: "DISME", isHeadliner: true }, // Headliner 2
+			{ time: "23:10 - 00:00", artist: "CHRYVERDE DJ SET" },
+			{ time: "00:00 - 01:00", artist: "DODI DJ SET" },
 		],
 	},
 	{
@@ -68,14 +106,15 @@ const lineup: LineupDay[] = [
 		spark: sparkGreen,
 		events: [
 			{ time: "17:00 - 17:50", artist: "DJ SET" },
-			{ time: "18:00 - 18:30", artist: "GEREMIA" },
+			{ time: "18:00 - 18:30", artist: "CONTEST" },
 			{ time: "18:40 - 19:10", artist: "EVA" },
 			{ time: "19:20 - 19:50", artist: "BLU" },
-			{ time: "20:00 - 20:30", artist: "VOLPI" },
-			{ time: "20:40 - 21:20", artist: "LUCA RE" },
-			{ time: "21:30 - 22:15", artist: "TBA", longness: "short" },
-			{ time: "22:25 - 23:10", artist: "LONGO DJ SET" },
-			{ time: "23:15 - 00:30", artist: "DEIV DJ SET" },
+			{ time: "20:00 - 20:30", artist: "LIL JOLIE", isHeadliner: true }, // Headliner 1
+			{ time: "20:30 - 21:20", artist: "VOLPI" },
+			{ time: "21:30 - 22:15", artist: "LUCA RE" },
+			{ time: "22:20 - 23:00", artist: "SISSI", isHeadliner: true }, // Headliner 2
+			{ time: "23:10 - 00:00", artist: "LONGO DJ SET" },
+			{ time: "00:00 - 01:00", artist: "DEIV DJ SET" },
 		],
 	},
 ];
@@ -132,11 +171,21 @@ const lineup: LineupDay[] = [
 						/>
 					</div>
 
-					<ol class="mt-7 flex flex-col gap-2.5 sm:mt-9 sm:gap-3">
-						{events.map(({ time, artist, longness }, eventIndex) => {
+					{(() => {
+						const firstHeadlinerIndex = events.findIndex(({ isHeadliner }) => isHeadliner);
+						const headlinerEvents = events.filter(({ isHeadliner }) => isHeadliner);
+						const eventsBeforeHeadliners = events
+							.slice(0, firstHeadlinerIndex)
+							.filter(({ isHeadliner }) => !isHeadliner);
+						const eventsAfterHeadliners = events
+							.slice(firstHeadlinerIndex)
+							.filter(({ isHeadliner }) => !isHeadliner);
+						const hasHeadlinerSection = ["venerdi", "sabato", "domenica"].includes(id) && firstHeadlinerIndex >= 0 && headlinerEvents.length > 0;
+
+						const renderEvent = ({ time, artist, longness, color }: LineupEvent) => {
 							const isRedacted = artist === "TBA";
 							const isShortRedaction = longness === "short";
-							const redactedImage = isShortRedaction ? eraseTextShort : eraseTextLong;
+							const redactedImage = getRedactedImage(longness, color);
 							const redactedWidthClass = isShortRedaction
 								? "w-[clamp(5.5rem,18vw,10rem)]"
 								: "w-[clamp(7rem,24vw,14rem)]";
@@ -167,8 +216,29 @@ const lineup: LineupDay[] = [
 									</span>
 								</li>
 							);
-						})}
-					</ol>
+						};
+
+						return (
+							<ol class="mt-7 flex flex-col gap-2.5 sm:mt-9 sm:gap-3">
+								{id === "domenica"
+									? events.map((event) =>
+											event.isHeadliner
+												? <LineupSundayHeadliners headliners={[event]} />
+												: renderEvent(event),
+										)
+									: hasHeadlinerSection
+									? (
+										<>
+											{eventsBeforeHeadliners.map(renderEvent)}
+											{id === "venerdi" && <LineupFridayHeadliners headliners={headlinerEvents} />}
+											{id === "sabato" && <LineupSaturdayHeadliners headliners={headlinerEvents} />}
+											{eventsAfterHeadliners.map(renderEvent)}
+										</>
+									)
+									: events.map(renderEvent)}
+							</ol>
+						);
+					})()}
 				</section>
 			))}
 		</div>

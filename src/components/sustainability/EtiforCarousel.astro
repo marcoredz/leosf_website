@@ -1,0 +1,253 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+	photos: Array<{
+		src: ImageMetadata;
+		alt: string;
+	}>;
+}
+
+const { photos } = Astro.props;
+---
+
+<div class="etifor-carousel" data-etifor-carousel>
+	<div
+		class="etifor-carousel-track"
+		tabindex="0"
+		aria-label="Immagini del progetto Etifor nel Parco del Ticino"
+		data-etifor-carousel-track
+	>
+		{photos.map(({ src, alt }, index) => (
+			<figure
+				class:list={["etifor-slide", { "is-active": index === Math.min(2, photos.length - 1) }]}
+				data-etifor-slide={index}
+			>
+				<Image
+					src={src}
+					alt={alt}
+					width={720}
+					format="webp"
+					quality={60}
+					class="h-full w-full object-cover"
+					loading={index < 3 ? "eager" : "lazy"}
+					decoding="async"
+					draggable="false"
+				/>
+			</figure>
+		))}
+	</div>
+	<div class="etifor-carousel-dots" aria-label="Seleziona un'immagine">
+		{photos.map((_, index) => (
+			<button
+				type="button"
+				class:list={[
+					"etifor-carousel-dot",
+					{ "is-active": index === Math.min(2, photos.length - 1) },
+				]}
+				aria-label={`Vai all'immagine ${index + 1}`}
+				aria-current={index === Math.min(2, photos.length - 1) ? "true" : undefined}
+				data-etifor-dot={index}
+			></button>
+		))}
+	</div>
+</div>
+
+<script>
+	document.querySelectorAll<HTMLElement>("[data-etifor-carousel]").forEach((carousel) => {
+		const carouselTrack = carousel.querySelector<HTMLElement>("[data-etifor-carousel-track]");
+		const carouselSlides = Array.from(
+			carousel.querySelectorAll<HTMLElement>("[data-etifor-slide]"),
+		);
+		const carouselDots = carousel.querySelectorAll<HTMLButtonElement>("[data-etifor-dot]");
+
+		if (!carouselTrack || !carouselSlides.length) return;
+
+		const initialSlide = carouselSlides[Math.min(2, carouselSlides.length - 1)];
+		let frameId = 0;
+		let isDragging = false;
+		let dragStartX = 0;
+		let dragStartScrollLeft = 0;
+
+		const centerSlide = (slide: HTMLElement, behavior: ScrollBehavior = "smooth") => {
+			carouselTrack.scrollTo({
+				left: slide.offsetLeft - (carouselTrack.clientWidth - slide.clientWidth) / 2,
+				behavior,
+			});
+		};
+
+		const getClosestSlide = () => {
+			const trackCenter = carouselTrack.scrollLeft + carouselTrack.clientWidth / 2;
+			return carouselSlides.reduce((closest, slide) => {
+				const distance = Math.abs(slide.offsetLeft + slide.offsetWidth / 2 - trackCenter);
+				const closestDistance = Math.abs(
+					closest.offsetLeft + closest.offsetWidth / 2 - trackCenter,
+				);
+				return distance < closestDistance ? slide : closest;
+			});
+		};
+
+		const updateActiveSlide = () => {
+			const closestSlide = getClosestSlide();
+			const activeIndex = Number(closestSlide.dataset.etiforSlide ?? 0);
+
+			carouselSlides.forEach((slide) => {
+				slide.classList.toggle("is-active", slide === closestSlide);
+			});
+			carouselDots.forEach((dot, index) => {
+				const isActive = index === activeIndex;
+				dot.classList.toggle("is-active", isActive);
+				dot.toggleAttribute("aria-current", isActive);
+			});
+		};
+
+		const handleScroll = () => {
+			window.cancelAnimationFrame(frameId);
+			frameId = window.requestAnimationFrame(updateActiveSlide);
+		};
+
+		window.requestAnimationFrame(() => {
+			centerSlide(initialSlide, "auto");
+			updateActiveSlide();
+		});
+
+		carouselTrack.addEventListener("scroll", handleScroll, { passive: true });
+		carouselDots.forEach((dot, index) => {
+			dot.addEventListener("click", () => centerSlide(carouselSlides[index]));
+		});
+
+		carouselTrack.addEventListener("pointerdown", (event) => {
+			if (event.pointerType !== "mouse" || event.button !== 0) return;
+			isDragging = true;
+			dragStartX = event.clientX;
+			dragStartScrollLeft = carouselTrack.scrollLeft;
+			carouselTrack.setPointerCapture(event.pointerId);
+			carouselTrack.classList.add("is-dragging");
+		});
+
+		carouselTrack.addEventListener("pointermove", (event) => {
+			if (!isDragging) return;
+			event.preventDefault();
+			carouselTrack.scrollLeft = dragStartScrollLeft - (event.clientX - dragStartX);
+		});
+
+		const finishDragging = (event: PointerEvent) => {
+			if (!isDragging) return;
+			isDragging = false;
+			carouselTrack.classList.remove("is-dragging");
+			if (carouselTrack.hasPointerCapture(event.pointerId)) {
+				carouselTrack.releasePointerCapture(event.pointerId);
+			}
+			centerSlide(getClosestSlide());
+		};
+
+		carouselTrack.addEventListener("pointerup", finishDragging);
+		carouselTrack.addEventListener("pointercancel", finishDragging);
+	});
+</script>
+
+<style>
+	.etifor-carousel {
+		position: relative;
+		z-index: 2;
+		margin-top: 4.3rem;
+	}
+
+	.etifor-carousel-track {
+		display: flex;
+		gap: 1rem;
+		overflow-x: auto;
+		padding: 0 max(1rem, calc((100% - min(69vw, 22rem)) / 2));
+		scroll-snap-type: x mandatory;
+		scroll-behavior: smooth;
+		-webkit-overflow-scrolling: touch;
+		overscroll-behavior-inline: contain;
+		scrollbar-width: none;
+	}
+
+	.etifor-carousel-track.is-dragging {
+		cursor: grabbing;
+		scroll-behavior: auto;
+		scroll-snap-type: none;
+		user-select: none;
+	}
+
+	.etifor-carousel-track::-webkit-scrollbar {
+		display: none;
+	}
+
+	.etifor-slide {
+		flex: 0 0 min(69vw, 22rem);
+		aspect-ratio: 1 / 1;
+		margin: 0;
+		overflow: hidden;
+		border-radius: clamp(1.15rem, 6vw, 2rem);
+		background: var(--color-background-dark);
+		scroll-snap-align: center;
+		transform: scale(0.82);
+		transition: transform 240ms ease, opacity 240ms ease;
+		opacity: 0.72;
+	}
+
+	.etifor-slide.is-active {
+		z-index: 1;
+		transform: scale(1);
+		opacity: 1;
+	}
+
+	.etifor-slide img {
+		display: block;
+	}
+
+	.etifor-carousel-dots {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.36rem;
+		margin-top: 1.25rem;
+	}
+
+	.etifor-carousel-dot {
+		width: 0.48rem;
+		height: 0.48rem;
+		padding: 0;
+		border: 0;
+		border-radius: 50%;
+		background: rgb(224 221 221 / 0.5);
+		transition: background-color 160ms ease, transform 160ms ease;
+	}
+
+	.etifor-carousel-dot.is-active {
+		background: var(--color-background-light);
+		transform: scale(1.08);
+	}
+
+	.etifor-carousel-dot:focus-visible {
+		outline: 2px solid var(--color-background-light);
+		outline-offset: 3px;
+	}
+
+	@media (min-width: 768px) {
+		.etifor-carousel-track {
+			cursor: grab;
+			gap: 1.25rem;
+			padding-inline: calc((100% - min(32vw, 24rem)) / 2);
+		}
+
+		.etifor-slide {
+			flex-basis: min(32vw, 24rem);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.etifor-carousel-track {
+			scroll-behavior: auto;
+		}
+
+		.etifor-carousel-dot,
+		.etifor-slide {
+			transition: none;
+		}
+	}
+</style>
