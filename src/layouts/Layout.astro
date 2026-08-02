@@ -12,10 +12,12 @@ interface Props {
 }
 
 const {
-	title = "Laveno End Of Summer Fest 2026",
-	description = "Laveno End Of Summer Fest 2026, V Edizione, 28-29-30 agosto.",
+	title = "Laveno End Of Summer Festival 2026",
+	description = "Laveno End Of Summer Festival 2026, V Edizione, 28-29-30 agosto.",
 	showMenu = true,
 } = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
@@ -25,6 +27,7 @@ const {
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href={faviconSvg.src} />
 		<link rel="icon" type="image/png" href={faviconPng.src} />
+		<link rel="canonical" href={canonicalUrl} />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<meta name="description" content={description} />
