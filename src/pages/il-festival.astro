@@ -5,7 +5,6 @@ import giaime2024 from "../assets/artists/giaime2024.jpg";
 import elea2023 from "../assets/artists/elea2023.jpg";
 import leosf22 from "../assets/leosf22.jpeg";
 import festivalHero from "../assets/festival.jpg";
-import teamPhoto from "../assets/team.jpeg";
 import PastEditionDetailCard from "../components/program/PastEditionDetailCard.astro";
 import ProgramCardScroller from "../components/program/ProgramCardScroller.astro";
 import ProgramSection from "../components/program/ProgramSection.astro";
@@ -156,9 +155,6 @@ const pastEditions = [
 						]}
 					>
 						<header class:list={[index % 2 === 1 ? "lg:order-2" : ""]}>
-							<p class="font-plex text-xs uppercase leading-tight opacity-80 sm:text-sm">
-								{String(index + 1).padStart(2, "0")}
-							</p>
 							<h2 class="mt-3 font-blur text-[clamp(2.7rem,8vw,6rem)] uppercase leading-none">
 								{title}
 							</h2>

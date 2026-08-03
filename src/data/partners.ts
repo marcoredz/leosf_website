@@ -11,7 +11,7 @@ export const partners = [
 	},
 	{
 		name: "Focus",
-		role: "Partner media",
+		role: "Partner culturale",
 		logo: focusBlack,
 	},
 	{

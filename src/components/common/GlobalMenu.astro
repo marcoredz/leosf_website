@@ -275,13 +275,10 @@ const desktopMenuItems = menuItems.filter(({ label }) => label !== "Home");
 		height: 3.25rem;
 		place-items: center;
 		border: 0;
-		color: var(--color-background-light);
-		background: transparent;
+		color: var(--color-background-dark);
 		cursor: pointer;
 		transition:
 			color 180ms ease,
-			background-color 180ms ease,
-			box-shadow 180ms ease,
 			transform 180ms ease;
 	}
 
@@ -296,8 +293,6 @@ const desktopMenuItems = menuItems.filter(({ label }) => label !== "Home");
 		z-index: 80;
 		top: max(1rem, env(safe-area-inset-top));
 		right: max(1rem, env(safe-area-inset-right));
-		color: var(--color-background-dark);
-		background: transparent;
 	}
 
 	.menu-toggle:hover,
@@ -479,18 +474,11 @@ const desktopMenuItems = menuItems.filter(({ label }) => label !== "Home");
 		}
 
 		.menu-close {
-			color: var(--color-background-dark);
-			background: var(--color-leof-yellow);
-			border: 2px solid var(--color-background-dark);
-			border-radius: 0.65rem 1.1rem 0.55rem 1rem;
-			box-shadow: 0.25rem 0.3rem 0 var(--color-leof-purple);
 			transform: rotate(2deg);
 		}
 
 		.menu-close:hover,
 		.menu-close:focus-visible {
-			color: var(--color-background-dark);
-			background: var(--color-leof-orange-light);
 			transform: rotate(-3deg) scale(1.05);
 		}
 
