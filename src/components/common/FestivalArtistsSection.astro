@@ -10,7 +10,7 @@ interface Props {
 
 const {
 	id = "artisti",
-	title = "Line Up 2026",
+	title = "Lineup 2026",
 	blendWithPreviousSection = false,
 } = Astro.props;
 
@@ -96,6 +96,10 @@ const artistRows = [
 			}
 		</div>
 
+		<div class="mt-8 flex justify-center sm:mt-20">
+			<a href="/lineup" class="lineup-link">LINEUP COMPLETA</a>
+		</div>
+
 		<div class="mt-12 flex min-w-0 items-center justify-center gap-5 sm:mt-16 sm:gap-8" aria-hidden="true">
 			<Image
 				src={moonDivider}
@@ -108,6 +112,7 @@ const artistRows = [
 				loading="lazy"
 			/>
 		</div>
+
 	</div>
 </section>
 
@@ -196,6 +201,33 @@ const artistRows = [
 		text-transform: uppercase;
 	}
 
+	.lineup-link {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 1rem 0.75rem 0.8rem;
+		border-radius: 18px;
+		color: var(--color-background-dark);
+		background: var(--color-leof-orange-light);
+		font-family: var(--font-blur);
+		font-weight: 700;
+		font-size: clamp(1.1rem, 4.8vw, 1.55rem);
+		line-height: 0.9;
+		text-decoration: none;
+		text-transform: uppercase;
+		white-space: nowrap;
+		transition: transform 180ms ease;
+	}
+
+	.lineup-link:hover {
+		transform: scale(1.04);
+	}
+
+	.lineup-link:focus-visible {
+		outline: 3px solid currentColor;
+		outline-offset: 4px;
+	}
+
 	@media (max-width: 40rem) {
 		.artist-row {
 			display: flex;
@@ -214,6 +246,12 @@ const artistRows = [
 		.artist-separator {
 			display: block;
 			margin-inline: 0;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.lineup-link {
+			transition: none;
 		}
 	}
 </style>
