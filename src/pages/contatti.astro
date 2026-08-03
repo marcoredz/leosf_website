@@ -28,15 +28,14 @@ import Layout from "../layouts/Layout.astro";
 			<div class="mx-auto w-full min-w-0 max-w-4xl">
 				<div class="grid min-w-0 border-t border-background-dark/25 md:grid-cols-2">
 					{
-						contactDetails.map(({ label, value, href, external }, index) => (
+						contactDetails.map(({ label, value, href, external }) => (
 							<address
 								class:list={[
-									"min-w-0 border-b border-background-dark/25 py-8 not-italic md:min-h-56 md:px-6 md:py-9 lg:px-8",
-									index > 0 && "md:border-l",
+									"min-w-0 border-b border-background-dark/25 py-8 not-italic md:min-h-36 md:px-6 md:py-9 lg:px-8",
 								]}
 							>
-								<p class="font-plex text-xs uppercase leading-tight opacity-70 sm:text-sm">
-									{String(index + 1).padStart(2, "0")} / {label}
+								<p class="font-plex text-xs uppercase leading-tight opacity-75 sm:text-sm">
+									{label}
 								</p>
 								<a
 									href={href}

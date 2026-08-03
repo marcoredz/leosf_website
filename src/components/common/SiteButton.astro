@@ -1,0 +1,104 @@
+---
+type Target = "_blank" | "_self" | "_parent" | "_top";
+
+interface Props {
+	href: string;
+	target?: Target;
+	rel?: string;
+	ariaLabel?: string;
+	backgroundColor?: string;
+	textColor?: string;
+	hoverBackgroundColor?: string;
+	hoverTextColor?: string;
+	borderColor?: string;
+	hoverBorderColor?: string;
+	boxShadow?: string;
+	class?: string;
+}
+
+const {
+	href,
+	target,
+	rel,
+	ariaLabel,
+	backgroundColor = "var(--color-leof-green)",
+	textColor = "var(--color-background-light)",
+	hoverBackgroundColor = backgroundColor,
+	hoverTextColor = textColor,
+	borderColor = "transparent",
+	hoverBorderColor = borderColor,
+	boxShadow = "none",
+	class: className,
+} = Astro.props;
+
+const linkRel = rel ?? (target === "_blank" ? "noopener noreferrer" : undefined);
+const buttonStyle = [
+	`--site-button-background: ${backgroundColor}`,
+	`--site-button-color: ${textColor}`,
+	`--site-button-hover-background: ${hoverBackgroundColor}`,
+	`--site-button-hover-color: ${hoverTextColor}`,
+	`--site-button-border: ${borderColor}`,
+	`--site-button-hover-border: ${hoverBorderColor}`,
+	`--site-button-shadow: ${boxShadow}`,
+].join("; ");
+---
+
+<a
+	href={href}
+	target={target}
+	rel={linkRel}
+	aria-label={ariaLabel}
+	class:list={["site-button", className]}
+	style={buttonStyle}
+>
+	<slot />
+</a>
+
+<style>
+	.site-button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 1rem 0.75rem 0.8rem;
+		border: 1px solid var(--site-button-border);
+		border-radius: 18px;
+		color: var(--site-button-color);
+		background-color: var(--site-button-background);
+		box-shadow: var(--site-button-shadow);
+		font-family: var(--font-blur);
+		font-weight: 700;
+		font-size: clamp(1.1rem, 4.8vw, 1.55rem);
+		line-height: 0.9;
+		text-decoration: none;
+		text-transform: uppercase;
+		text-shadow: none;
+		white-space: nowrap;
+		transition:
+			transform 180ms ease,
+			background-color 180ms ease,
+			color 180ms ease,
+			border-color 180ms ease;
+	}
+
+	.site-button:hover {
+		border-color: var(--site-button-hover-border);
+		color: var(--site-button-hover-color);
+		background-color: var(--site-button-hover-background);
+		transform: scale(1.04);
+	}
+
+	.site-button:focus-visible {
+		outline: 3px solid currentColor;
+		outline-offset: 4px;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.site-button {
+			transition: none;
+		}
+
+		.site-button:hover {
+			transform: none;
+		}
+	}
+</style>

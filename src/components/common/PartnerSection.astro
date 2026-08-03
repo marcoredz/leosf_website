@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import { partners as defaultPartners } from "../../data/partners";
+import SiteButton from "./SiteButton.astro";
 
 interface Props {
 	id?: string;
@@ -13,7 +14,7 @@ const marqueePartners = Array.from({ length: 4 }, () => defaultPartners).flat();
 const marqueeGroups = [marqueePartners, marqueePartners];
 ---
 
-<section id={id} class="bg-background-dark py-12 text-background-light sm:py-16">
+<section id={id} class="bg-background-dark pb-16 text-background-light sm:pb-16">
 	<div class="mx-auto w-full max-w-6xl px-5 sm:px-8">
 		<header class="text-center">
 			<h2 class="font-blur text-[clamp(2.25rem,7vw,5.25rem)] uppercase leading-none">
@@ -59,12 +60,17 @@ const marqueeGroups = [marqueePartners, marqueePartners];
 
 	<div class="mx-auto w-full max-w-6xl px-5 sm:px-8">
 		<div class="mt-7 flex justify-center">
-			<a
+			<SiteButton
 				href="/partner"
-				class="inline-flex min-h-12 items-center justify-center rounded border border-background-light px-6 font-plex text-sm uppercase leading-none text-background-light transition-colors hover:bg-background-light hover:text-background-dark"
+				backgroundColor="var(--color-background-light)"
+				textColor="var(--color-background-dark)"
+				hoverBackgroundColor="var(--color-background-light)"
+				hoverTextColor="var(--color-background-dark)"
+				borderColor="var(--color-leof-green-accent)"
+				hoverBorderColor="var(--color-background-light)"
 			>
 				Vedi tutti
-			</a>
+			</SiteButton>
 		</div>
 	</div>
 </section>
