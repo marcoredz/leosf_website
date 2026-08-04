@@ -12,7 +12,8 @@ import dropSketch from "../assets/ui/drop-sketch.png";
 import plantSketch from "../assets/ui/plant-sketch.png";
 import mountainSketch from "../assets/ui/mountain-sketch.png";
 import treeLifesteps from "../assets/ui/tree-lifesteps.png";
-import parcoTicinoAerial from "../assets/parco-lombardo-valle-ticino/parco-ticino-1.jpg";
+// import parcoTicinoAerial from "../assets/parco-lombardo-valle-ticino/parco-ticino-1.jpg";
+import lavenoFromMountain from "../assets/laveno-from-mountain.jpeg";
 import parcoTicino1 from "../assets/parco-lombardo-valle-ticino/wownature-parco-lombardo-del-ticino-05-04-25-hd-1.jpg";
 import parcoTicino3 from "../assets/parco-lombardo-valle-ticino/wownature-parco-lombardo-del-ticino-05-04-25-hd-3.jpg";
 import parcoTicino4 from "../assets/parco-lombardo-valle-ticino/parco-ticino-4.jpg";
@@ -228,11 +229,11 @@ const carouselPhotos = [
 
 				<figure class="ticino-image">
 					<Image
-						src={parcoTicinoAerial}
-						alt="Veduta aerea del Parco Lombardo della Valle del Ticino"
+						src={lavenoFromMountain}
+						alt="Veduta di Laveno dal monte"
 						width={1200}
 						format="webp"
-						quality={65}
+						quality={100}
 						loading="lazy"
 					/>
 				</figure>
@@ -679,7 +680,7 @@ const carouselPhotos = [
 	.ticino-image {
 		width: 90%;
 		max-width: 72rem;
-		aspect-ratio: 3 / 4;
+		aspect-ratio: 16 / 9;
 		margin: 4rem auto 0;
 		overflow: hidden;
 		border-radius: 0.9rem;
@@ -755,7 +756,7 @@ const carouselPhotos = [
 		}
 
 		.ticino-image {
-			aspect-ratio: 2 / 1;
+			aspect-ratio: 3 / 1;
 		}
 
 		.etifor-tree-left {
