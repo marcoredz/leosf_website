@@ -745,7 +745,7 @@ const carouselPhotos = [
 		}
 
 		.partner-descriptions {
-			grid-template-columns: repeat(3, minmax(0, 1fr));
+			grid-template-columns: repeat(2, minmax(0, 1fr));
 			gap: 2rem;
 		}
 
@@ -753,6 +753,11 @@ const carouselPhotos = [
 			grid-column: 1 / -1;
 			justify-self: center;
 			text-align: center;
+		}
+
+		.partner-descriptions p:not(:first-child) {
+			width: min(100%, 28rem);
+			justify-self: center;
 		}
 
 		.ticino-image {
@@ -766,7 +771,7 @@ const carouselPhotos = [
 
 		.etifor-tree-right {
 			top: 37rem;
-			right: -11rem;
+			right: -15rem;
 		}
 	}
 
@@ -791,7 +796,7 @@ const carouselPhotos = [
 
 		.etifor-tree-right {
 			top: 28rem;
-			right: -11rem;
+			right: -15rem;
 		}
 
 		.sustainability-hero-copy {
@@ -871,6 +876,20 @@ const carouselPhotos = [
 		.etifor-tree-right {
 			top: 26rem;
 			right: -12rem;
+		}
+	}
+
+	@media (min-width: 768px) and (max-width: 1535px) {
+		.partner-descriptions p:not(:first-child) {
+			width: min(100%, 20rem);
+		}
+
+		.partner-descriptions p:nth-child(2) {
+			justify-self: end;
+		}
+
+		.partner-descriptions p:nth-child(3) {
+			justify-self: start;
 		}
 	}
 
