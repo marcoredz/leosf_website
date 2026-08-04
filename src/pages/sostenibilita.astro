@@ -12,7 +12,8 @@ import dropSketch from "../assets/ui/drop-sketch.png";
 import plantSketch from "../assets/ui/plant-sketch.png";
 import mountainSketch from "../assets/ui/mountain-sketch.png";
 import treeLifesteps from "../assets/ui/tree-lifesteps.png";
-import parcoTicinoAerial from "../assets/parco-lombardo-valle-ticino/parco-ticino-1.jpg";
+// import parcoTicinoAerial from "../assets/parco-lombardo-valle-ticino/parco-ticino-1.jpg";
+import lavenoFromMountain from "../assets/laveno-from-mountain.jpeg";
 import parcoTicino1 from "../assets/parco-lombardo-valle-ticino/wownature-parco-lombardo-del-ticino-05-04-25-hd-1.jpg";
 import parcoTicino3 from "../assets/parco-lombardo-valle-ticino/wownature-parco-lombardo-del-ticino-05-04-25-hd-3.jpg";
 import parcoTicino4 from "../assets/parco-lombardo-valle-ticino/parco-ticino-4.jpg";
@@ -65,8 +66,8 @@ const carouselPhotos = [
 ---
 
 <Layout
-	title="Sostenibilità | Laveno End Of Summer Fest 2026"
-	description="Il percorso di sostenibilità del Laveno End Of Summer Fest insieme a Etifor e WOWnature."
+	title="Sostenibilità | Laveno End Of Summer Festival 2026"
+	description="Il percorso di sostenibilità del Laveno End Of Summer Festival insieme a Etifor e WOWnature."
 >
 	<main class="sustainability-page">
 		<section class="sustainability-hero" aria-labelledby="sustainability-title">
@@ -111,14 +112,14 @@ const carouselPhotos = [
 					</p>
 				</div>
 
-				<ol class="approach-list">
+				<ul class="approach-list">
 					{approachSteps.map(({ title, text }) => (
 						<li class="approach-item">
 							<h3>{title}</h3>
 							<p>{text}</p>
 						</li>
 					))}
-				</ol>
+				</ul>
 			</div>
 		</section>
 
@@ -228,11 +229,11 @@ const carouselPhotos = [
 
 				<figure class="ticino-image">
 					<Image
-						src={parcoTicinoAerial}
-						alt="Veduta aerea del Parco Lombardo della Valle del Ticino"
+						src={lavenoFromMountain}
+						alt="Veduta di Laveno dal monte"
 						width={1200}
 						format="webp"
-						quality={65}
+						quality={100}
 						loading="lazy"
 					/>
 				</figure>
@@ -253,7 +254,10 @@ const carouselPhotos = [
 	}
 
 	.content-shell {
+		box-sizing: border-box;
 		width: min(100%, 78rem);
+		max-width: 100%;
+		min-width: 0;
 		margin-inline: auto;
 		padding-inline: var(--page-padding);
 	}
@@ -307,7 +311,10 @@ const carouselPhotos = [
 		position: relative;
 		z-index: 2;
 		align-self: start;
+		box-sizing: border-box;
 		width: 100%;
+		max-width: 100%;
+		min-width: 0;
 		padding: clamp(16rem, 34vh, 20rem) 1.25rem 0;
 		color: #fff;
 		text-align: center;
@@ -317,6 +324,7 @@ const carouselPhotos = [
 	.sustainability-hero-copy h1 {
 		margin: 0;
 		font-family: var(--font-blur);
+		font-weight: 700;
 		font-size: clamp(2.8rem, 12vw, 8rem);
 		line-height: 0.86;
 		text-transform: uppercase;
@@ -410,9 +418,9 @@ const carouselPhotos = [
 	.approach-list {
 		display: grid;
 		gap: 1.35rem;
-		margin: 2.75rem 0 0;
-		padding: 0;
-		list-style: none;
+		margin: 2rem 0 0;
+		padding-inline-start: 1.25rem;
+		list-style: disc;
 	}
 
 	.approach-item h3 {
@@ -672,7 +680,7 @@ const carouselPhotos = [
 	.ticino-image {
 		width: 90%;
 		max-width: 72rem;
-		aspect-ratio: 3 / 4;
+		aspect-ratio: 16 / 9;
 		margin: 4rem auto 0;
 		overflow: hidden;
 		border-radius: 0.9rem;
@@ -732,6 +740,8 @@ const carouselPhotos = [
 		.approach-list {
 			grid-template-columns: repeat(2, minmax(0, 1fr));
 			gap: 2.25rem 3rem;
+			padding-inline-start: 0;
+			list-style: none;
 		}
 
 		.partner-descriptions {
@@ -746,7 +756,7 @@ const carouselPhotos = [
 		}
 
 		.ticino-image {
-			aspect-ratio: 2 / 1;
+			aspect-ratio: 3 / 1;
 		}
 
 		.etifor-tree-left {

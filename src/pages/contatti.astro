@@ -6,14 +6,14 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout
-	title="Contatti | Laveno End Of Summer Fest 2026"
-	description="Contatta il Laveno End Of Summer Fest e seguici sui nostri canali social."
+	title="Contatti | Laveno End Of Summer Festival 2026"
+	description="Contatta il Laveno End Of Summer Festival e seguici sui nostri canali social."
 >
 	<main class="w-full min-w-0 overflow-x-clip">
 		<section class="bg-background-dark px-5 pb-14 pt-32 text-background-light sm:px-8 sm:pb-20 sm:pt-36">
 			<div class="mx-auto w-full max-w-5xl">
 				<p class="font-plex text-sm uppercase leading-tight sm:text-base">
-					Laveno End Of Summer Fest
+					Laveno End Of Summer Festival
 				</p>
 				<h1 class="mt-5 font-blur text-[clamp(3.5rem,11vw,8.5rem)] uppercase leading-none">
 					Contatti
@@ -28,15 +28,14 @@ import Layout from "../layouts/Layout.astro";
 			<div class="mx-auto w-full min-w-0 max-w-4xl">
 				<div class="grid min-w-0 border-t border-background-dark/25 md:grid-cols-2">
 					{
-						contactDetails.map(({ label, value, href, external }, index) => (
+						contactDetails.map(({ label, value, href, external }) => (
 							<address
 								class:list={[
-									"min-w-0 border-b border-background-dark/25 py-8 not-italic md:min-h-56 md:px-6 md:py-9 lg:px-8",
-									index > 0 && "md:border-l",
+									"min-w-0 border-b border-background-dark/25 py-8 not-italic md:min-h-36 md:px-6 md:py-9 lg:px-8",
 								]}
 							>
-								<p class="font-plex text-xs uppercase leading-tight opacity-70 sm:text-sm">
-									{String(index + 1).padStart(2, "0")} / {label}
+								<p class="font-plex text-xs uppercase leading-tight opacity-75 sm:text-sm">
+									{label}
 								</p>
 								<a
 									href={href}

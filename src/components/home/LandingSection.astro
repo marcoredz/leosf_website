@@ -24,7 +24,7 @@ const placeholder = await getImage({ src: landingImage, width: 20, quality: 10, 
 		/>
 	</div>
 	<div class="absolute inset-0 bg-background-dark/35" aria-hidden="true"></div>
-	<div class="absolute inset-x-0 bottom-0 z-1 h-[32svh] bg-linear-to-b from-transparent via-background-dark/65 to-background-dark" aria-hidden="true"></div>
+	<div class="absolute inset-x-0 bottom-0 z-1 h-[32svh] bg-linear-to-b from-transparent via-background-dark/80 to-background-dark" aria-hidden="true"></div>
 
 	<div class="relative z-10 mx-auto flex min-h-[calc(100svh-12rem)] w-full max-w-5xl flex-col items-center text-center">
 		<div class="landing-main flex w-full flex-1 flex-col items-center justify-center pb-12">
@@ -166,7 +166,6 @@ const placeholder = await getImage({ src: landingImage, width: 20, quality: 10, 
 
 	@media (min-width: 1024px) and (max-height: 760px) {
 		.landing-main {
-			justify-content: flex-start;
 			padding-top: 4.5rem;
 		}
 

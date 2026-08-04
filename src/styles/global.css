@@ -3,6 +3,8 @@
 @font-face {
   font-family: "Blur Bold";
   src: url("/fonts/Blur Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
   font-display: swap;
 }
 
@@ -33,6 +35,8 @@
 @font-face {
   font-family: "Poppins Bold";
   src: url("/fonts/Poppins-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
   font-display: swap;
 }
 
@@ -61,15 +65,24 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    overflow-x: clip;
     background: var(--color-background-dark);
   }
 
   body {
     min-width: 320px;
-    overflow-x: hidden;
+    max-width: 100%;
+    overflow-x: clip;
     font-family: var(--font-plex);
     color: var(--color-background-light);
     background: var(--color-background-dark);
+  }
+
+  @supports not (overflow: clip) {
+    html,
+    body {
+      overflow-x: hidden;
+    }
   }
 
   h1,

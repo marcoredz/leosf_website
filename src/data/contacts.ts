@@ -26,7 +26,7 @@ export const socials = [
 	},
 	{
 		label: "Spotify",
-		href: "https://open.spotify.com/playlist/6eCBnz6tWHKffBUsiDtQts/",
+		href: "https://open.spotify.com/playlist/64Ym0jrKfv59snrUr9lkQS/",
 		icon: "simple-icons:spotify",
 	},
 ] as const;

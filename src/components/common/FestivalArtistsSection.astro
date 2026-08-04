@@ -1,0 +1,253 @@
+---
+import { Image } from "astro:assets";
+import moonDivider from "../../assets/ui/moon-divider.png";
+
+interface Props {
+	id?: string;
+	title?: string;
+	blendWithPreviousSection?: boolean;
+}
+
+const {
+	id = "artisti",
+	title = "Lineup 2026",
+	blendWithPreviousSection = false,
+} = Astro.props;
+
+const artistRows = [
+	{
+		level: "headliner",
+		artists: ["Disme", "Vaz Tè", "Sissi", "Marte"],
+	},
+	{
+		level: "featured",
+		artists: ["Lil Jolie", "Sally Cruz", "Principe", "Volpi", "Chryverde"],
+	},
+	{
+		level: "featured",
+		artists: ["Luca Re", "Taizal e Affanno", "Maisby", "Deiv"],
+	},
+	{
+		level: "standard",
+		artists: [
+			"Longo",
+			"Zaga",
+			"Doxx",
+			"Verosimile",
+			"29Giulio",
+			"Blu",
+			"Don't Tell Mama",
+		],
+	},
+	{
+		level: "standard",
+		artists: [
+			"Èva",
+			"Manzo",
+			"Roedeer",
+			"Lavíe",
+			"Australopitechno",
+			"Jaen",
+			"Malaffari",
+		],
+	},
+] as const;
+---
+
+<section
+	id={id}
+	class="artist-poster relative bg-background-dark px-5 py-16 text-background-light sm:px-8 sm:py-24"
+	aria-labelledby={`${id}-title`}
+>
+	{
+		blendWithPreviousSection && (
+			<div
+				class="pointer-events-none absolute inset-x-0 top-0 h-30 -translate-y-full bg-linear-to-b from-transparent via-background-dark/70 to-background-dark"
+				aria-hidden="true"
+			></div>
+		)
+	}
+
+	<div class="relative mx-auto w-full max-w-6xl text-center">
+		<h2
+			id={`${id}-title`}
+			class="font-blur text-[clamp(3.2rem,10vw,8.5rem)] uppercase leading-[0.82] text-leof-orange-light"
+		>
+			{title}
+		</h2>
+
+		<div class="mt-8 flex flex-col gap-3 sm:mt-10 sm:gap-4">
+			{
+				artistRows.map(({ level, artists }) => (
+					<ul
+						class:list={["artist-row", `artist-row-${level}`]}
+						aria-label={level === "headliner" ? "Headliner" : undefined}
+					>
+						{artists.map((artist, index) => (
+							<>
+								<li class="artist-name">
+									<span>{artist}</span>
+								</li>
+								{index < artists.length - 1 && <li class="artist-separator" aria-hidden="true"></li>}
+							</>
+						))}
+					</ul>
+				))
+			}
+		</div>
+
+		<div class="mt-12 flex min-w-0 items-center justify-center gap-5 sm:mt-16 sm:gap-8" aria-hidden="true">
+			<Image
+				src={moonDivider}
+				alt=""
+				width={640}
+				height={46}
+				format="avif"
+				quality={80}
+				class="h-auto min-w-0 max-w-2xl flex-1 object-contain opacity-75"
+				loading="lazy"
+			/>
+		</div>
+
+	</div>
+</section>
+
+<style>
+	.artist-poster {
+		isolation: isolate;
+	}
+
+	.poster-glow {
+		position: absolute;
+		z-index: -1;
+		width: 22rem;
+		height: 22rem;
+		border-radius: 9999px;
+		filter: blur(100px);
+		opacity: 0.2;
+	}
+
+	.poster-glow-left {
+		top: 8%;
+		left: -12rem;
+		background: var(--color-leof-orange);
+	}
+
+	.poster-glow-right {
+		right: -12rem;
+		bottom: 8%;
+		background: var(--color-leof-pink);
+	}
+
+	.artist-row {
+		--artist-size: 1rem;
+
+		display: flex;
+		width: 100%;
+		box-sizing: border-box;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 0;
+		margin: 0;
+		padding-inline: clamp(0.75rem, 3vw, 2rem);
+		list-style: none;
+		font-size: var(--artist-size);
+	}
+
+	.artist-name {
+		flex: 0 1 auto;
+		min-width: 0;
+		white-space: nowrap;
+	}
+
+	.artist-separator {
+		flex: 0 0 auto;
+		align-self: center;
+		width: 0.24em;
+		height: 0.24em;
+		border-radius: 9999px;
+		background: var(--color-leof-pink);
+	}
+
+	.artist-row-headliner {
+		--artist-size: clamp(1.2rem, 5vw, 4.65rem);
+
+		font-family: var(--font-blur);
+		line-height: 0.95;
+		text-transform: uppercase;
+	}
+
+	.artist-row-headliner .artist-separator {
+		background: var(--color-leof-orange-light);
+	}
+
+	.artist-row-featured {
+		--artist-size: clamp(0.75rem, 3.1vw, 2.45rem);
+
+		font-family: var(--font-blur);
+		line-height: 1;
+		text-transform: uppercase;
+	}
+
+	.artist-row-standard {
+		--artist-size: clamp(0.5rem, 2.1vw, 1.7rem);
+
+		font-family: var(--font-blur);
+		line-height: 1.15;
+		text-transform: uppercase;
+	}
+
+	.lineup-link {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 1rem 0.75rem 0.8rem;
+		border-radius: 18px;
+		color: var(--color-background-dark);
+		background: var(--color-leof-orange-light);
+		font-family: var(--font-blur);
+		font-weight: 700;
+		font-size: clamp(1.1rem, 4.8vw, 1.55rem);
+		line-height: 0.9;
+		text-decoration: none;
+		text-transform: uppercase;
+		white-space: nowrap;
+		transition: transform 180ms ease;
+	}
+
+	.lineup-link:hover {
+		transform: scale(1.04);
+	}
+
+	.lineup-link:focus-visible {
+		outline: 3px solid currentColor;
+		outline-offset: 4px;
+	}
+
+	@media (max-width: 40rem) {
+		.artist-row {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: baseline;
+			justify-content: space-between;
+			padding-inline: 0.75rem;
+			row-gap: 0.2em;
+			white-space: normal;
+		}
+
+		.artist-name {
+			display: flex;
+		}
+
+		.artist-separator {
+			display: block;
+			margin-inline: 0;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.lineup-link {
+			transition: none;
+		}
+	}
+</style>
