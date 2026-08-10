@@ -78,21 +78,33 @@ const artistRows = [
 
 		<div class="mt-8 flex flex-col gap-3 sm:mt-10 sm:gap-4">
 			{
-				artistRows.map(({ level, artists }) => (
-					<ul
-						class:list={["artist-row", `artist-row-${level}`]}
-						aria-label={level === "headliner" ? "Headliner" : undefined}
-					>
-						{artists.map((artist, index) => (
-							<>
-								<li class="artist-name">
-									<span>{artist}</span>
-								</li>
-								{index < artists.length - 1 && <li class="artist-separator" aria-hidden="true"></li>}
-							</>
-						))}
-					</ul>
-				))
+				artistRows.map(({ level, artists }, rowIndex) => {
+					const artistOffset = artistRows
+						.slice(0, rowIndex)
+						.reduce((total, row) => total + row.artists.length, 0);
+
+					return (
+						<ul
+							class:list={["artist-row", `artist-row-${level}`]}
+							aria-label={level === "headliner" ? "Headliner" : undefined}
+						>
+							{artists.map((artist, index) => (
+								<>
+									<li class="artist-name">
+										<span style={`--artist-index: ${artistOffset + index}`}>{artist}</span>
+									</li>
+									{index < artists.length - 1 && (
+										<li
+											class="artist-separator"
+											style={`--artist-index: ${artistOffset + index + 0.5}`}
+											aria-hidden="true"
+										></li>
+									)}
+								</>
+							))}
+						</ul>
+					);
+				})
 			}
 		</div>
 
@@ -111,6 +123,36 @@ const artistRows = [
 
 	</div>
 </section>
+
+<script>
+	const artistSections = document.querySelectorAll<HTMLElement>(".artist-poster");
+
+	if ("IntersectionObserver" in window) {
+		const artistObserver = new IntersectionObserver(
+			(entries, observer) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						entry.target.closest<HTMLElement>(".artist-poster")?.classList.add("is-visible");
+						observer.unobserve(entry.target);
+					}
+				});
+			},
+			{ threshold: 0.25 },
+		);
+
+		artistSections.forEach((section) => {
+			const firstArtistRow = section.querySelector<HTMLElement>(".artist-row");
+
+			if (firstArtistRow) {
+				artistObserver.observe(firstArtistRow);
+			} else {
+				section.classList.add("is-visible");
+			}
+		});
+	} else {
+		artistSections.forEach((section) => section.classList.add("is-visible"));
+	}
+</script>
 
 <style>
 	.artist-poster {
@@ -158,6 +200,55 @@ const artistRows = [
 		flex: 0 1 auto;
 		min-width: 0;
 		white-space: nowrap;
+	}
+
+	.artist-name span {
+		display: inline-block;
+		opacity: 0;
+		transform: translateY(0.35em);
+		animation: artist-name-reveal 520ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+		animation-delay: calc(var(--artist-index) * 90ms);
+		animation-play-state: paused;
+	}
+
+	.artist-poster.is-visible .artist-name span {
+		animation-play-state: running;
+	}
+
+	.artist-separator {
+		opacity: 0;
+		transform: scale(0.35);
+		animation: artist-separator-reveal 380ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+		animation-delay: calc(var(--artist-index) * 90ms);
+		animation-play-state: paused;
+	}
+
+	.artist-poster.is-visible .artist-separator {
+		animation-play-state: running;
+	}
+
+	@keyframes artist-name-reveal {
+		from {
+			opacity: 0;
+			transform: translateY(0.35em);
+		}
+
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes artist-separator-reveal {
+		from {
+			opacity: 0;
+			transform: scale(0.35);
+		}
+
+		to {
+			opacity: 1;
+			transform: scale(1);
+		}
 	}
 
 	.artist-separator {
@@ -248,6 +339,18 @@ const artistRows = [
 	@media (prefers-reduced-motion: reduce) {
 		.lineup-link {
 			transition: none;
+		}
+
+		.artist-name span {
+			animation: none;
+			opacity: 1;
+			transform: none;
+		}
+
+		.artist-separator {
+			animation: none;
+			opacity: 1;
+			transform: none;
 		}
 	}
 </style>
