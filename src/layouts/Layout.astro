@@ -10,9 +10,11 @@ interface Props {
 	structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
+const siteName = "Laveno End Of Summer Festival";
+
 const {
-	title = "Laveno End Of Summer Festival 2026",
-	description = "Laveno End Of Summer Festival 2026, V Edizione, 28-29-30 agosto.",
+	title = `${siteName} 2026`,
+	description = `${siteName} 2026, V Edizione, 28-29-30 agosto.`,
 	showMenu = true,
 	structuredData,
 } = Astro.props;
@@ -27,7 +29,7 @@ const schemaGraph: Record<string, unknown>[] = [
 	{
 		"@type": "Organization",
 		"@id": organizationId,
-		name: "Laveno End Of Summer Festival",
+		name: siteName,
 		alternateName: "Laveno (End of) Summer Festival",
 		url: new URL("/", Astro.site).toString(),
 		logo: {
@@ -46,8 +48,8 @@ const schemaGraph: Record<string, unknown>[] = [
 		"@type": "WebSite",
 		"@id": websiteId,
 		url: new URL("/", Astro.site).toString(),
-		name: "Laveno End Of Summer Festival",
-		alternateName: "End Of Summer Festival Laveno",
+		name: siteName,
+		alternateName: ["End Of Summer Festival Laveno"],
 		inLanguage: "it-IT",
 		publisher: { "@id": organizationId },
 	},
@@ -94,6 +96,12 @@ const serializedStructuredData = JSON.stringify({
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<meta name="description" content={description} />
+		<meta name="application-name" content={siteName} />
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content={siteName} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonicalUrl} />
 		<script is:inline type="application/ld+json" set:html={serializedStructuredData} />
 		<Analytics />
 	</head>
