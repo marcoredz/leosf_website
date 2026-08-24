@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import moonDivider from "../../assets/ui/moon-divider.png";
+import SiteButton from "./SiteButton.astro";
 
 interface Props {
 	id?: string;
@@ -17,7 +18,7 @@ const {
 const artistRows = [
 	{
 		level: "headliner",
-		artists: ["Disme", "Vaz Tè", "Sissi", "Marte"],
+		artists: ["Vaz Tè", "Disme", "Sissi", "Marte"],
 	},
 	{
 		level: "featured",
@@ -56,7 +57,12 @@ const artistRows = [
 
 <section
 	id={id}
-	class="artist-poster relative bg-background-dark px-5 py-16 text-background-light sm:px-8 sm:py-24"
+	class="artist-poster relative cursor-pointer bg-background-dark px-5 py-16 text-background-light sm:px-8 sm:py-24"
+	data-lineup-section
+	data-lineup-href="/lineup"
+	role="link"
+	tabindex="0"
+	aria-label="Scopri gli orari della lineup completa"
 	aria-labelledby={`${id}-title`}
 >
 	{
@@ -108,6 +114,19 @@ const artistRows = [
 			}
 		</div>
 
+		<div class="mt-10 flex justify-center sm:mt-12">
+			<SiteButton
+				href="/lineup"
+				class="w-full max-w-sm px-8 py-5 text-[clamp(1.25rem,5vw,2rem)] sm:max-w-md"
+				backgroundColor="var(--color-leof-orange-light)"
+				textColor="var(--color-background-dark)"
+				hoverBackgroundColor="var(--color-leof-orange-light)"
+				hoverTextColor="var(--color-background-dark)"
+			>
+				Scopri gli orari
+			</SiteButton>
+		</div>
+
 		<div class="mt-12 flex min-w-0 items-center justify-center gap-5 sm:mt-16 sm:gap-8" aria-hidden="true">
 			<Image
 				src={moonDivider}
@@ -126,6 +145,25 @@ const artistRows = [
 
 <script>
 	const artistSections = document.querySelectorAll<HTMLElement>(".artist-poster");
+
+	document.querySelectorAll<HTMLElement>("[data-lineup-section]").forEach((section) => {
+		const href = section.dataset.lineupHref;
+
+		if (!href) return;
+
+		section.addEventListener("click", (event) => {
+			if (event.target instanceof Element && event.target.closest("a, button")) return;
+
+			window.location.href = href;
+		});
+
+		section.addEventListener("keydown", (event) => {
+			if (event.target !== section || (event.key !== "Enter" && event.key !== " ")) return;
+
+			event.preventDefault();
+			window.location.href = href;
+		});
+	});
 
 	if ("IntersectionObserver" in window) {
 		const artistObserver = new IntersectionObserver(
@@ -157,6 +195,11 @@ const artistRows = [
 <style>
 	.artist-poster {
 		isolation: isolate;
+	}
+
+	.artist-poster:focus-visible {
+		outline: 3px solid var(--color-leof-orange-light);
+		outline-offset: -3px;
 	}
 
 	.poster-glow {
@@ -288,33 +331,6 @@ const artistRows = [
 		text-transform: uppercase;
 	}
 
-	.lineup-link {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		padding: 1rem 0.75rem 0.8rem;
-		border-radius: 18px;
-		color: var(--color-background-dark);
-		background: var(--color-leof-orange-light);
-		font-family: var(--font-blur);
-		font-weight: 700;
-		font-size: clamp(1.1rem, 4.8vw, 1.55rem);
-		line-height: 0.9;
-		text-decoration: none;
-		text-transform: uppercase;
-		white-space: nowrap;
-		transition: transform 180ms ease;
-	}
-
-	.lineup-link:hover {
-		transform: scale(1.04);
-	}
-
-	.lineup-link:focus-visible {
-		outline: 3px solid currentColor;
-		outline-offset: 4px;
-	}
-
 	@media (max-width: 40rem) {
 		.artist-row {
 			display: flex;
@@ -337,10 +353,6 @@ const artistRows = [
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.lineup-link {
-			transition: none;
-		}
-
 		.artist-name span {
 			animation: none;
 			opacity: 1;

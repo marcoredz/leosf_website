@@ -3,7 +3,7 @@ import { Image } from "astro:assets";
 import dismeVazteImage from "../../../assets/artists/disme_vazte.jpeg";
 import dismeImage from "../../../assets/artists/disme.jpg";
 import vazTeImage from "../../../assets/artists/vaz-te.avif";
-import sparkViolet from "../../../assets/ui/spark-violet.png";
+import sparkGreen from "../../../assets/ui/spark-green.png";
 import ArtistDetailCard from "./ArtistDetailCard.astro";
 
 type Headliner = {
@@ -30,7 +30,7 @@ const getTime = (artistName: string) =>
 			sizes="(min-width: 768px) 56rem, calc(100vw - 3rem)"
 			quality={84}
 			format="avif"
-			class="absolute inset-0 -z-10 size-full object-cover"
+			class="absolute inset-0 -z-10 size-full -scale-x-100 object-cover"
 			loading="lazy"
 		/>
 		<div class="absolute inset-0 -z-10 bg-linear-to-t from-background-dark/70 via-background-dark/12 to-transparent"></div>
@@ -38,56 +38,57 @@ const getTime = (artistName: string) =>
 			<button
 				type="button"
 				class="group flex h-full cursor-pointer flex-col justify-end p-3 text-left transition-colors hover:bg-background-dark/18 focus-visible:bg-background-dark/18 focus-visible:outline focus-visible:-outline-offset-4 focus-visible:outline-background-light sm:p-5"
-				aria-label="Apri scheda VAZ TE"
-				data-artist-detail-open="vaz-te-detail"
+				aria-label="Apri scheda DISME"
+				data-artist-detail-open="disme-detail"
 			>
-				<time class="w-fit rounded bg-leof-pink px-2 py-1 font-plex font-extrabold text-[clamp(1rem,3.5vw,1.3rem)] uppercase leading-none text-background-dark">
-					{getTime("VAZ TE")}
+				<time class="w-fit rounded bg-leof-green px-2 py-1 font-plex font-extrabold text-[clamp(1rem,3.5vw,1.3rem)] uppercase leading-none text-background-light">
+					{getTime("DISME")}
 				</time>
-				<span class="mt-2 block font-blur text-[clamp(2.2rem,10vw,5.6rem)] uppercase leading-none text-background-light transition-transform duration-300 group-hover:translate-x-1">
-					VAZ TE
+				<span class="mt-6 block font-blur text-[clamp(2.2rem,10vw,6rem)] uppercase leading-none text-background-light transition-transform duration-300 group-hover:translate-x-1">
+					DISME
 				</span>
 			</button>
 
 			<button
 				type="button"
 				class="group flex h-full cursor-pointer flex-col items-end justify-end p-3 text-right transition-colors hover:bg-background-dark/18 focus-visible:bg-background-dark/18 focus-visible:outline focus-visible:-outline-offset-4 focus-visible:outline-background-light sm:p-5"
-				aria-label="Apri scheda DISME"
-				data-artist-detail-open="disme-detail"
+				aria-label="Apri scheda VAZ TE"
+				data-artist-detail-open="vaz-te-detail"
 			>
-				<time class="w-fit rounded bg-leof-pink px-2 py-1 font-plex font-extrabold text-[clamp(1rem,3.5vw,1.3rem)] uppercase leading-none text-background-dark">
-					{getTime("DISME")}
+				<time class="w-fit rounded bg-leof-green px-2 py-1 font-plex font-extrabold text-[clamp(1rem,3.5vw,1.3rem)] uppercase leading-none text-background-light">
+					{getTime("VAZ TÈ")}
 				</time>
-				<span class="mt-2 block font-blur text-[clamp(2.2rem,10vw,6rem)] uppercase leading-none text-background-light transition-transform duration-300 group-hover:-translate-x-1">
-					DISME
+				<span class="mt-6 block font-blur text-[clamp(2.2rem,10vw,5.6rem)] uppercase leading-none text-background-light transition-transform duration-300 group-hover:-translate-x-1">
+					VAZ TÈ
 				</span>
 			</button>
 		</div>
 	</article>
-	<ArtistDetailCard
-		dialogId="vaz-te-detail"
-		artist="VAZ TE"
-		date="SABATO 29/08"
-		time="21:30"
-		image={vazTeImage}
-		imageAlt="Vaz Tè"
-		spark={sparkViolet}
-		accentClass="text-leof-pink"
-		bio={`Vaz Tè, nome d'arte di Alessandro Guzzo (Genova, 28 settembre 1992), è un rapper italiano, membro dei collettivi <b>Wild Bandana</b> e <b>Drilliguria</b>. Il suo alias è ispirato al calciatore portoghese Ricardo Vaz Tê, uno dei tanti riferimenti al calcio presenti nella sua discografia.
 
-		Talento puro del rap, stile inconfondibile, dal classico Hip Hop italiano fino al sottogenere "Glo" legato alla cultura della Glo Gang di Chicago.`}
-	/>
 	<ArtistDetailCard
 		dialogId="disme-detail"
 		artist="DISME"
 		date="SABATO 29/08"
-		time="22:20"
+		time="21:45"
 		image={dismeImage}
 		imageAlt="Disme"
-		spark={sparkViolet}
-		accentClass="text-leof-pink"
+		spark={sparkGreen}
+		accentClass="text-leof-green"
 		bio={`Pseudonimo di Andrew Majuri, è un rapper italiano classe ’93, nato a La Spezia. Appartiene insieme a diversi colleghi genovesi all’immaginario del complesso <b>Drilliguria</b>.
 
 		Capace di spaziare tra rap conscious, trap e dembow, DISME è uno dei nomi più interessanti e autentici della scena rap italiana contemporanea.`}
+	/>
+	<ArtistDetailCard
+		dialogId="vaz-te-detail"
+		artist="VAZ TÈ"
+		date="SABATO 29/08"
+		time="22:30"
+		image={vazTeImage}
+		imageAlt="Vaz Tè"
+		spark={sparkGreen}
+		accentClass="text-leof-green"
+		bio={`Vaz Tè, nome d'arte di Alessandro Guzzo (Genova, 28 settembre 1992), è un rapper italiano, membro dei collettivi <b>Wild Bandana</b> e <b>Drilliguria</b>. Il suo alias è ispirato al calciatore portoghese Ricardo Vaz Tê, uno dei tanti riferimenti al calcio presenti nella sua discografia.
+
+		Talento puro del rap, stile inconfondibile, dal classico Hip Hop italiano fino al sottogenere "Glo" legato alla cultura della Glo Gang di Chicago.`}
 	/>
 </li>
