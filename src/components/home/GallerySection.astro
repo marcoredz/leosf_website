@@ -1,6 +1,7 @@
 ---
 import { Image, getImage } from "astro:assets";
 import type { ImageMetadata } from "astro";
+import SiteButton from "../common/SiteButton.astro";
 import crowdPhoto from "../../assets/crowd.jpg";
 import dancePhoto from "../../assets/landing-image.jpg";
 import stagePhoto from "../../assets/stage.jpg";
@@ -105,12 +106,16 @@ const placeholders = await Promise.all(
 		</div>
 
 		<div class="-mt-16 flex justify-center sm:-mt-4.5rem">
-			<a
+			<SiteButton
 				href={galleryUrl}
-				class="relative z-10 inline-flex min-h-12 items-center justify-center rounded-full bg-background-light px-6 py-3 font-blur text-xl uppercase leading-none text-background-dark transition-opacity hover:opacity-85 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-background-light sm:text-2xl"
+				class="relative z-10 min-h-12 px-6 py-3 text-xl leading-none transition-opacity hover:opacity-85 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-background-light sm:text-2xl"
+				backgroundColor="var(--color-background-light)"
+				textColor="var(--color-background-dark)"
+				hoverBackgroundColor="var(--color-background-light)"
+				hoverTextColor="var(--color-background-dark)"
 			>
 				Guarda di più
-			</a>
+			</SiteButton>
 		</div>
 	</div>
 </section>

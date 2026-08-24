@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import lilJolieImage from "../../../assets/artists/liljolie2.jpg";
 import sissiImage from "../../../assets/artists/sissi2.avif";
-import sparkGreen from "../../../assets/ui/spark-green.png";
+import sparkViolet from "../../../assets/ui/spark-violet.png";
 import ArtistDetailCard from "./ArtistDetailCard.astro";
 
 type Headliner = {
@@ -48,7 +48,7 @@ const getDialogId = (artistName: string) =>
 				/>
 				<div class="absolute inset-0 -z-10 bg-linear-to-t from-background-dark/78 via-background-dark/20 to-transparent"></div>
 				<div class="flex h-full flex-col justify-end p-4 sm:p-6">
-					<time class="w-fit rounded bg-leof-green px-2 py-1 font-plex text-[clamp(1rem,3.5vw,1.3rem)] font-extrabold uppercase leading-none text-background-light">
+					<time class="w-fit rounded bg-leof-pink px-2 py-1 font-plex text-[clamp(1rem,3.5vw,1.3rem)] font-extrabold uppercase leading-none text-background-dark">
 						{time}
 					</time>
 					<h4 class="mt-2 font-blur text-[clamp(2.2rem,10vw,5.6rem)] uppercase leading-none text-background-light">
@@ -67,8 +67,8 @@ const getDialogId = (artistName: string) =>
 	time="20:00"
 	image={lilJolieImage}
 	imageAlt="Lil Jolie"
-	spark={sparkGreen}
-	accentClass="text-leof-green"
+	spark={sparkViolet}
+	accentClass="text-leof-pink"
 	bio={`Lil Jolie, pseudonimo di Angela Ciancio (Calvi Risorta - CE, 29 marzo 2000), è una <b>cantautrice</b> italiana.
 
 Con il nome d'arte ispirato ad Angelina Jolie, esordisce nel 2018 su SoundCloud e si fa notare nella scena urban italiana.
@@ -83,8 +83,8 @@ Dopo Amici23 e l’EP <i>La vita non uccide</i> (2024), arriva tra le Nuove Prop
 	time="22:20"
 	image={sissiImage}
 	imageAlt="Sissi"
-	spark={sparkGreen}
-	accentClass="text-leof-green"
+	spark={sparkViolet}
+	accentClass="text-leof-pink"
 	bio={`Sissi, nome d'arte di Silvia Cesana (Merone - CO, 1999).
 
 Si fa conoscere nel 2019 a X Factor e poi ad Amici21. Da lì pubblica brani che diventano subito riconoscibili: <i>Per farti paura</i>, <i>Sento</i> e <i>Come come</i>, quest’ultima certificata Disco d’Oro.
