@@ -3,6 +3,7 @@ import ComingSoonPage from "../components/home/ComingSoonPage.astro";
 import landingImage from "../assets/landing-image.jpg";
 import FestivalArtistsSection from "../components/common/FestivalArtistsSection.astro";
 import PartnerSection from "../components/common/PartnerSection.astro";
+import SiteButton from "../components/common/SiteButton.astro";
 import SiteFooter from "../components/common/SiteFooter.astro";
 import GallerySection from "../components/home/GallerySection.astro";
 import LandingSection from "../components/home/LandingSection.astro";
@@ -68,6 +69,26 @@ const eventStructuredData = {
 				<LandingSection />
 				<FestivalArtistsSection blendWithPreviousSection />
 				<PartnerSection />
+				<section id="menu" class="bg-leof-orange-light px-5 py-14 text-background-dark sm:px-8 sm:py-20">
+					<div class="mx-auto flex w-full max-w-5xl flex-col items-center text-center">
+						<h2 class="font-blur text-[clamp(3.5rem,9vw,7rem)] uppercase leading-none">
+							Menu
+						</h2>
+						<p class="mt-6 max-w-lg font-plex text-sm leading-tight sm:text-base">
+							Scopri cosa gustare durante il festival, tra proposte salate, dolci e drink.
+						</p>
+						<SiteButton
+							href="/menu"
+							class="mt-6"
+							backgroundColor="var(--color-background-dark)"
+							textColor="var(--color-background-light)"
+							hoverBackgroundColor="var(--color-background-dark)"
+							hoverTextColor="var(--color-background-light)"
+						>
+							Scopri il menu
+						</SiteButton>
+					</div>
+				</section>
 				{/* <FestivalMapSection /> */}
 				<GallerySection />
 				<SiteFooter />
