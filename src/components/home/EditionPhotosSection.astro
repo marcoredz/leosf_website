@@ -1,0 +1,46 @@
+---
+import SiteButton from "../common/SiteButton.astro";
+
+interface Props {
+	blendWithPreviousSection?: boolean;
+}
+
+const { blendWithPreviousSection = false } = Astro.props;
+const editionPhotosUrl =
+	"https://drive.google.com/drive/folders/1A3x9gVPfVeTRX_0WhR3f_MFetshuZQfZ";
+---
+
+<section id="edizione-2026" class="relative scroll-mt-20 bg-background-dark px-5 py-16 text-background-light sm:px-8 sm:py-24">
+	{
+		blendWithPreviousSection && (
+			<div
+				class="pointer-events-none absolute inset-x-0 top-0 h-30 -translate-y-full bg-linear-to-b from-transparent via-background-dark/70 to-background-dark"
+				aria-hidden="true"
+			></div>
+		)
+	}
+
+	<div class="relative mx-auto flex w-full max-w-4xl flex-col items-center text-center">
+		<p class="font-plex text-sm uppercase tracking-[0.16em] text-leof-orange-light sm:text-base">
+			Edizione 2026
+		</p>
+		<h2 class="mt-5 font-blur text-[clamp(3rem,9vw,7rem)] uppercase leading-[0.9]">
+			Rivivi il festival
+		</h2>
+		<p class="mt-6 max-w-2xl font-plex text-sm leading-relaxed sm:text-base">
+			Guarda e scarica tutte le foto dell'edizione 2026.
+		</p>
+		<SiteButton
+			href={editionPhotosUrl}
+			target="_blank"
+			ariaLabel="Apri le foto dell'edizione 2026 su Google Drive"
+			class="mt-8 px-7 sm:mt-10"
+			backgroundColor="var(--color-leof-orange-light)"
+			textColor="var(--color-background-dark)"
+			hoverBackgroundColor="var(--color-leof-orange-light)"
+			hoverTextColor="var(--color-background-dark)"
+		>
+			Guarda tutte le foto
+		</SiteButton>
+	</div>
+</section>
